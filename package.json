@@ -1,8 +1,21 @@
 {
   "name": "component-library",
-  "private": true,
+  "description": "Accessible UI component library written in React and TypeScript.",
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -13,7 +26,7 @@
     "test:run": "vitest run",
     "coverage": "vitest run --coverage"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   },
@@ -36,8 +49,11 @@
     "jsdom": "^29.1.1",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
+    "unplugin-dts": "^1.0.2",
     "vite": "^8.0.12",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "packageManager": "yarn@4.16.0"
 }
