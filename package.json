@@ -22,7 +22,6 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -30,6 +29,8 @@
     "coverage": "vitest run --coverage",
     "format": "yarn prettier . --check",
     "format:fix": "yarn prettier . --write",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "start": "vite --port 3005 --open",
     "story": "storybook dev -p 6006",
     "build:story": "storybook build"
