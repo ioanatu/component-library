@@ -1,7 +1,9 @@
 .yarn/cache
 .yarn/install-state.gz
 
+storybook-static
 node_modules
 dist
 
 .vscode/*
+
