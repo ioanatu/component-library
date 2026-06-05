@@ -1,7 +1,14 @@
 {
-  "name": "component-library",
+  "name": "@ioanatu/component-library",
   "description": "Accessible UI component library written in React and TypeScript.",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioanatu/component-library.git"
+  },
   "type": "module",
   "license": "MIT",
   "main": "dist/index.cjs",
@@ -15,9 +22,7 @@
     }
   },
   "files": [
-    "dist",
-    "fonts",
-    "OFL.txt"
+    "dist"
   ],
   "scripts": {
     "dev": "vite",

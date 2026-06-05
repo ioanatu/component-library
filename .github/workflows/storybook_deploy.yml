@@ -1,5 +1,8 @@
 name: Build storybook and upload artifact to S3 bucket
 
+env:
+  NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 on:
   push:
     branches:
