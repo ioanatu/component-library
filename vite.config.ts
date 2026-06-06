@@ -5,7 +5,7 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [react(), libInjectCss(), dts({ tsconfigPath: 'tsconfig.build.json' })],
+  plugins: [react(), libInjectCss(), dts({ tsconfigPath: 'tsconfig.lib.json', outDirs: ['dist'] })],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
