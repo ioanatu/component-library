@@ -1,7 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-
-import { Button } from '../Button';
+import { Button } from './Button';
 
 describe('Button', () => {
   it('renders with an accessible name', () => {

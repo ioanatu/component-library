@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import dts from 'unplugin-dts/vite';
-import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import { resolve } from 'path';
+import dts from 'unplugin-dts/vite';
+import { defineConfig } from 'vite';
+import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
 export default defineConfig({
   plugins: [react(), libInjectCss(), dts({ tsconfigPath: 'tsconfig.lib.json', outDirs: ['dist'] })],
