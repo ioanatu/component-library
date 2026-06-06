@@ -1,13 +1,13 @@
 {
   "name": "@ioanatu/component-library",
   "description": "Accessible UI component library written in React and TypeScript.",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioanatu/component-library.git"
+    "url": "git+https://github.com/ioanatu/component-library.git"
   },
   "type": "module",
   "license": "MIT",
