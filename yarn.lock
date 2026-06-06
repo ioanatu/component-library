@@ -875,7 +875,6 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
     eslint-plugin-react-hooks: "npm:^7.1.1"
-    eslint-plugin-react-refresh: "npm:^0.5.2"
     eslint-plugin-storybook: "npm:^10.4.2"
     globals: "npm:^17.6.0"
     jsdom: "npm:^29.1.1"
@@ -890,8 +889,15 @@ __metadata:
     vite-plugin-lib-inject-css: "npm:^2.2.2"
     vitest: "npm:^4.1.8"
   peerDependencies:
+    "@types/react": ^19.2.14
+    "@types/react-dom": ^19.2.3
     react: ^19.2.6
     react-dom: ^19.2.6
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3220,15 +3226,6 @@ __metadata:
   peerDependencies:
     eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0 || ^10.0.0
   checksum: 10/9dfe543af9813343f7cc7c5079b02da94a3b4c15df5cefdeef731f220120df26471d0db24c943222d2d9c6b43c3b78faea47ada9acc9dfd9c28492153cbc6902
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-react-refresh@npm:^0.5.2":
-  version: 0.5.2
-  resolution: "eslint-plugin-react-refresh@npm:0.5.2"
-  peerDependencies:
-    eslint: ^9 || ^10
-  checksum: 10/155a2e66d74866352f023b2a2d9b0daf1fb3033638851321caafa48fe9c9984830acc089d3832348ff2df2848791db96d17bd43639860b045b9f7ee4e5f86dcc
   languageName: node
   linkType: hard
 

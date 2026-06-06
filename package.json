@@ -41,8 +41,18 @@
     "story:build": "storybook build"
   },
   "peerDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "@types/react-dom": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.2.1",
@@ -65,7 +75,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
     "eslint-plugin-storybook": "^10.4.2",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
