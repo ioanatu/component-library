@@ -1,0 +1,21 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- hard offset shadow -->
+  <rect x="150" y="150" width="300" height="300" rx="66" fill="#3367F6"/>
+  <!-- solid ink tile for max contrast at tiny sizes -->
+  <rect x="62" y="62" width="300" height="300" rx="66" fill="#1A1A1A"/>
+  <!-- white folder knocked out -->
+  <g transform="translate(132,150)" fill="#FFFFFF">
+    <path d="M10 30
+             Q10 10 30 10
+             L78 10
+             Q89 10 96 21
+             L107 38
+             L162 38
+             Q190 38 190 66
+             L190 140
+             Q190 160 170 160
+             L30 160
+             Q10 160 10 140
+             Z"/>
+  </g>
+</svg>

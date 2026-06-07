@@ -14,8 +14,8 @@ export default defineConfig({
     },
     cssCodeSplit: true,
     rollupOptions: {
-      external: ['react', 'react-dom'],
-      output: { globals: { react: 'React' } },
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      output: { globals: { react: 'React', 'react-dom': 'ReactDOM' } },
     },
     copyPublicDir: false,
   },
