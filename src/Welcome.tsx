@@ -275,6 +275,11 @@ const USAGE_TABMENU =
   onChange={(view) => setView(view)}
 />`
 
+const scrollTo = (id: string) => (e: React.MouseEvent) => {
+  e.preventDefault()
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
 export default function Welcome() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const isDark = theme === 'dark'
@@ -298,9 +303,9 @@ export default function Welcome() {
       <header className="topbar">
         <div className="brand"><Mark size={30} /> OFFSET <span className="ver">v1.0.0</span></div>
         <nav className="topnav">
-          <a href="#start">Getting started</a>
-          <a href="#components">Components</a>
-          <a href="#a11y">Accessibility</a>
+          <a href="#start" onClick={scrollTo('start')}>Getting started</a>
+          <a href="#components" onClick={scrollTo('components')}>Components</a>
+          <a href="#a11y" onClick={scrollTo('a11y')}>Accessibility</a>
           <label className="toggle" title="Toggle theme">
             <input type="checkbox" checked={isDark}
               onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')} aria-label="Dark mode" />
@@ -323,8 +328,8 @@ export default function Welcome() {
               <span className="badge">Zero-runtime CSS vars</span>
             </div>
             <div className="cta">
-              <a className="btn btn--accent on-accent" href="#start">Get started</a>
-              <a className="btn" href="#components">Browse components</a>
+              <a className="btn btn--accent on-accent" href="#start" onClick={scrollTo('start')}>Get started</a>
+              <a className="btn" href="#components" onClick={scrollTo('components')}>Browse components</a>
             </div>
           </div>
           <Mark size={180} />
