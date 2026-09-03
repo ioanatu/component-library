@@ -1,7 +1,7 @@
 {
   "name": "@ioanatu/component-library",
   "description": "Accessible UI component library written in React and TypeScript.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
@@ -43,7 +43,8 @@
     "lint:fix": "eslint --fix .",
     "start": "vite --port 3005 --open",
     "story": "storybook dev -p 6007",
-    "story:build": "storybook build"
+    "story:build": "storybook build",
+    "publish-lib": "yarn build && npm version patch --no-git-tag-version && npm publish && git add package.json && git commit -m 'Bump lib version' && git push"
   },
   "peerDependencies": {
     "@types/react": "^19.2.14",
