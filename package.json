@@ -17,10 +17,9 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/@ioanatu/component-library.js"
-    },
-    "./styles.css": "./dist/index.css",
-    "./package.json": "./package.json"
+      "import": "./dist/@ioanatu/component-library.js",
+      "require": "./dist/@ioanatu/component-library.js"
+    }
   },
   "sideEffects": [
     "**/*.css"
