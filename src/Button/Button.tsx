@@ -1,50 +1,59 @@
-import type { ButtonHTMLAttributes } from 'react';
-import { forwardRef } from 'react';
+import clsx from 'clsx';
+import type { ButtonHTMLAttributes, Ref } from 'react';
+import type { ButtonSize, ButtonVariant } from '../types';
 import styles from './Button.module.css';
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger';
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonType = 'button' | 'reset' | 'submit';
 
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'> {
+/**
+ * CTA button.
+ *
+ * @param variant - Button variant. Default is primary.
+ * @param size - Button size. Default is medium.
+ * @param type - HTML button type. Default is 'button'.
+ * @param label - Button text.
+ * @param loading
+ * @param disabled - Controls the disabled property of the HTML button.
+ * @param ref - Forwarded to the underlying HTML button.
+ * @param onClick - Function with an optional event parameter.
+ * Function is not assigned to HTML onClick if loading is true.
+ */
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  isLoading?: boolean;
+  type: ButtonType;
+  label?: string;
+  loading?: boolean;
   disabled?: boolean;
-  loadingLabel?: string;
+  onClick?: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  ref?: Ref<HTMLButtonElement>;
 }
 
-function cx(...parts: Array<string | false | undefined>) {
-  return parts.filter(Boolean).join(' ');
-}
-
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  {
-    children,
-    className,
-    variant = 'primary',
-    size = 'md',
-    isLoading = false,
-    disabled = false,
-    loadingLabel = 'Loading',
-    type = 'button',
-    ...props
-  },
+export function Button({
+  label,
+  className,
+  variant = 'primary',
+  size = 'md',
+  loading = false,
+  disabled = false,
+  type = 'button',
+  onClick,
   ref,
-) {
-  const isDisabled = disabled || isLoading;
+}: ButtonProps) {
+  const isDisabled = disabled || loading;
 
   return (
     <button
       ref={ref}
-      className={cx(styles.button, styles[variant], styles[size], className)}
+      className={clsx(styles.button, styles[variant], styles[size], className)}
       disabled={isDisabled}
-      aria-busy={isLoading}
+      aria-busy={loading}
       type={type}
-      {...props}
+      onClick={!loading ? onClick : undefined}
     >
-      {isLoading ? <span className={styles.loadingSpinner} aria-hidden="true" /> : null}
-      <span>{children}</span>
-      {isLoading ? <span className={styles.srOnly}>{loadingLabel}</span> : null}
+      {loading ? <span className={styles.loadingSpinner} aria-hidden="true" /> : null}
+      <span className={clsx({ [styles.loading]: loading }, styles.centerContent)}>{label}</span>
     </button>
   );
-});
+}

@@ -37,7 +37,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "start": "vite --port 3005 --open",
-    "story": "storybook dev -p 6006",
+    "story": "storybook dev -p 6007",
     "story:build": "storybook build"
   },
   "peerDependencies": {
