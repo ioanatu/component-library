@@ -11,15 +11,16 @@
   },
   "type": "module",
   "license": "MIT",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "main": "./dist/@ioanatu/component-library.js",
+  "module": "./dist/@ioanatu/component-library.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+      "default": "./dist/@ioanatu/component-library.js"
+    },
+    "./styles.css": "./dist/index.css",
+    "./package.json": "./package.json"
   },
   "sideEffects": [
     "**/*.css"

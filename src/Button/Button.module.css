@@ -7,6 +7,9 @@
   --btn-shadow: #4169e1;
   --btn-shadow-offset: 4px;
 
+  box-sizing: border-box;
+  font-family: 'DM Sans', sans-serif;
+
   background-color: var(--btn-bg);
   border: 2px solid var(--btn-border);
   box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--btn-shadow);
