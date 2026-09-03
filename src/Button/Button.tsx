@@ -22,7 +22,7 @@ type ButtonType = 'button' | 'reset' | 'submit';
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  type: ButtonType;
+  type?: ButtonType;
   label?: string;
   loading?: boolean;
   disabled?: boolean;
