@@ -7,6 +7,10 @@ import styles from './Button.module.css';
 describe('Button', () => {
   const onClick = vi.fn();
 
+  beforeEach(() => {
+    onClick.mockClear();
+  });
+
   it('renders the label as its accessible name', () => {
     render(<Button type="button" label="Save changes" />);
     expect(screen.getByRole('button', { name: 'Save changes' })).toBeInTheDocument();

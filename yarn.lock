@@ -871,6 +871,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^6.0.1"
     "@vitest/coverage-v8": "npm:4.1.8"
     "@vitest/ui": "npm:^4.1.8"
+    clsx: "npm:^2.1.1"
     eslint: "npm:^10.3.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-jsx-a11y: "npm:^6.10.2"
@@ -879,6 +880,7 @@ __metadata:
     eslint-plugin-simple-import-sort: "npm:^13.0.0"
     eslint-plugin-storybook: "npm:^10.4.2"
     globals: "npm:^17.6.0"
+    istanbul-badges-readme: "npm:^1.9.0"
     jsdom: "npm:^29.1.1"
     prettier: "npm:^3.8.3"
     react: "npm:^19.2.6"
@@ -2682,6 +2684,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: 10/cdfb57fa6c7649bbff98d9028c2f0de2f91c86f551179541cf784b1cfdc1562dcb951955f46d54d930a3879931a980e32a46b598acaea274728dbe068deca919
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^2.0.1":
   version: 2.0.1
   resolution: "color-convert@npm:2.0.1"
@@ -4249,6 +4258,15 @@ __metadata:
   version: 4.0.0
   resolution: "isexe@npm:4.0.0"
   checksum: 10/2ead327ef596042ef9c9ec5f236b316acfaedb87f4bb61b3c3d574fb2e9c8a04b67305e04733bde52c24d9622fdebd3270aadb632adfbf9cadef88fe30f479e5
+  languageName: node
+  linkType: hard
+
+"istanbul-badges-readme@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "istanbul-badges-readme@npm:1.9.0"
+  bin:
+    istanbul-badges-readme: lib/index.js
+  checksum: 10/c4f2c9bcf6520b07bd88b78307355b24d079a76fa41e5dc6f75cd511dfb9c6e14f4c53281412bb55d78fb7567600dfc5a78db1e0fa422f0913f68f7d3bc6bd23
   languageName: node
   linkType: hard
 
