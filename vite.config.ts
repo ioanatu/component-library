@@ -2,12 +2,12 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import dts from 'unplugin-dts/vite';
 import { defineConfig } from 'vite';
-// import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
 export default defineConfig({
   plugins: [
     react(),
-    // libInjectCss(),
+    libInjectCss(),
     dts({
       tsconfigPath: 'tsconfig.lib.json',
       include: ['src/**/*.ts', 'src/**/*.tsx'],
@@ -23,11 +23,20 @@ export default defineConfig({
       formats: ['es'],
     },
     assetsDir: '',
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     copyPublicDir: false,
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
-      output: { globals: { react: 'React', 'react-dom': 'ReactDOM' } },
+      output: {
+        globals: { react: 'React', 'react-dom': 'ReactDOM' },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return '@ioanatu/component-library.css';
+          }
+
+          return '[name][extname]';
+        },
+      },
     },
   },
   // Emit asset URLs relative to the built CSS so fonts resolve inside the
