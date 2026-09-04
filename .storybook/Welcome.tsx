@@ -1,4 +1,5 @@
-import { useState, useRef, useId } from 'react'
+import { useState, useRef, useId } from 'react';
+import { Button } from '../src';
 
 /* ============================================================
    OFFSET — Storybook welcome / docs page
@@ -142,90 +143,161 @@ const CSS = `
 
 .offset-docs .footer{border-top:var(--border-w) solid var(--ink);padding:var(--s8) var(--s6);text-align:center;font-size:14px;opacity:.7}
 .offset-docs .note{font-size:13px;opacity:.65;margin-top:var(--s3)}
-`
+`;
 
 const Mark = ({ size = 40 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 512 512" aria-hidden="true" className="hero-mark">
     <rect x="133" y="133" width="296" height="296" rx="60" fill="#3367F6" />
-    <rect x="93" y="93" width="296" height="296" rx="60" fill="#FFFFFF" stroke="#1A1A1A" strokeWidth="20" />
+    <rect
+      x="93"
+      y="93"
+      width="296"
+      height="296"
+      rx="60"
+      fill="#FFFFFF"
+      stroke="#1A1A1A"
+      strokeWidth="20"
+    />
     <g transform="translate(168,176)" fill="#1A1A1A">
       <path d="M8 26Q8 8 26 8L70 8Q80 8 86 18L96 34L150 34Q176 34 176 60L176 132Q176 150 158 150L26 150Q8 150 8 132Z" />
     </g>
   </svg>
-)
+);
 
-type Tab = { id: string; label: string; content: React.ReactNode }
+type Tab = { id: string; label: string; content: React.ReactNode };
 
 function Tabs({ tabs, label }: { tabs: Tab[]; label: string }) {
-  const [active, setActive] = useState(0)
-  const refs = useRef<(HTMLButtonElement | null)[]>([])
-  const base = useId()
+  const [active, setActive] = useState(0);
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const base = useId();
   const onKey = (e: React.KeyboardEvent) => {
-    const last = tabs.length - 1
-    let n: number | null = null
-    if (e.key === 'ArrowRight') n = active === last ? 0 : active + 1
-    else if (e.key === 'ArrowLeft') n = active === 0 ? last : active - 1
-    else if (e.key === 'Home') n = 0
-    else if (e.key === 'End') n = last
-    if (n !== null) { e.preventDefault(); setActive(n); refs.current[n]?.focus() }
-  }
+    const last = tabs.length - 1;
+    let n: number | null = null;
+    if (e.key === 'ArrowRight') n = active === last ? 0 : active + 1;
+    else if (e.key === 'ArrowLeft') n = active === 0 ? last : active - 1;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = last;
+    if (n !== null) {
+      e.preventDefault();
+      setActive(n);
+      refs.current[n]?.focus();
+    }
+  };
   return (
     <div className="tabs">
       <div role="tablist" aria-label={label} className="tablist" onKeyDown={onKey}>
         {tabs.map((t, i) => (
-          <button key={t.id} role="tab" id={`${base}-t-${i}`} className="tab"
-            aria-selected={active === i} aria-controls={`${base}-p-${i}`}
-            tabIndex={active === i ? 0 : -1} ref={(el) => { refs.current[i] = el }}
-            onClick={() => setActive(i)}>{t.label}</button>
+          <button
+            key={t.id}
+            role="tab"
+            id={`${base}-t-${i}`}
+            className="tab"
+            aria-selected={active === i}
+            aria-controls={`${base}-p-${i}`}
+            tabIndex={active === i ? 0 : -1}
+            ref={(el) => {
+              refs.current[i] = el;
+            }}
+            onClick={() => setActive(i)}
+          >
+            {t.label}
+          </button>
         ))}
       </div>
       {tabs.map((t, i) => (
-        <div key={t.id} role="tabpanel" id={`${base}-p-${i}`} aria-labelledby={`${base}-t-${i}`}
-          hidden={active !== i} tabIndex={0} className="tabpanel">{t.content}</div>
+        <div
+          key={t.id}
+          role="tabpanel"
+          id={`${base}-p-${i}`}
+          aria-labelledby={`${base}-t-${i}`}
+          hidden={active !== i}
+          tabIndex={0}
+          className="tabpanel"
+        >
+          {t.content}
+        </div>
       ))}
     </div>
-  )
+  );
 }
 
-function TabMenu({ items, label, onChange }: { items: string[]; label: string; onChange?: (item: string) => void }) {
-  const [active, setActive] = useState(0)
-  const refs = useRef<(HTMLButtonElement | null)[]>([])
-  const base = useId()
-  const select = (i: number) => { setActive(i); onChange?.(items[i]) }
+function TabMenu({
+  items,
+  label,
+  onChange,
+}: {
+  items: string[];
+  label: string;
+  onChange?: (item: string) => void;
+}) {
+  const [active, setActive] = useState(0);
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const base = useId();
+  const select = (i: number) => {
+    setActive(i);
+    onChange?.(items[i]);
+  };
   const onKey = (e: React.KeyboardEvent) => {
-    const last = items.length - 1
-    let n: number | null = null
-    if (e.key === 'ArrowRight') n = active === last ? 0 : active + 1
-    else if (e.key === 'ArrowLeft') n = active === 0 ? last : active - 1
-    else if (e.key === 'Home') n = 0
-    else if (e.key === 'End') n = last
-    if (n !== null) { e.preventDefault(); select(n); refs.current[n]?.focus() }
-  }
+    const last = items.length - 1;
+    let n: number | null = null;
+    if (e.key === 'ArrowRight') n = active === last ? 0 : active + 1;
+    else if (e.key === 'ArrowLeft') n = active === 0 ? last : active - 1;
+    else if (e.key === 'Home') n = 0;
+    else if (e.key === 'End') n = last;
+    if (n !== null) {
+      e.preventDefault();
+      select(n);
+      refs.current[n]?.focus();
+    }
+  };
   return (
     <div role="tablist" aria-label={label} className="tabmenu" onKeyDown={onKey}>
       {items.map((it, i) => (
-        <button key={it} role="tab" id={`${base}-${i}`} className="tabmenu-btn"
-          aria-selected={active === i} tabIndex={active === i ? 0 : -1}
-          ref={(el) => { refs.current[i] = el }} onClick={() => select(i)}>{it}</button>
+        <button
+          key={it}
+          role="tab"
+          id={`${base}-${i}`}
+          className="tabmenu-btn"
+          aria-selected={active === i}
+          tabIndex={active === i ? 0 : -1}
+          ref={(el) => {
+            refs.current[i] = el;
+          }}
+          onClick={() => select(i)}
+        >
+          {it}
+        </button>
       ))}
     </div>
-  )
+  );
 }
 
-const Swatch = ({ name, light, dark, isDark }: { name: string; light: string; dark: string; isDark: boolean }) => (
+const Swatch = ({
+  name,
+  light,
+  dark,
+  isDark,
+}: {
+  name: string;
+  light: string;
+  dark: string;
+  isDark: boolean;
+}) => (
   <div className="sw">
     <div className="chip" style={{ background: isDark ? dark : light }} />
-    <div className="m">{name}<small>{isDark ? dark : light}</small></div>
+    <div className="m">
+      {name}
+      <small>{isDark ? dark : light}</small>
+    </div>
   </div>
-)
+);
 
 const INSTALL = {
   npm: `npm install @ioanatu/component-library`,
   pnpm: `pnpm add @ioanatu/component-library`,
   yarn: `yarn add @ioanatu/component-library`,
-}
-const USAGE_BASIC =
-`import { Button } from '@ioanatu/component-library';
+};
+const USAGE_BASIC = `import { Button } from '@ioanatu/component-library';
 
 export function Toolbar() {
   return (
@@ -233,18 +305,16 @@ export function Toolbar() {
       add new project
     </Button>
   );
-}`
-const USAGE_DARK_CSS =
-`/* Theming is pure CSS variables — override them under a scope. */
+}`;
+const USAGE_DARK_CSS = `/* Theming is pure CSS variables — override them under a scope. */
 [data-theme="dark"] {
   --page:    #121214;
   --surface: #1D1D21;
   --ink:     #F2F2F0;   /* borders + text flip light */
   --accent:  #5B82FF;   /* brightened for dark fills  */
   --on-accent:#101014;
-}`
-const USAGE_DARK_REACT =
-`function App() {
+}`;
+const USAGE_DARK_REACT = `function App() {
   const [theme, setTheme] = useState('light');
 
   // Apply the theme at the root; every token cascades down.
@@ -254,9 +324,8 @@ const USAGE_DARK_REACT =
 
   return <Toggle checked={theme === 'dark'}
                  onChange={e => setTheme(e.target.checked ? 'dark' : 'light')} />;
-}`
-const USAGE_TABS =
-`import { Tabs } from '@ioanatu/component-library';
+}`;
+const USAGE_TABS = `import { Tabs } from '@ioanatu/component-library';
 
 <Tabs
   label="Account settings"
@@ -265,25 +334,24 @@ const USAGE_TABS =
     { id: 'billing', label: 'Billing', content: <Billing /> },
     { id: 'team',    label: 'Team',    content: <Team /> },
   ]}
-/>`
-const USAGE_TABMENU =
-`import { TabMenu } from '@ioanatu/component-library';
+/>`;
+const USAGE_TABMENU = `import { TabMenu } from '@ioanatu/component-library';
 
 <TabMenu
   label="View mode"
   items={['Grid', 'List', 'Board']}
   onChange={(view) => setView(view)}
-/>`
+/>`;
 
 const scrollTo = (id: string) => (e: React.MouseEvent) => {
-  e.preventDefault()
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-}
+  e.preventDefault();
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+};
 
 export default function Welcome() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  const isDark = theme === 'dark'
-  const [menuView, setMenuView] = useState('Grid')
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const isDark = theme === 'dark';
+  const [menuView, setMenuView] = useState('Grid');
 
   const components: [string, string][] = [
     ['Button', 'Primary, accent, and ghost variants with the signature press interaction.'],
@@ -293,7 +361,7 @@ export default function Welcome() {
     ['Toggle', 'A role=switch control for binary settings.'],
     ['Tabs', 'Browser-tab styled tablist with arrow-key navigation and panels.'],
     ['TabMenu', 'A segmented, pill-style tab menu for switching views.'],
-  ]
+  ];
 
   return (
     <div className="offset-docs" data-theme={theme}>
@@ -301,15 +369,29 @@ export default function Welcome() {
 
       {/* TOP BAR */}
       <header className="topbar">
-        <div className="brand"><Mark size={30} /> OFFSET <span className="ver">v1.0.0</span></div>
+        <div className="brand">
+          <Mark size={30} /> OFFSET <span className="ver">v1.0.0</span>
+        </div>
         <nav className="topnav">
-          <a href="#start" onClick={scrollTo('start')}>Getting started</a>
-          <a href="#components" onClick={scrollTo('components')}>Components</a>
-          <a href="#a11y" onClick={scrollTo('a11y')}>Accessibility</a>
+          <a href="#start" onClick={scrollTo('start')}>
+            Getting started
+          </a>
+          <a href="#components" onClick={scrollTo('components')}>
+            Components
+          </a>
+          <a href="#a11y" onClick={scrollTo('a11y')}>
+            Accessibility
+          </a>
           <label className="toggle" title="Toggle theme">
-            <input type="checkbox" checked={isDark}
-              onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')} aria-label="Dark mode" />
-            <span className="switch"><span className="knob" /></span>
+            <input
+              type="checkbox"
+              checked={isDark}
+              onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
+              aria-label="Dark mode"
+            />
+            <span className="switch">
+              <span className="knob" />
+            </span>
           </label>
         </nav>
       </header>
@@ -320,7 +402,11 @@ export default function Welcome() {
           <div>
             <p className="eyebrow">React · TypeScript · Design System</p>
             <h1>OFFSET</h1>
-            <p className="lead">A neo-brutalist component library where every surface is defined by one idea: a bold border and a hard, unapologetic offset shadow. Token-driven, themeable, and accessible from the first commit.</p>
+            <p className="lead">
+              A neo-brutalist component library where every surface is defined by one idea: a bold
+              border and a hard, unapologetic offset shadow. Token-driven, themeable, and accessible
+              from the first commit.
+            </p>
             <div className="badges">
               <span className="badge">React 19</span>
               <span className="badge">TypeScript</span>
@@ -328,8 +414,16 @@ export default function Welcome() {
               <span className="badge">Zero-runtime CSS vars</span>
             </div>
             <div className="cta">
-              <a className="btn btn--accent on-accent" href="#start" onClick={scrollTo('start')}>Get started</a>
-              <a className="btn" href="#components" onClick={scrollTo('components')}>Browse components</a>
+              <Button
+                variant="accent"
+                label="Get started"
+                onClick={scrollTo('start')}
+                href="#start"
+              />
+
+              <a className="btn" href="#components" onClick={scrollTo('components')}>
+                Browse components
+              </a>
             </div>
           </div>
           <Mark size={180} />
@@ -339,11 +433,37 @@ export default function Welcome() {
         <section>
           <p className="eyebrow">Overview</p>
           <h2>One button, extrapolated into a system</h2>
-          <p className="lead" style={{ maxWidth: '65ch' }}>OFFSET began as a single button and grew outward by rule, not by guesswork. Its color, radius, border weight, and shadow were lifted directly from that component, then extended into a complete token scale so every new piece inherits the same point of view. The result is a library that feels designed rather than assembled.</p>
+          <p className="lead" style={{ maxWidth: '65ch' }}>
+            OFFSET began as a single button and grew outward by rule, not by guesswork. Its color,
+            radius, border weight, and shadow were lifted directly from that component, then
+            extended into a complete token scale so every new piece inherits the same point of view.
+            The result is a library that feels designed rather than assembled.
+          </p>
           <div className="grid grid-3" style={{ marginTop: 'var(--s6)' }}>
-            <div className="card"><div className="ic">◆</div><h3>Token-driven</h3><p>Every value — color, spacing, radius, elevation, type — is a CSS custom property. Restyle the whole system by editing the token layer, not the components.</p></div>
-            <div className="card"><div className="ic">⌨</div><h3>Accessible by default</h3><p>Correct ARIA roles, full keyboard operation, managed focus, and visible focus rings ship with every component — not as an afterthought.</p></div>
-            <div className="card"><div className="ic">◑</div><h3>Light & dark</h3><p>Theming is a scoped variable override. No duplicated components, no theme props threaded everywhere — just one attribute on the root.</p></div>
+            <div className="card">
+              <div className="ic">◆</div>
+              <h3>Token-driven</h3>
+              <p>
+                Every value — color, spacing, radius, elevation, type — is a CSS custom property.
+                Restyle the whole system by editing the token layer, not the components.
+              </p>
+            </div>
+            <div className="card">
+              <div className="ic">⌨</div>
+              <h3>Accessible by default</h3>
+              <p>
+                Correct ARIA roles, full keyboard operation, managed focus, and visible focus rings
+                ship with every component — not as an afterthought.
+              </p>
+            </div>
+            <div className="card">
+              <div className="ic">◑</div>
+              <h3>Light & dark</h3>
+              <p>
+                Theming is a scoped variable override. No duplicated components, no theme props
+                threaded everywhere — just one attribute on the root.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -353,21 +473,55 @@ export default function Welcome() {
           <h2>Install & use</h2>
           <p>Add the package, then import components directly — styles inject automatically.</p>
           <div style={{ marginBottom: 'var(--s5)' }}>
-            <Tabs label="Install with your package manager" tabs={[
-              { id: 'npm', label: 'npm', content: <pre><code>{INSTALL.npm}</code></pre> },
-              { id: 'pnpm', label: 'pnpm', content: <pre><code>{INSTALL.pnpm}</code></pre> },
-              { id: 'yarn', label: 'yarn', content: <pre><code>{INSTALL.yarn}</code></pre> },
-            ]} />
+            <Tabs
+              label="Install with your package manager"
+              tabs={[
+                {
+                  id: 'npm',
+                  label: 'npm',
+                  content: (
+                    <pre>
+                      <code>{INSTALL.npm}</code>
+                    </pre>
+                  ),
+                },
+                {
+                  id: 'pnpm',
+                  label: 'pnpm',
+                  content: (
+                    <pre>
+                      <code>{INSTALL.pnpm}</code>
+                    </pre>
+                  ),
+                },
+                {
+                  id: 'yarn',
+                  label: 'yarn',
+                  content: (
+                    <pre>
+                      <code>{INSTALL.yarn}</code>
+                    </pre>
+                  ),
+                },
+              ]}
+            />
           </div>
-          <pre><code>{USAGE_BASIC}</code></pre>
-          <p className="note">Styles are injected automatically on import — no separate CSS import needed in your app.</p>
+          <pre>
+            <code>{USAGE_BASIC}</code>
+          </pre>
+          <p className="note">
+            Styles are injected automatically on import — no separate CSS import needed in your app.
+          </p>
         </section>
 
         {/* TOKENS */}
         <section id="tokens">
           <p className="eyebrow">Design tokens</p>
           <h2>The values everything reads from</h2>
-          <p>Colors flip with the theme; structural tokens stay constant. Toggle the switch in the header to watch these swatches re-theme live.</p>
+          <p>
+            Colors flip with the theme; structural tokens stay constant. Toggle the switch in the
+            header to watch these swatches re-theme live.
+          </p>
           <div className="grid grid-3" style={{ marginBottom: 'var(--s5)' }}>
             <Swatch name="--page" light="#F7F5F5" dark="#121214" isDark={isDark} />
             <Swatch name="--surface" light="#FFFFFF" dark="#1D1D21" isDark={isDark} />
@@ -377,8 +531,26 @@ export default function Welcome() {
             <Swatch name="--success" light="#1FA971" dark="#3DD68C" isDark={isDark} />
           </div>
           <div className="grid grid-2">
-            <div className="card"><h3>Structure</h3><p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>--border-w: 2px<br />--radius-md: 12px<br />--shadow-md: 4px 4px 0 accent</p></div>
-            <div className="card"><h3>Scale</h3><p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>--s1…--s12: 4 → 48px<br />--fs-xs…2xl: 12 → 30px<br />--radius-sm/lg/full</p></div>
+            <div className="card">
+              <h3>Structure</h3>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>
+                --border-w: 2px
+                <br />
+                --radius-md: 12px
+                <br />
+                --shadow-md: 4px 4px 0 accent
+              </p>
+            </div>
+            <div className="card">
+              <h3>Scale</h3>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>
+                --s1…--s12: 4 → 48px
+                <br />
+                --fs-xs…2xl: 12 → 30px
+                <br />
+                --radius-sm/lg/full
+              </p>
+            </div>
           </div>
         </section>
 
@@ -386,11 +558,25 @@ export default function Welcome() {
         <section id="theming">
           <p className="eyebrow">Theming & dark mode</p>
           <h2>Dark mode is one attribute</h2>
-          <p>Because components only ever reference tokens, a dark theme is just a second set of variable values scoped under <code className="kbd">[data-theme="dark"]</code>. Define them once:</p>
-          <pre style={{ marginBottom: 'var(--s5)' }}><code>{USAGE_DARK_CSS}</code></pre>
-          <p>Then drive it from React — set the attribute on the root and every descendant re-themes through the cascade:</p>
-          <pre><code>{USAGE_DARK_REACT}</code></pre>
-          <p className="note">The accent brightens in dark mode and <code>--on-accent</code> flips to a near-black so text on accent fills keeps an AA contrast ratio.</p>
+          <p>
+            Because components only ever reference tokens, a dark theme is just a second set of
+            variable values scoped under <code className="kbd">[data-theme="dark"]</code>. Define
+            them once:
+          </p>
+          <pre style={{ marginBottom: 'var(--s5)' }}>
+            <code>{USAGE_DARK_CSS}</code>
+          </pre>
+          <p>
+            Then drive it from React — set the attribute on the root and every descendant re-themes
+            through the cascade:
+          </p>
+          <pre>
+            <code>{USAGE_DARK_REACT}</code>
+          </pre>
+          <p className="note">
+            The accent brightens in dark mode and <code>--on-accent</code> flips to a near-black so
+            text on accent fills keeps an AA contrast ratio.
+          </p>
         </section>
 
         {/* COMPONENTS */}
@@ -400,51 +586,159 @@ export default function Welcome() {
           <div className="grid grid-2" style={{ marginBottom: 'var(--s8)' }}>
             {components.map(([name, desc]) => (
               <div className="card comp-card" key={name}>
-                <h3>{name} <span className="pill">A11y ✓</span></h3>
+                <h3>
+                  {name} <span className="pill">A11y ✓</span>
+                </h3>
                 <p>{desc}</p>
               </div>
             ))}
           </div>
 
           <h3 style={{ fontSize: 20, marginBottom: 'var(--s4)' }}>Tabs — live</h3>
-          <p>The browser-tab strip you liked, promoted into a real <code>Tabs</code> component: a proper <code className="kbd">tablist</code> with roving <code>tabindex</code>, arrow-key navigation, and <code>Home</code>/<code>End</code> jumps.</p>
+          <p>
+            The browser-tab strip you liked, promoted into a real <code>Tabs</code> component: a
+            proper <code className="kbd">tablist</code> with roving <code>tabindex</code>, arrow-key
+            navigation, and <code>Home</code>/<code>End</code> jumps.
+          </p>
           <div style={{ marginBottom: 'var(--s5)' }}>
-            <Tabs label="Demo tabs" tabs={[
-              { id: 'a', label: 'Overview', content: <p style={{ margin: 0 }}>Each tab links to its panel via <code>aria-controls</code>, and the selected tab is the only one in the tab order — arrow keys move between the rest.</p> },
-              { id: 'b', label: 'Keyboard', content: <p style={{ margin: 0 }}>Try it: focus a tab and press <span className="kbd">←</span> <span className="kbd">→</span> to move, <span className="kbd">Home</span> / <span className="kbd">End</span> to jump to the ends.</p> },
-              { id: 'c', label: 'Panels', content: <p style={{ margin: 0 }}>Panels are focusable (<code>tabIndex=0</code>) and labelled by their tab, so screen-reader users land in the right context.</p> },
-            ]} />
+            <Tabs
+              label="Demo tabs"
+              tabs={[
+                {
+                  id: 'a',
+                  label: 'Overview',
+                  content: (
+                    <p style={{ margin: 0 }}>
+                      Each tab links to its panel via <code>aria-controls</code>, and the selected
+                      tab is the only one in the tab order — arrow keys move between the rest.
+                    </p>
+                  ),
+                },
+                {
+                  id: 'b',
+                  label: 'Keyboard',
+                  content: (
+                    <p style={{ margin: 0 }}>
+                      Try it: focus a tab and press <span className="kbd">←</span>{' '}
+                      <span className="kbd">→</span> to move, <span className="kbd">Home</span> /{' '}
+                      <span className="kbd">End</span> to jump to the ends.
+                    </p>
+                  ),
+                },
+                {
+                  id: 'c',
+                  label: 'Panels',
+                  content: (
+                    <p style={{ margin: 0 }}>
+                      Panels are focusable (<code>tabIndex=0</code>) and labelled by their tab, so
+                      screen-reader users land in the right context.
+                    </p>
+                  ),
+                },
+              ]}
+            />
           </div>
-          <pre style={{ marginBottom: 'var(--s8)' }}><code>{USAGE_TABS}</code></pre>
+          <pre style={{ marginBottom: 'var(--s8)' }}>
+            <code>{USAGE_TABS}</code>
+          </pre>
 
           <h3 style={{ fontSize: 20, marginBottom: 'var(--s4)' }}>TabMenu — live</h3>
-          <p>A segmented, pill-style sibling for switching views or modes. Same accessible tab semantics, different silhouette.</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s4)', flexWrap: 'wrap', marginBottom: 'var(--s5)' }}>
+          <p>
+            A segmented, pill-style sibling for switching views or modes. Same accessible tab
+            semantics, different silhouette.
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--s4)',
+              flexWrap: 'wrap',
+              marginBottom: 'var(--s5)',
+            }}
+          >
             <TabMenu label="View mode" items={['Grid', 'List', 'Board']} onChange={setMenuView} />
-            <span style={{ fontWeight: 700, opacity: .7 }}>→ showing <code className="kbd">{menuView}</code></span>
+            <span style={{ fontWeight: 700, opacity: 0.7 }}>
+              → showing <code className="kbd">{menuView}</code>
+            </span>
           </div>
-          <pre><code>{USAGE_TABMENU}</code></pre>
+          <pre>
+            <code>{USAGE_TABMENU}</code>
+          </pre>
         </section>
 
         {/* ACCESSIBILITY */}
         <section id="a11y">
           <p className="eyebrow">Accessibility</p>
           <h2>Built to WCAG 2.1 AA</h2>
-          <p className="lead" style={{ maxWidth: '65ch' }}>Accessibility is a baseline requirement here, not a feature. Every interactive component is fully operable by keyboard, exposes the correct ARIA roles and states, manages focus deliberately, and never communicates meaning through color alone.</p>
+          <p className="lead" style={{ maxWidth: '65ch' }}>
+            Accessibility is a baseline requirement here, not a feature. Every interactive component
+            is fully operable by keyboard, exposes the correct ARIA roles and states, manages focus
+            deliberately, and never communicates meaning through color alone.
+          </p>
           <table className="a11y" style={{ marginTop: 'var(--s5)' }}>
-            <thead><tr><th>Component</th><th>Pattern</th><th>Keyboard</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Pattern</th>
+                <th>Keyboard</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr><td>Dropdown</td><td>listbox + button</td><td>↑ ↓ · Enter · Esc · Home/End · typeahead-ready</td></tr>
-              <tr><td>Tabs / TabMenu</td><td>tablist (roving tabindex)</td><td>← → · Home/End</td></tr>
-              <tr><td>Checkbox / Radio</td><td>native input + custom UI</td><td>Space · arrow keys (radio group)</td></tr>
-              <tr><td>Toggle</td><td>role=switch</td><td>Space</td></tr>
-              <tr><td>Inputs</td><td>label + aria-describedby</td><td>standard · errors announced</td></tr>
+              <tr>
+                <td>Dropdown</td>
+                <td>listbox + button</td>
+                <td>↑ ↓ · Enter · Esc · Home/End · typeahead-ready</td>
+              </tr>
+              <tr>
+                <td>Tabs / TabMenu</td>
+                <td>tablist (roving tabindex)</td>
+                <td>← → · Home/End</td>
+              </tr>
+              <tr>
+                <td>Checkbox / Radio</td>
+                <td>native input + custom UI</td>
+                <td>Space · arrow keys (radio group)</td>
+              </tr>
+              <tr>
+                <td>Toggle</td>
+                <td>role=switch</td>
+                <td>Space</td>
+              </tr>
+              <tr>
+                <td>Inputs</td>
+                <td>label + aria-describedby</td>
+                <td>standard · errors announced</td>
+              </tr>
             </tbody>
           </table>
           <div className="grid grid-3" style={{ marginTop: 'var(--s6)' }}>
-            <div className="card"><h3><span className="check">✓</span> Visible focus</h3><p>A 3px focus ring on every focusable element, never removed — only restyled to stay visible on light and accent surfaces alike.</p></div>
-            <div className="card"><h3><span className="check">✓</span> Color independence</h3><p>Error states pair the danger color with text and an invalid state, so meaning survives for color-blind and grayscale users.</p></div>
-            <div className="card"><h3><span className="check">✓</span> Contrast</h3><p>Text and essential UI meet AA contrast in both themes; <code>--on-accent</code> is tuned per theme to keep button labels legible.</p></div>
+            <div className="card">
+              <h3>
+                <span className="check">✓</span> Visible focus
+              </h3>
+              <p>
+                A 3px focus ring on every focusable element, never removed — only restyled to stay
+                visible on light and accent surfaces alike.
+              </p>
+            </div>
+            <div className="card">
+              <h3>
+                <span className="check">✓</span> Color independence
+              </h3>
+              <p>
+                Error states pair the danger color with text and an invalid state, so meaning
+                survives for color-blind and grayscale users.
+              </p>
+            </div>
+            <div className="card">
+              <h3>
+                <span className="check">✓</span> Contrast
+              </h3>
+              <p>
+                Text and essential UI meet AA contrast in both themes; <code>--on-accent</code> is
+                tuned per theme to keep button labels legible.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -453,15 +747,26 @@ export default function Welcome() {
           <p className="eyebrow">Resources</p>
           <h2>Keep going</h2>
           <div className="cta">
-            <a className="btn" href="#">Storybook</a>
-            <a className="btn" href="https://github.com/ioanatu/component-library">GitHub</a>
-            <a className="btn" href="#">Figma library</a>
-            <a className="btn" href="#">Changelog</a>
+            <a className="btn" href="#">
+              Storybook
+            </a>
+            <a className="btn" href="https://github.com/ioanatu/component-library">
+              GitHub
+            </a>
+            <a className="btn" href="#">
+              Figma library
+            </a>
+            <a className="btn" href="#">
+              Changelog
+            </a>
           </div>
         </section>
       </main>
 
-      <footer className="footer">OFFSET Design System · v1.0.0 · Built with React + TypeScript · Toggle the theme in the header ◑</footer>
+      <footer className="footer">
+        OFFSET Design System · v1.0.0 · Built with React + TypeScript · Toggle the theme in the
+        header ◑
+      </footer>
     </div>
-  )
+  );
 }

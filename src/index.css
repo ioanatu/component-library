@@ -1,42 +1,14 @@
 @import './styles/border-radii.css';
 @import './styles/colors.css';
 
+/**
+ * Hanken Grotesk ships as a variable font, so a single file covers the whole
+ * 100-900 weight range instead of one file per weight.
+ */
 @font-face {
-  font-family: 'DM Sans';
-  src:
-    url('./assets/fonts/DMSans-Light.woff2?no-inline') format('woff2'),
-    url('./assets/fonts/DMSans-Light.woff?no-inline') format('woff');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'DM Sans';
-  src:
-    url('./assets/fonts/DMSans-Regular.woff2?no-inline') format('woff2'),
-    url('./assets/fonts/DMSans-Regular.woff?no-inline') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'DM Sans';
-  src:
-    url('./assets/fonts/DMSans-Medium.woff2?no-inline') format('woff2'),
-    url('./assets/fonts/DMSans-Medium.woff?no-inline') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'DM Sans';
-  src:
-    url('./assets/fonts/DMSans-Bold.woff2?no-inline') format('woff2'),
-    url('./assets/fonts/DMSans-Bold.woff?no-inline') format('woff');
-  font-weight: bold; /* bold */
+  font-family: 'Hanken Grotesk';
+  src: url('./assets/fonts/HankenGrotesk-Variable.woff2?no-inline') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }

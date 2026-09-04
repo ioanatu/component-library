@@ -2,13 +2,15 @@
   --btn-shadow-offset: 4px;
 
   box-sizing: border-box;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 700;
 
   background-color: var(--surface-default);
   border: 2px solid var(--border-default);
   box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-default);
   color: var(--text-default);
   cursor: pointer;
+  text-decoration: none;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -19,13 +21,26 @@
     box-shadow 120ms ease;
 }
 
-.button:hover:not(:disabled) {
+/**
+ * Consumer stylesheets commonly underline anchors on hover or once visited, and
+ * those selectors outrank a single class. Matching the states keeps the
+ * link-flavoured button undecorated without resorting to !important.
+ */
+.button:link,
+.button:visited,
+.button:hover,
+.button:focus,
+.button:active {
+  text-decoration: none;
+}
+
+.button:hover:not(:disabled):not([aria-disabled='true']) {
   background-color: var(--surface-hover);
   box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
     var(--shadow-default);
 }
 
-.button:active:not(:disabled) {
+.button:active:not(:disabled):not([aria-disabled='true']) {
   background-color: var(--surface-active);
   box-shadow: 2px 2px 0 var(--shadow-default);
   transform: translate(2px, 2px);
@@ -36,7 +51,8 @@
   outline-offset: 3px;
 }
 
-.button:disabled {
+.button:disabled,
+.button[aria-disabled='true'] {
   cursor: not-allowed;
   opacity: 0.45;
 }
@@ -47,12 +63,12 @@
   box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-neutral);
 }
 
-.secondary:hover:not(:disabled) {
+.secondary:hover:not(:disabled):not([aria-disabled='true']) {
   box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
     var(--shadow-neutral);
 }
 
-.secondary:active:not(:disabled) {
+.secondary:active:not(:disabled):not([aria-disabled='true']) {
   box-shadow: 2px 2px 0 var(--shadow-neutral);
 }
 
@@ -66,12 +82,12 @@
   box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-danger);
 }
 
-.danger:hover:not(:disabled) {
+.danger:hover:not(:disabled):not([aria-disabled='true']) {
   box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
     var(--shadow-danger);
 }
 
-.danger:active:not(:disabled) {
+.danger:active:not(:disabled):not([aria-disabled='true']) {
   box-shadow: 2px 2px 0 var(--shadow-danger);
 }
 
@@ -85,12 +101,12 @@
   box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-success);
 }
 
-.success:hover:not(:disabled) {
+.success:hover:not(:disabled):not([aria-disabled='true']) {
   box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
     var(--shadow-success);
 }
 
-.success:active:not(:disabled) {
+.success:active:not(:disabled):not([aria-disabled='true']) {
   box-shadow: 2px 2px 0 var(--shadow-success);
 }
 
@@ -104,13 +120,13 @@
   box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-strong);
 }
 
-.accent:hover:not(:disabled) {
+.accent:hover:not(:disabled):not([aria-disabled='true']) {
   background-color: var(--surface-accent);
   box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
     var(--shadow-strong);
 }
 
-.accent:active:not(:disabled) {
+.accent:active:not(:disabled):not([aria-disabled='true']) {
   background-color: var(--surface-accent);
   box-shadow: 2px 2px 0 var(--shadow-strong);
 }
@@ -120,23 +136,23 @@
 }
 
 .sm {
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 9px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 10px;
   font-size: 14px;
 }
 
 .md {
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 10px;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 12px;
   font-size: 16px;
 }
 
 .lg {
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 11px;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
   font-size: 18px;
 }
 

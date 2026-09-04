@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { createEvent, fireEvent, render, screen } from '@testing-library/react';
+import type React from 'react';
 import { createRef } from 'react';
 import { buttonSizes, buttonVariants } from '../types';
 import { Button } from './Button';
@@ -52,6 +53,90 @@ describe('Button', () => {
     const { container } = render(<Button type="button" label="Sized" loading size={size} />);
     expect(container.querySelector(`.${styles.loadingSpinner}`)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Sized' })).toHaveClass(styles.button, styles[size]);
+  });
+
+  describe('with href', () => {
+    it('renders an anchor that navigates instead of a button', () => {
+      render(<Button label="Get started" href="#start" />);
+      const link = screen.getByRole('link', { name: 'Get started' });
+      expect(link).toHaveAttribute('href', '#start');
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    it('keeps the variant and size classes', () => {
+      render(<Button label="Get started" href="#start" variant="accent" size="lg" />);
+      expect(screen.getByRole('link', { name: 'Get started' })).toHaveClass(
+        styles.button,
+        styles.accent,
+        styles.lg,
+      );
+    });
+
+    it('supports click interactions', () => {
+      render(<Button label="Go" href="#start" onClick={onClick} />);
+      fireEvent.click(screen.getByRole('link', { name: 'Go' }));
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('passes the click event so a handler can take over navigation', () => {
+      const handleClick = vi.fn((event: React.MouseEvent) => event.preventDefault());
+      render(<Button label="Scroll" href="#start" onClick={handleClick} />);
+
+      const event = createEvent.click(screen.getByRole('link', { name: 'Scroll' }));
+      fireEvent(screen.getByRole('link', { name: 'Scroll' }), event);
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+      expect(handleClick.mock.calls[0][0]).toBeDefined();
+      expect(event.defaultPrevented).toBe(true);
+    });
+
+    it('does not let a disabled link bubble its click to an ancestor', () => {
+      const onAncestorClick = vi.fn();
+      render(
+        <div onClick={onAncestorClick}>
+          <Button label="Cannot go" href="#start" disabled onClick={onClick} />
+        </div>,
+      );
+      fireEvent.click(screen.getByText('Cannot go'));
+      expect(onClick).not.toHaveBeenCalled();
+      expect(onAncestorClick).not.toHaveBeenCalled();
+    });
+
+    it('drops the href when disabled so the link cannot be followed', () => {
+      const { container } = render(
+        <Button label="Cannot go" href="#start" disabled onClick={onClick} />,
+      );
+      const anchor = container.querySelector('a');
+
+      expect(anchor).not.toHaveAttribute('href');
+      expect(anchor).toHaveAttribute('aria-disabled', 'true');
+      fireEvent.click(anchor!);
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it('announces busy state and blocks navigation while loading', () => {
+      const { container } = render(
+        <Button label="Loading" href="#start" loading onClick={onClick} />,
+      );
+      const anchor = container.querySelector('a');
+
+      expect(anchor).toHaveAttribute('aria-busy', 'true');
+      expect(anchor).not.toHaveAttribute('href');
+      expect(anchor).toHaveAttribute('aria-disabled', 'true');
+      fireEvent.click(anchor!);
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it('never renders a type attribute on the anchor', () => {
+      render(<Button label="Go" href="#start" type="submit" />);
+      expect(screen.getByRole('link', { name: 'Go' })).not.toHaveAttribute('type');
+    });
+
+    it('forwards its ref to the underlying anchor element', () => {
+      const ref = createRef<HTMLAnchorElement>();
+      render(<Button label="Focus me" href="#start" ref={ref} />);
+      expect(ref.current).toBe(screen.getByRole('link', { name: 'Focus me' }));
+    });
   });
 
   it('renders the success variant with its own class', () => {

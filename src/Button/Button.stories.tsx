@@ -38,6 +38,7 @@ const meta: Meta<typeof Button> = {
   tags: ['autodocs'],
   argTypes: {
     size: { control: 'inline-radio', options: buttonSizes },
+    href: { control: 'text' },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
   },
@@ -74,10 +75,29 @@ export const Variants: Story = {
     variant: { control: false, table: { disable: true } },
   },
   render: (args) => (
-    <div style={{ display: 'flex', gap: '14px' }}>
+    <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
       {buttonVariants.map((variant) => (
         <Button {...args} key={variant} variant={variant} label={variant} />
       ))}
+    </div>
+  ),
+};
+
+/**
+ * Passing `href` renders an anchor that navigates, keeping the same styling.
+ * A disabled or loading link drops its `href` so it cannot be followed or tabbed to.
+ */
+export const AsLink: Story = {
+  args: {
+    href: '#start',
+    variant: 'accent',
+    label: 'Get started',
+  },
+  render: (args) => (
+    <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+      <Button {...args} />
+      <Button {...args} variant="primary" label="Docs" />
+      <Button {...args} variant="primary" label="Disabled link" disabled />
     </div>
   ),
 };
