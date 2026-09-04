@@ -98,6 +98,27 @@
   outline-color: var(--shadow-success);
 }
 
+.accent {
+  background-color: var(--surface-accent);
+  color: var(--text-on-accent);
+  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-strong);
+}
+
+.accent:hover:not(:disabled) {
+  background-color: var(--surface-accent);
+  box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
+    var(--shadow-strong);
+}
+
+.accent:active:not(:disabled) {
+  background-color: var(--surface-accent);
+  box-shadow: 2px 2px 0 var(--shadow-strong);
+}
+
+.accent:focus-visible {
+  outline-color: var(--shadow-strong);
+}
+
 .sm {
   height: 30px;
   padding: 0 10px;

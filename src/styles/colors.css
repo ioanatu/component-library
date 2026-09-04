@@ -3,10 +3,12 @@
   --surface-default: #ffffff;
   --surface-hover: #f5f5f5;
   --surface-active: #ebebeb;
+  --surface-accent: #5377e4;
 
   /* Text */
   --text-default: #111111;
   --text-muted: #6b7280;
+  --text-on-accent: #111111;
   --text-danger: #b91c1c;
   --text-success: #15803d;
 
@@ -18,6 +20,7 @@
   /* Offset shadows. Each intent pairs a lighter shadow with its darker border. */
   --shadow-default: #4169e1;
   --shadow-neutral: #9ca3af;
+  --shadow-strong: #111111;
   --shadow-danger: #ef4444;
   --shadow-success: #22c55e;
 }

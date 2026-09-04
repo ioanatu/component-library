@@ -62,6 +62,14 @@ describe('Button', () => {
     expect(button).not.toHaveClass(styles.secondary);
   });
 
+  it('renders the accent variant as a filled button', () => {
+    render(<Button type="button" label="Get started" variant="accent" />);
+    const button = screen.getByRole('button', { name: 'Get started' });
+    expect(button).toHaveClass(styles.button, styles.accent);
+    expect(button).not.toHaveClass(styles.success);
+    expect(button).not.toHaveClass(styles.danger);
+  });
+
   it.each(buttonVariants)('renders button %s', (variant) => {
     render(<Button type="button" label="Varied" variant={variant} />);
     expect(screen.getByRole('button', { name: 'Varied' })).toHaveClass(
