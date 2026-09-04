@@ -38,7 +38,6 @@ const meta: Meta<typeof Button> = {
   tags: ['autodocs'],
   argTypes: {
     size: { control: 'inline-radio', options: buttonSizes },
-    variant: { control: 'inline-radio', options: buttonVariants },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
   },
@@ -56,6 +55,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const SmallMediumLargeButtons: Story = {
+  argTypes: {
+    variant: { control: 'inline-radio', options: buttonVariants },
+  },
   render: (args) => (
     <div style={{ margin: 'auto' }}>
       <Button {...args} size="sm" />
@@ -68,6 +70,9 @@ export const SmallMediumLargeButtons: Story = {
 };
 
 export const Variants: Story = {
+  argTypes: {
+    variant: { control: false, table: { disable: true } },
+  },
   render: (args) => (
     <div style={{ display: 'flex', gap: '14px' }}>
       {buttonVariants.map((variant) => (

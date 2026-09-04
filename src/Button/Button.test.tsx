@@ -7,9 +7,7 @@ import styles from './Button.module.css';
 describe('Button', () => {
   const onClick = vi.fn();
 
-  beforeEach(() => {
-    onClick.mockClear();
-  });
+  beforeEach(() => onClick.mockClear());
 
   it('renders the label as its accessible name', () => {
     render(<Button type="button" label="Save changes" />);
@@ -54,6 +52,14 @@ describe('Button', () => {
     const { container } = render(<Button type="button" label="Sized" loading size={size} />);
     expect(container.querySelector(`.${styles.loadingSpinner}`)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Sized' })).toHaveClass(styles.button, styles[size]);
+  });
+
+  it('renders the success variant with its own class', () => {
+    render(<Button type="button" label="Confirm" variant="success" />);
+    const button = screen.getByRole('button', { name: 'Confirm' });
+    expect(button).toHaveClass(styles.button, styles.success);
+    expect(button).not.toHaveClass(styles.danger);
+    expect(button).not.toHaveClass(styles.secondary);
   });
 
   it.each(buttonVariants)('renders button %s', (variant) => {

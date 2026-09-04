@@ -1,19 +1,13 @@
 .button {
-  --btn-bg: #ffffff;
-  --btn-bg-hover: #f5f5f5;
-  --btn-bg-active: #ebebeb;
-  --btn-text: #111111;
-  --btn-border: #111111;
-  --btn-shadow: #4169e1;
   --btn-shadow-offset: 4px;
 
   box-sizing: border-box;
   font-family: 'DM Sans', sans-serif;
 
-  background-color: var(--btn-bg);
-  border: 2px solid var(--btn-border);
-  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--btn-shadow);
-  color: var(--btn-text);
+  background-color: var(--surface-default);
+  border: 2px solid var(--border-default);
+  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-default);
+  color: var(--text-default);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -26,19 +20,19 @@
 }
 
 .button:hover:not(:disabled) {
-  background-color: var(--btn-bg-hover);
+  background-color: var(--surface-hover);
   box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
-    var(--btn-shadow);
+    var(--shadow-default);
 }
 
 .button:active:not(:disabled) {
-  background-color: var(--btn-bg-active);
-  box-shadow: 2px 2px 0 var(--btn-shadow);
+  background-color: var(--surface-active);
+  box-shadow: 2px 2px 0 var(--shadow-default);
   transform: translate(2px, 2px);
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--btn-shadow);
+  outline: 2px solid var(--shadow-default);
   outline-offset: 3px;
 }
 
@@ -47,14 +41,61 @@
   opacity: 0.45;
 }
 
+/* Variants restate every state the base button defines, because the colour
+   is written straight into each rule rather than held in a shared variable. */
 .secondary {
-  --btn-shadow: #9ca3af;
+  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-neutral);
+}
+
+.secondary:hover:not(:disabled) {
+  box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
+    var(--shadow-neutral);
+}
+
+.secondary:active:not(:disabled) {
+  box-shadow: 2px 2px 0 var(--shadow-neutral);
+}
+
+.secondary:focus-visible {
+  outline-color: var(--shadow-neutral);
 }
 
 .danger {
-  --btn-border: #b91c1c;
-  --btn-text: #b91c1c;
-  --btn-shadow: #ef4444;
+  border-color: var(--border-danger);
+  color: var(--text-danger);
+  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-danger);
+}
+
+.danger:hover:not(:disabled) {
+  box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
+    var(--shadow-danger);
+}
+
+.danger:active:not(:disabled) {
+  box-shadow: 2px 2px 0 var(--shadow-danger);
+}
+
+.danger:focus-visible {
+  outline-color: var(--shadow-danger);
+}
+
+.success {
+  border-color: var(--border-success);
+  color: var(--text-success);
+  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 var(--shadow-success);
+}
+
+.success:hover:not(:disabled) {
+  box-shadow: calc(var(--btn-shadow-offset) + 2px) calc(var(--btn-shadow-offset) + 2px) 0
+    var(--shadow-success);
+}
+
+.success:active:not(:disabled) {
+  box-shadow: 2px 2px 0 var(--shadow-success);
+}
+
+.success:focus-visible {
+  outline-color: var(--shadow-success);
 }
 
 .sm {
@@ -80,9 +121,9 @@
 
 .loadingSpinner {
   animation: spin 700ms linear infinite;
-  border: 2px solid color-mix(in srgb, var(--btn-text), transparent 70%);
+  border: 2px solid color-mix(in srgb, currentColor, transparent 70%);
   border-radius: 999px;
-  border-top-color: var(--btn-text);
+  border-top-color: currentColor;
   height: 1.2em;
   width: 1.2em;
   position: absolute;
