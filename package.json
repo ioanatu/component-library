@@ -1,7 +1,7 @@
 {
   "name": "@ioanatu/component-library",
   "description": "Accessible UI component library written in React and TypeScript.",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
