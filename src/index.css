@@ -12,3 +12,15 @@
   font-style: normal;
   font-display: swap;
 }
+
+/**
+ * JetBrains Mono backs the tag-like surfaces — the Chip — where a monospace
+ * face reads as metadata rather than prose. Variable too, over 100-800.
+ */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./assets/fonts/JetBrainsMono-Variable.woff2?no-inline') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,259 @@
+/**
+ * The chip is the docs badge promoted to a component: a monospace pill with the
+ * system's 2px border. It stays flat while it is only a label, and picks up the
+ * offset shadow and press interaction once it becomes clickable.
+ *
+ * Every variant sets one --chip-accent, so the shadow, hover and focus rules are
+ * written once instead of restated per variant.
+ */
+.chip {
+  --chip-accent: var(--shadow-default);
+  --chip-shadow-offset: 2px;
+  --chip-gap: 6px;
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chip-gap);
+  max-width: 100%;
+  padding-inline: var(--chip-pad);
+  vertical-align: middle;
+
+  background-color: var(--surface-default);
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-round);
+  color: var(--text-default);
+
+  font-family:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 120ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+/**
+ * Consumer stylesheets commonly underline anchors on hover or once visited, and
+ * those selectors outrank a single class. Matching the states keeps the
+ * link-flavoured chip undecorated without resorting to !important.
+ */
+.chip:link,
+.chip:visited,
+.chip:hover,
+.chip:focus,
+.chip:active,
+.action:link,
+.action:visited,
+.action:hover,
+.action:focus,
+.action:active {
+  text-decoration: none;
+}
+
+.clickable {
+  box-shadow: var(--chip-shadow-offset) var(--chip-shadow-offset) 0 var(--chip-accent);
+  cursor: pointer;
+}
+
+/* A wrapped chip is a span, so :hover and :active reach it from the action inside. */
+.clickable:hover:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--surface-hover);
+  box-shadow: calc(var(--chip-shadow-offset) + 2px) calc(var(--chip-shadow-offset) + 2px) 0
+    var(--chip-accent);
+}
+
+.clickable:active:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--surface-active);
+  box-shadow: 1px 1px 0 var(--chip-accent);
+  transform: translate(1px, 1px);
+}
+
+.chip:focus-visible,
+.chip:has(.action:focus-visible) {
+  outline: 2px solid var(--chip-accent);
+  outline-offset: 3px;
+}
+
+.chip:disabled,
+.chip[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ---------- Variants ---------- */
+
+.secondary {
+  border-color: var(--shadow-secondary);
+  color: var(--text-secondary);
+}
+
+.danger {
+  --chip-accent: var(--shadow-danger);
+  border-color: var(--shadow-danger);
+  color: var(--text-danger);
+}
+
+.success {
+  --chip-accent: var(--shadow-success);
+
+  border-color: var(--border-success);
+  color: var(--text-success);
+}
+
+.accent {
+  --chip-accent: var(--shadow-strong);
+
+  background-color: var(--surface-accent);
+  color: var(--text-on-accent);
+}
+
+/* The accent chip is already filled, so hover and press move the shadow only. */
+.accent.clickable:hover:not(:disabled):not([aria-disabled='true']),
+.accent.clickable:active:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--surface-accent);
+}
+
+/* ---------- Sizes ---------- */
+
+.sm {
+  --chip-pad: 8px;
+  height: 22px;
+  font-size: 10px;
+}
+
+.md {
+  --chip-pad: 10px;
+  height: 28px;
+  font-size: 12px;
+}
+
+.lg {
+  --chip-pad: 10px;
+  height: 30px;
+  font-size: 14px;
+}
+
+/* ---------- Parts ---------- */
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Inherited rather than fixed, so overriding white-space on the chip is enough
+     to let a long label wrap. */
+  white-space: inherit;
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+.icon > svg {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+/**
+ * The avatar sits flush against the leading edge, so it cancels the chip's own
+ * padding on that side and fills the full inner height.
+ */
+.avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 4px);
+  aspect-ratio: 1;
+  margin-inline-start: calc(-1 * var(--chip-pad) + 2px);
+  overflow: hidden;
+
+  background-color: var(--surface-active);
+  border-radius: var(--radius-round);
+  font-size: 0.9em;
+}
+
+.avatar > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/**
+ * The action reaches back over the chip's leading padding and re-adds it, so the
+ * padding becomes part of its hit area rather than dead space beside it.
+ */
+.action {
+  display: inline-flex;
+  flex: 1;
+  align-self: stretch;
+  align-items: center;
+  gap: var(--chip-gap);
+  min-width: 0;
+  margin-inline-start: calc(-1 * var(--chip-pad));
+  padding: 0;
+  padding-inline-start: var(--chip-pad);
+
+  background: none;
+  border: 0;
+  border-radius: inherit;
+  color: inherit;
+  cursor: inherit;
+  text-decoration: none;
+}
+
+.action:focus-visible {
+  outline: none;
+}
+
+/* The remove button owns the trailing padding, for the same reason. */
+.hasDelete {
+  padding-inline-end: 0;
+}
+
+.delete {
+  display: inline-flex;
+  flex: none;
+  align-self: stretch;
+  align-items: center;
+  margin: 0;
+  padding-inline: 2px var(--chip-pad);
+
+  background: none;
+  border: 0;
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.65;
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease;
+}
+
+.delete:hover:not(:disabled) {
+  background-color: color-mix(in srgb, currentcolor, transparent 88%);
+  opacity: 1;
+}
+
+.delete:focus-visible {
+  background-color: color-mix(in srgb, currentcolor, transparent 88%);
+  opacity: 1;
+  outline: 2px solid var(--chip-accent);
+  outline-offset: -3px;
+}
+
+.delete:disabled {
+  cursor: not-allowed;
+}
+
+.deleteIcon {
+  width: 1.1em;
+  height: 1.1em;
+}

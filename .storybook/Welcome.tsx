@@ -1,5 +1,5 @@
 import { useState, useRef, useId } from 'react';
-import { Button } from '../src';
+import { Button, Chip } from '../src';
 
 /* ============================================================
    OFFSET — Storybook welcome / docs page
@@ -8,7 +8,11 @@ import { Button } from '../src';
    ============================================================ */
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+/* Hanken Grotesk and JetBrains Mono both ship with the library and are loaded by
+   src/index.css, which the Storybook preview imports. Pulling them from Google
+   Fonts as well would let this page drift onto a different copy of the face --
+   or onto a fallback whenever the request is blocked -- while the components
+   below stayed on the bundled one. */
 
 .offset-docs{
   /* ---------- LIGHT THEME TOKENS ---------- */
@@ -23,7 +27,7 @@ const CSS = `
   --font:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 
-  font-family:var(--font); color:var(--ink); background:var(--page);
+  color:var(--ink); background:var(--page);
   min-height:100%; line-height:1.55;
 }
 .offset-docs[data-theme="dark"]{
@@ -355,6 +359,7 @@ export default function Welcome() {
 
   const components: [string, string][] = [
     ['Button', 'Primary, accent, and ghost variants with the signature press interaction.'],
+    ['Chip', 'Monospace pill for tags and filters, optionally clickable and removable.'],
     ['Input & Textarea', 'Labelled fields with focus-driven shadow, error and disabled states.'],
     ['Dropdown', 'Single-select built on the listbox pattern with full keyboard control.'],
     ['Checkbox & Radio', 'Custom-styled controls backed by native inputs for free semantics.'],
@@ -408,10 +413,10 @@ export default function Welcome() {
               from the first commit.
             </p>
             <div className="badges">
-              <span className="badge">React 19</span>
-              <span className="badge">TypeScript</span>
-              <span className="badge">WCAG 2.1 AA</span>
-              <span className="badge">Zero-runtime CSS vars</span>
+              <Chip label="React 19" />
+              <Chip label="TypeScript" size="md" />
+              <Chip label="WCAG 2.1 AA" />
+              <Chip label="Zero-runtime CSS vars" />
             </div>
             <div className="cta">
               <Button
@@ -420,10 +425,11 @@ export default function Welcome() {
                 onClick={scrollTo('start')}
                 href="#start"
               />
-
-              <a className="btn" href="#components" onClick={scrollTo('components')}>
-                Browse components
-              </a>
+              <Button
+                label="Browse components"
+                onClick={scrollTo('components')}
+                href="#components"
+              />
             </div>
           </div>
           <Mark size={180} />

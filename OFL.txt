@@ -1,7 +1,10 @@
 Copyright 2020 The Hanken Grotesk Project Authors
 (https://github.com/marcologous/hanken-grotesk)
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
+Copyright 2020 The JetBrains Mono Project Authors
+(https://github.com/JetBrains/JetBrainsMono)
+
+Both Font Softwares are licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 https://openfontlicense.org
 

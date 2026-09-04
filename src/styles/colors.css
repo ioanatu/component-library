@@ -7,13 +7,15 @@
 
   /* Text */
   --text-default: #111111;
+  --text-secondary: #717379;
   --text-muted: #6b7280;
   --text-on-accent: #111111;
   --text-danger: #b91c1c;
-  --text-success: #15803d;
+  --text-success: #008832;
 
   /* Borders */
   --border-default: #111111;
+  --border-secondary: #717379;
   --border-danger: #b91c1c;
   --border-success: #15803d;
 

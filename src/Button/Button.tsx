@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type { ButtonHTMLAttributes, Ref } from 'react';
-import type { ButtonSize, ButtonVariant } from '../types';
+import type { ButtonVariant, LibSize } from '../types';
 import styles from './Button.module.css';
 
 type ButtonType = 'button' | 'reset' | 'submit';
@@ -23,7 +23,7 @@ type ButtonType = 'button' | 'reset' | 'submit';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
-  size?: ButtonSize;
+  size?: LibSize;
   type?: ButtonType;
   href?: string;
   label?: string;

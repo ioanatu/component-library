@@ -1,7 +1,7 @@
 import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import type React from 'react';
 import { createRef } from 'react';
-import { buttonSizes, buttonVariants } from '../types';
+import { buttonVariants, libSizes } from '../types';
 import { Button } from './Button';
 import styles from './Button.module.css';
 
@@ -49,7 +49,7 @@ describe('Button', () => {
     expect(ref.current).toBe(screen.getByRole('button', { name: 'Focus me' }));
   });
 
-  it.each(buttonSizes)('renders button %s', (size) => {
+  it.each(libSizes)('renders button %s', (size) => {
     const { container } = render(<Button type="button" label="Sized" loading size={size} />);
     expect(container.querySelector(`.${styles.loadingSpinner}`)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Sized' })).toHaveClass(styles.button, styles[size]);

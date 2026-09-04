@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { buttonSizes, buttonVariants } from '../types';
+import { buttonVariants, libSizes } from '../types';
 import { Button } from './Button';
 
 /**
@@ -37,7 +37,7 @@ const meta: Meta<typeof Button> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'inline-radio', options: buttonSizes },
+    size: { control: 'inline-radio', options: libSizes },
     href: { control: 'text' },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
@@ -55,7 +55,7 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SmallMediumLargeButtons: Story = {
+export const ButtonSizes: Story = {
   argTypes: {
     variant: { control: 'inline-radio', options: buttonVariants },
   },
@@ -70,7 +70,7 @@ export const SmallMediumLargeButtons: Story = {
   ),
 };
 
-export const Variants: Story = {
+export const ButtonVariants: Story = {
   argTypes: {
     variant: { control: false, table: { disable: true } },
   },
