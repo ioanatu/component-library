@@ -5,24 +5,43 @@
   --surface-active: #ebebeb;
   --surface-accent: #4f7eff;
 
+  --surface-neutral: #adadad;
+  --surface-success: #16a34a;
+  --surface-warning: #f59e0b;
+  --surface-danger: #b91c1c;
+  --surface-info: #1d4ed8;
+
   /* Text */
   --text-default: #111111;
   --text-secondary: #717379;
   --text-muted: #6b7280;
-  --text-on-accent: #111111;
-  --text-danger: #b91c1c;
   --text-success: #008832;
+  --text-warning: #b45309;
+  --text-danger: #b91c1c;
+  --text-info: #1d4ed8;
+
+  /* Text sitting on a filled surface. */
+  --text-on-accent: #111111;
+  --text-on-neutral: #111111;
+  --text-on-success: #111111;
+  --text-on-warning: #111111;
+  --text-on-danger: #ffffff;
+  --text-on-info: #ffffff;
 
   /* Borders */
   --border-default: #111111;
   --border-secondary: #717379;
-  --border-danger: #b91c1c;
   --border-success: #15803d;
+  --border-warning: #b45309;
+  --border-danger: #b91c1c;
+  --border-info: #1d4ed8;
 
   /* Offset shadows. Each intent pairs a lighter shadow with its darker border. */
   --shadow-default: #4169e1;
   --shadow-neutral: #9ca3af;
   --shadow-strong: #111111;
-  --shadow-danger: #ef4444;
   --shadow-success: #22c55e;
+  --shadow-warning: #f59e0b;
+  --shadow-danger: #ef4444;
+  --shadow-info: #4f7eff;
 }

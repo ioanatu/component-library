@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
-import { chipVariants, libSizes } from '../types';
+import { chipFills, chipVariants, libSizes } from '../types';
 import { Chip } from './Chip';
 
 /**
@@ -14,6 +14,10 @@ import { Chip } from './Chip';
  *
  * A chip renders the lightest element its props allow: a `span` while it is only a
  * label, a `button` once `onClick` is set, an anchor once `href` is set.
+ *
+ * Intent and fill are two independent props rather than one combined `variant`:
+ * `variant` names the intent, `fill` says whether that intent's colour outlines the
+ * chip or fills it.
  *
  *
  * Import
@@ -31,7 +35,7 @@ import { Chip } from './Chip';
  *
  * ** All props example: **
  *
- * `<Chip variant="accent" size="sm" label="Design" icon={<StarIcon />} href="/tags/design" onClick={onClick} onDelete={onDelete} deleteLabel="Remove design tag" disabled />`
+ * `<Chip variant="info" fill="filled" size="sm" label="Design" icon={<StarIcon />} href="/tags/design" onClick={onClick} onDelete={onDelete} deleteLabel="Remove design tag" disabled />`
  *
  */
 
@@ -44,6 +48,7 @@ const meta: Meta<typeof Chip> = {
   tags: ['autodocs'],
   argTypes: {
     variant: { control: 'inline-radio', options: chipVariants },
+    fill: { control: 'inline-radio', options: chipFills },
     size: { control: 'inline-radio', options: libSizes },
     href: { control: 'text' },
     disabled: { control: 'boolean' },
@@ -54,7 +59,8 @@ const meta: Meta<typeof Chip> = {
   args: {
     label: 'React 19',
     size: 'md',
-    variant: 'primary',
+    variant: 'default',
+    fill: 'outlined',
     disabled: false,
   },
 };
@@ -83,27 +89,53 @@ const TrashIcon = () => (
 );
 
 /**
- * `variant` carries both the fill and the intent, so there is no separate `color`
- * prop to pair it with. The five match the Button variants: `primary` and
- * `secondary` are neutral, `danger` and `success` colour the border and text, and
- * `accent` fills the chip.
+ * `variant` names the intent: `default` for a plain tag, then `success`,
+ * `warning`, `error` and `info` for status. Each carries a filled surface
+ * alongside its outlined one.
  */
 export const ChipVariants: Story = {
   argTypes: {
     variant: { control: false, table: { disable: true } },
+    fill: { control: false, table: { disable: true } },
   },
   render: (args) => (
-    <div style={row}>
-      {chipVariants.map((variant) => (
-        <Chip {...args} key={variant} variant={variant} label={variant} />
+    <div style={{ display: 'grid', gap: '12px', justifyItems: 'start' }}>
+      {chipFills.map((fill) => (
+        <div key={fill} style={row}>
+          {chipVariants.map((variant) => (
+            <Chip {...args} key={variant} variant={variant} fill={fill} label={variant} />
+          ))}
+        </div>
       ))}
     </div>
   ),
 };
 
 /**
- * `size` offers a small chip alongside the default medium one. `md` matches the
- * height of the badges in the docs; `sm` is for dense rows and table cells.
+ * `fill` is independent of `variant`, so a filled chip keeps every behaviour an
+ * outlined one has. Each variant names one filled surface and the text colour that
+ * clears 4.5:1 against it, and drops the border so the chip reads as one uncut
+ * block of colour. The border is hidden rather than removed, so a filled chip is
+ * exactly the size of an outlined one.
+ */
+export const FilledChip: Story = {
+  args: {
+    fill: 'filled',
+  },
+  render: (args) => (
+    <div style={row}>
+      <Chip {...args} variant="info" label="info" />
+      <Chip {...args} variant="error" label="blocked" onDelete={fn()} />
+      <Chip {...args} variant="success" label="shipped" icon={<CheckIcon />} />
+      <Chip {...args} variant="warning" label="clickable" onClick={fn()} />
+      <Chip {...args} variant="default" label="disabled" disabled />
+    </div>
+  ),
+};
+
+/**
+ * `size` runs from `sm` to `lg`. `md` is the default and matches the height of the
+ * badges in the docs; `sm` is for dense rows and table cells.
  */
 export const ChipSizes: Story = {
   argTypes: {
@@ -133,7 +165,7 @@ export const Clickable: Story = {
   render: (args) => (
     <div style={row}>
       <Chip {...args} />
-      <Chip {...args} variant="accent" label="Filter: mine" />
+      <Chip {...args} variant="info" fill="filled" label="Filter: mine" />
     </div>
   ),
 };
@@ -152,7 +184,7 @@ export const Deletable: Story = {
   render: (args) => (
     <div style={row}>
       <Chip {...args} />
-      <Chip {...args} variant="danger" label="blocked" />
+      <Chip {...args} variant="error" label="blocked" />
     </div>
   ),
 };
@@ -172,7 +204,7 @@ export const ClickableAndDeletable: Story = {
   render: (args) => (
     <div style={row}>
       <Chip {...args} />
-      <Chip {...args} variant="accent" label="typescript" />
+      <Chip {...args} variant="info" label="typescript" />
     </div>
   ),
 };
@@ -191,7 +223,7 @@ export const ClickableLink: Story = {
   render: (args) => (
     <div style={row}>
       <Chip {...args} />
-      <Chip {...args} variant="accent" label="accessibility" />
+      <Chip {...args} variant="info" label="accessibility" />
       <Chip {...args} label="unavailable" disabled />
     </div>
   ),
@@ -212,7 +244,7 @@ export const CustomDeleteIcon: Story = {
       <Chip {...args} deleteIcon={<TrashIcon />} deleteLabel="Delete the draft" />
       <Chip
         {...args}
-        variant="danger"
+        variant="error"
         label="stale"
         deleteIcon={<span aria-hidden="true">✕</span>}
       />
@@ -231,7 +263,8 @@ export const AvatarChip: Story = {
       <Chip {...args} label="Ada Lovelace" avatar={<span aria-hidden="true">AL</span>} />
       <Chip
         {...args}
-        variant="accent"
+        variant="info"
+        fill="filled"
         label="Grace Hopper"
         avatar={<span aria-hidden="true">GH</span>}
       />
@@ -298,9 +331,9 @@ export const ChipArray: Story = {
           />
         ))}
         {filters.length === 0 ? (
-          <Chip {...args} variant="secondary" label="no filters" />
+          <Chip {...args} variant="default" label="no filters" />
         ) : (
-          <Chip {...args} variant="secondary" label="clear all" onClick={() => setFilters([])} />
+          <Chip {...args} variant="default" label="clear all" onClick={() => setFilters([])} />
         )}
       </div>
     );
@@ -350,8 +383,8 @@ export const Accessibility: Story = {
   render: (args) => (
     <div style={row}>
       <Chip {...args} />
-      <Chip {...args} variant="accent" label="typescript" onClick={undefined} />
-      <Chip {...args} variant="secondary" label="storybook" onDelete={undefined} />
+      <Chip {...args} variant="info" label="typescript" onClick={undefined} />
+      <Chip {...args} variant="warning" label="storybook" onDelete={undefined} />
     </div>
   ),
 };

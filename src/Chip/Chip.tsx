@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import type { ChipVariant, LibSize } from '../types';
+import type { ChipFill, ChipVariant, LibSize } from '../types';
 import styles from './Chip.module.css';
 
 type ChipMouseEvent = React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>;
@@ -16,7 +16,9 @@ type ChipDeleteEvent = React.MouseEvent<HTMLButtonElement, MouseEvent> | React.K
  * click target that is not a button cannot be reached by keyboard.
  *
  * @param label - Chip text, and the fallback accessible name of the remove button.
- * @param variant - Chip variant. Default is primary.
+ * @param variant - Chip variant, which names the intent. Default is default.
+ * @param fill - Whether that colour outlines the chip or fills it. Default is
+ * outlined. The two are independent, so any variant can be either.
  * @param size - Chip size. Default is md.
  * @param icon - Decorative node rendered before the label. Hidden from assistive tech.
  * @param avatar - Node rendered flush against the leading edge, for an image or initials.
@@ -36,6 +38,7 @@ type ChipDeleteEvent = React.MouseEvent<HTMLButtonElement, MouseEvent> | React.K
 export interface ChipProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick'> {
   label: string;
   variant?: ChipVariant;
+  fill?: ChipFill;
   size?: LibSize;
   icon?: ReactNode;
   avatar?: ReactNode;
@@ -66,7 +69,8 @@ const DeleteCross = () => (
 export function Chip({
   label,
   className,
-  variant = 'primary',
+  variant = 'default',
+  fill = 'outlined',
   size = 'md',
   icon,
   avatar,
@@ -85,9 +89,11 @@ export function Chip({
    */
   const { onKeyDown, onKeyUp, ...rootProps } = rest;
   const isInteractive = href !== undefined || onClick !== undefined;
+  /* default and outlined are the base chip, so neither has a class of its own. */
   const classes = clsx(
     styles.chip,
     styles[variant],
+    styles[fill],
     styles[size],
     { [styles.clickable]: isInteractive },
     className,

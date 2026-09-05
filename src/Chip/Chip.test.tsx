@@ -1,6 +1,6 @@
 import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { chipVariants, libSizes } from '../types';
+import { chipFills, chipVariants, libSizes } from '../types';
 import { Chip } from './Chip';
 import styles from './Chip.module.css';
 
@@ -18,7 +18,7 @@ describe('Chip', () => {
     expect(screen.getByText('React 19')).toBeInTheDocument();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
-    expect(container.firstChild).toHaveClass(styles.chip, styles.primary, styles.md);
+    expect(container.firstChild).toHaveClass(styles.chip, styles.md);
     expect(container.firstChild).not.toHaveClass(styles.clickable);
   });
 
@@ -41,6 +41,64 @@ describe('Chip', () => {
   it.each(libSizes)('renders chip %s', (size) => {
     const { container } = render(<Chip label="Sized" size={size} />);
     expect(container.firstChild).toHaveClass(styles.chip, styles[size]);
+  });
+
+  describe('fill', () => {
+    it('leaves no stray class behind for the base variant and fill', () => {
+      const { container } = render(<Chip label="React 19" />);
+      expect((container.firstChild as HTMLElement).className).not.toContain('undefined');
+    });
+
+    it('is outlined by default, which is the base chip and carries no class', () => {
+      const { container } = render(<Chip label="React 19" />);
+      expect(container.firstChild).toHaveClass(styles.chip);
+      expect(container.firstChild).not.toHaveClass(styles.filled);
+    });
+
+    it.each(chipFills)('renders a %s chip', (fill) => {
+      const { container } = render(<Chip label="Filled" fill={fill} />);
+      expect(container.firstChild).toHaveClass(styles.chip);
+      if (fill === 'filled') {
+        expect(container.firstChild).toHaveClass(styles.filled);
+      } else {
+        expect(container.firstChild).not.toHaveClass(styles.filled);
+      }
+    });
+
+    it.each(chipVariants)('fills the %s variant without dropping its colour', (variant) => {
+      const { container } = render(<Chip label="Varied" variant={variant} fill="filled" />);
+      expect(container.firstChild).toHaveClass(styles.chip, styles.filled);
+      if (variant !== 'default') {
+        expect(container.firstChild).toHaveClass(styles[variant]);
+      }
+    });
+
+    it('stays independent of the size', () => {
+      const { container } = render(<Chip label="Filled" fill="filled" size="lg" />);
+      expect(container.firstChild).toHaveClass(styles.chip, styles.filled, styles.lg);
+    });
+
+    it('reaches a clickable chip', () => {
+      render(<Chip label="Filter" fill="filled" onClick={onClick} />);
+      expect(screen.getByRole('button', { name: 'Filter' })).toHaveClass(
+        styles.chip,
+        styles.filled,
+        styles.clickable,
+      );
+    });
+
+    it('reaches the wrapper of a deletable chip', () => {
+      const { container } = render(<Chip label="react" fill="filled" onDelete={onDelete} />);
+      expect(container.firstChild).toHaveClass(styles.chip, styles.filled, styles.hasDelete);
+    });
+
+    it('reaches a link chip', () => {
+      render(<Chip label="typescript" fill="filled" href="#tags" />);
+      expect(screen.getByRole('link', { name: 'typescript' })).toHaveClass(
+        styles.chip,
+        styles.filled,
+      );
+    });
   });
 
   describe('with onClick', () => {

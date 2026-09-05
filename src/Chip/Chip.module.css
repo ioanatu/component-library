@@ -11,6 +11,24 @@
   --chip-shadow-offset: 2px;
   --chip-gap: 6px;
 
+  /* The variant sets these six; the fill decides which of them get used. */
+  --chip-border: var(--border-default);
+  --chip-ink: var(--text-default);
+  --chip-fill: var(--surface-neutral);
+  --chip-on-fill: var(--text-on-neutral);
+  --chip-hover: var(--surface-hover);
+  --chip-active: var(--surface-active);
+  --chip-shade: #000000;
+
+  /**
+   * An outlined chip greys its surface under the pointer, which on its own walks
+   * the coloured text down towards the 4.5:1 floor -- outlined success lands at
+   * 3.86:1 pressed. Darkening the ink by the same move holds every variant above
+   * 5:1 in all three states.
+   */
+  --chip-ink-hover: color-mix(in srgb, var(--chip-ink), #000 12%);
+  --chip-ink-active: color-mix(in srgb, var(--chip-ink), #000 20%);
+
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -20,9 +38,9 @@
   vertical-align: middle;
 
   background-color: var(--surface-default);
-  border: 2px solid var(--border-default);
+  border: 2px solid var(--chip-border);
   border-radius: var(--radius-round);
-  color: var(--text-default);
+  color: var(--chip-ink);
 
   font-family:
     'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
@@ -61,14 +79,16 @@
 
 /* A wrapped chip is a span, so :hover and :active reach it from the action inside. */
 .clickable:hover:not(:disabled):not([aria-disabled='true']) {
-  background-color: var(--surface-hover);
+  background-color: var(--chip-hover);
   box-shadow: calc(var(--chip-shadow-offset) + 2px) calc(var(--chip-shadow-offset) + 2px) 0
     var(--chip-accent);
+  color: var(--chip-ink-hover);
 }
 
 .clickable:active:not(:disabled):not([aria-disabled='true']) {
-  background-color: var(--surface-active);
+  background-color: var(--chip-active);
   box-shadow: 1px 1px 0 var(--chip-accent);
+  color: var(--chip-ink-active);
   transform: translate(1px, 1px);
 }
 
@@ -86,35 +106,80 @@
 
 /* ---------- Variants ---------- */
 
-.secondary {
-  border-color: var(--shadow-secondary);
-  color: var(--text-secondary);
-}
-
-.danger {
-  --chip-accent: var(--shadow-danger);
-  border-color: var(--shadow-danger);
-  color: var(--text-danger);
-}
+/**
+ * A variant only names colours. Default is the base chip, so it declares nothing
+ * of its own beyond what .chip already sets.
+ *
+ * The token layer calls the error colour "danger", which is what the Button
+ * variant is named. The chip states the intent instead, and points at the same
+ * tokens rather than duplicating the hexes.
+ */
 
 .success {
   --chip-accent: var(--shadow-success);
+  --chip-border: var(--border-success);
+  --chip-ink: var(--text-success);
+  --chip-fill: var(--surface-success);
+  --chip-on-fill: var(--text-on-success);
 
-  border-color: var(--border-success);
-  color: var(--text-success);
+  /**
+   * The success fill is light enough to need dark text, so darkening it under the
+   * pointer would close the gap to that text -- 4.36:1 pressed, under the 4.5:1
+   * floor. It brightens instead, which opens the gap to 6.8:1. Warning is the
+   * other dark-text fill, but amber is bright enough that darkening still leaves
+   * it at 6.6:1.
+   */
+  --chip-shade: #ffffff;
 }
 
-.accent {
-  --chip-accent: var(--shadow-strong);
-
-  background-color: var(--surface-accent);
-  color: var(--text-on-accent);
+.warning {
+  --chip-accent: var(--shadow-warning);
+  --chip-border: var(--border-warning);
+  --chip-ink: var(--text-warning);
+  --chip-fill: var(--surface-warning);
+  --chip-on-fill: var(--text-on-warning);
 }
 
-/* The accent chip is already filled, so hover and press move the shadow only. */
-.accent.clickable:hover:not(:disabled):not([aria-disabled='true']),
-.accent.clickable:active:not(:disabled):not([aria-disabled='true']) {
-  background-color: var(--surface-accent);
+.error {
+  --chip-accent: var(--shadow-danger);
+  --chip-border: var(--border-danger);
+  --chip-ink: var(--text-danger);
+  --chip-fill: var(--surface-danger);
+  --chip-on-fill: var(--text-on-danger);
+}
+
+.info {
+  --chip-accent: var(--shadow-info);
+  --chip-border: var(--border-info);
+  --chip-ink: var(--text-info);
+  --chip-fill: var(--surface-info);
+  --chip-on-fill: var(--text-on-info);
+}
+
+/* ---------- Fills ---------- */
+
+/**
+ * The fill is orthogonal to the variant. Outlined is the base chip and needs no
+ * rule of its own; filled swaps in the variant's surface and its paired text
+ * colour, and drops the border so the chip reads as one uncut block of colour.
+ *
+ * The border is hidden rather than removed: the 2px is still in the box, so a
+ * filled chip is exactly the size of an outlined one and a row of mixed chips
+ * lines up.
+ *
+ * Hover and press shade that surface instead of falling back to the neutral greys
+ * an outlined chip uses, which would wash the colour out. The direction comes from
+ * --chip-shade, so every state keeps its text above 4.5:1.
+ */
+.filled {
+  --chip-hover: color-mix(in srgb, var(--chip-fill), var(--chip-shade) 8%);
+  --chip-active: color-mix(in srgb, var(--chip-fill), var(--chip-shade) 14%);
+  --chip-ink-hover: var(--chip-on-fill);
+  --chip-ink-active: var(--chip-on-fill);
+
+  background-color: var(--chip-fill);
+  border-color: transparent;
+  color: var(--chip-on-fill);
 }
 
 /* ---------- Sizes ---------- */

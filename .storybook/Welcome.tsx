@@ -1,5 +1,5 @@
 import { useState, useRef, useId } from 'react';
-import { Button, Chip } from '../src';
+import { Button, Card, Chip } from '../src';
 
 /* ============================================================
    OFFSET — Storybook welcome / docs page
@@ -67,26 +67,16 @@ const CSS = `
 .offset-docs .hero-mark{filter:drop-shadow(0 0 0 transparent)}
 @media(max-width:640px){.offset-docs .hero{grid-template-columns:1fr}.offset-docs .hero-mark{display:none}}
 
-/* ---------- BUTTONS ---------- */
-.offset-docs .btn{display:inline-flex;align-items:center;gap:var(--s2);font:700 15px/1 var(--font);
-  color:var(--ink);background:var(--surface);border:var(--border-w) solid var(--ink);border-radius:var(--radius-md);
-  padding:var(--s3) var(--s5);cursor:pointer;box-shadow:var(--shadow-md);transition:transform .08s,box-shadow .08s;text-decoration:none}
-.offset-docs .btn:hover{transform:translate(-1px,-1px);box-shadow:var(--shadow-lg)}
-.offset-docs .btn:active{transform:translate(4px,4px);box-shadow:0 0 0 0 var(--accent)}
-.offset-docs .btn--accent{background:var(--accent);color:var(--on-accent);box-shadow:var(--shadow-ink)}
-.offset-docs .btn--accent:hover{box-shadow:6px 6px 0 0 var(--ink)}
-.offset-docs .btn--accent:active{box-shadow:0 0 0 0 var(--ink)}
-.offset-docs .cta{display:flex;gap:var(--s4);flex-wrap:wrap;margin-top:var(--s6)}
 
 /* ---------- CARDS / GRID ---------- */
 .offset-docs .grid{display:grid;gap:var(--s4)}
 .offset-docs .grid-3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .offset-docs .grid-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.offset-docs .card{background:var(--surface);border:var(--border-w) solid var(--ink);border-radius:var(--radius-lg);
+// .offset-docs .card{background:var(--surface);border:var(--border-w) solid var(--ink);border-radius:var(--radius-lg);
   padding:var(--s5);box-shadow:var(--shadow-md)}
-.offset-docs .card .ic{width:34px;height:34px;border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);
+.offset-docs .TEST .ic{width:34px;height:34px;border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);
   display:grid;place-items:center;margin-bottom:var(--s3);background:var(--accent);color:var(--on-accent)}
-.offset-docs .card p{font-size:14px;opacity:.75;margin:0}
+// .offset-docs .card p{font-size:14px;opacity:.75;margin:0}
 .offset-docs .comp-card h3{display:flex;align-items:center;justify-content:space-between;gap:var(--s2)}
 .offset-docs .pill{font:700 10px/1 var(--mono);padding:4px 7px;border:1.5px solid var(--success);color:var(--success);border-radius:var(--radius-full);white-space:nowrap}
 
@@ -359,6 +349,7 @@ export default function Welcome() {
 
   const components: [string, string][] = [
     ['Button', 'Primary, accent, and ghost variants with the signature press interaction.'],
+    ['Card', 'Bordered surface for a titled block, with or without the offset shadow.'],
     ['Chip', 'Monospace pill for tags and filters, optionally clickable and removable.'],
     ['Input & Textarea', 'Labelled fields with focus-driven shadow, error and disabled states.'],
     ['Dropdown', 'Single-select built on the listbox pattern with full keyboard control.'],
@@ -418,7 +409,14 @@ export default function Welcome() {
               <Chip label="WCAG 2.1 AA" />
               <Chip label="Zero-runtime CSS vars" />
             </div>
-            <div className="cta">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 16,
+                marginTop: 24,
+              }}
+            >
               <Button
                 variant="accent"
                 label="Get started"
@@ -446,30 +444,30 @@ export default function Welcome() {
             The result is a library that feels designed rather than assembled.
           </p>
           <div className="grid grid-3" style={{ marginTop: 'var(--s6)' }}>
-            <div className="card">
+            <Card className="TEST">
               <div className="ic">◆</div>
               <h3>Token-driven</h3>
-              <p>
+              <span>
                 Every value — color, spacing, radius, elevation, type — is a CSS custom property.
                 Restyle the whole system by editing the token layer, not the components.
-              </p>
-            </div>
-            <div className="card">
+              </span>
+            </Card>
+            <Card className="TEST">
               <div className="ic">⌨</div>
               <h3>Accessible by default</h3>
-              <p>
+              <span>
                 Correct ARIA roles, full keyboard operation, managed focus, and visible focus rings
                 ship with every component — not as an afterthought.
-              </p>
-            </div>
-            <div className="card">
+              </span>
+            </Card>
+            <Card className="TEST">
               <div className="ic">◑</div>
               <h3>Light & dark</h3>
-              <p>
+              <span>
                 Theming is a scoped variable override. No duplicated components, no theme props
                 threaded everywhere — just one attribute on the root.
-              </p>
-            </div>
+              </span>
+            </Card>
           </div>
         </section>
 
@@ -537,7 +535,7 @@ export default function Welcome() {
             <Swatch name="--success" light="#1FA971" dark="#3DD68C" isDark={isDark} />
           </div>
           <div className="grid grid-2">
-            <div className="card">
+            <Card>
               <h3>Structure</h3>
               <p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>
                 --border-w: 2px
@@ -546,8 +544,8 @@ export default function Welcome() {
                 <br />
                 --shadow-md: 4px 4px 0 accent
               </p>
-            </div>
-            <div className="card">
+            </Card>
+            <Card>
               <h3>Scale</h3>
               <p style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 2 }}>
                 --s1…--s12: 4 → 48px
@@ -556,7 +554,7 @@ export default function Welcome() {
                 <br />
                 --radius-sm/lg/full
               </p>
-            </div>
+            </Card>
           </div>
         </section>
 
@@ -585,18 +583,17 @@ export default function Welcome() {
           </p>
         </section>
 
-        {/* COMPONENTS */}
         <section id="components">
           <p className="eyebrow">Components</p>
           <h2>What's in the box</h2>
-          <div className="grid grid-2" style={{ marginBottom: 'var(--s8)' }}>
+          <div className="grid grid-2">
             {components.map(([name, desc]) => (
-              <div className="card comp-card" key={name}>
+              <Card className="comp-card" key={name}>
                 <h3>
                   {name} <span className="pill">A11y ✓</span>
                 </h3>
-                <p>{desc}</p>
-              </div>
+                <span>{desc}</span>
+              </Card>
             ))}
           </div>
 
@@ -718,7 +715,7 @@ export default function Welcome() {
             </tbody>
           </table>
           <div className="grid grid-3" style={{ marginTop: 'var(--s6)' }}>
-            <div className="card">
+            <Card>
               <h3>
                 <span className="check">✓</span> Visible focus
               </h3>
@@ -726,8 +723,8 @@ export default function Welcome() {
                 A 3px focus ring on every focusable element, never removed — only restyled to stay
                 visible on light and accent surfaces alike.
               </p>
-            </div>
-            <div className="card">
+            </Card>
+            <Card>
               <h3>
                 <span className="check">✓</span> Color independence
               </h3>
@@ -735,8 +732,8 @@ export default function Welcome() {
                 Error states pair the danger color with text and an invalid state, so meaning
                 survives for color-blind and grayscale users.
               </p>
-            </div>
-            <div className="card">
+            </Card>
+            <Card>
               <h3>
                 <span className="check">✓</span> Contrast
               </h3>
@@ -744,27 +741,30 @@ export default function Welcome() {
                 Text and essential UI meet AA contrast in both themes; <code>--on-accent</code> is
                 tuned per theme to keep button labels legible.
               </p>
-            </div>
+            </Card>
           </div>
         </section>
 
-        {/* RESOURCES */}
         <section>
           <p className="eyebrow">Resources</p>
           <h2>Keep going</h2>
-          <div className="cta">
-            <a className="btn" href="#">
-              Storybook
-            </a>
-            <a className="btn" href="https://github.com/ioanatu/component-library">
-              GitHub
-            </a>
-            <a className="btn" href="#">
-              Figma library
-            </a>
-            <a className="btn" href="#">
-              Changelog
-            </a>
+          <div
+            className="cta"
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 16,
+            }}
+          >
+            <Button href="#" label="Storybook" size="sm" />
+            <Button href="https://github.com/ioanatu/component-library" label="GitHub" size="sm" />
+            <Button
+              href="https://github.com/ioanatu/component-library"
+              label="Figma library"
+              size="sm"
+            />
+            <Button href="#" label="Changelog" size="sm" />
           </div>
         </section>
       </main>
