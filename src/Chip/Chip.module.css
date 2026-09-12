@@ -186,8 +186,8 @@
 
 .sm {
   --chip-pad: 8px;
-  height: 22px;
-  font-size: 10px;
+  height: 24px;
+  font-size: 11px;
 }
 
 .md {
@@ -288,7 +288,6 @@
   align-self: stretch;
   align-items: center;
   margin: 2px;
-  /* padding-inline: 2px var(--chip-pad); */
   padding-inline: 2px;
 
   background: none;
@@ -323,4 +322,13 @@
 .deleteIcon {
   width: 1.3em;
   height: 1.3em;
+}
+.sm {
+  .delete {
+    padding-inline: 1px;
+  }
+  .deleteIcon {
+    width: 1.2em;
+    height: 1.2em;
+  }
 }
