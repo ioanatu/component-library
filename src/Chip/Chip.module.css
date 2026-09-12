@@ -287,23 +287,25 @@
   flex: none;
   align-self: stretch;
   align-items: center;
-  margin: 0;
-  padding-inline: 2px var(--chip-pad);
+  margin: 2px;
+  /* padding-inline: 2px var(--chip-pad); */
+  padding-inline: 2px;
 
   background: none;
   border: 0;
   border-start-end-radius: inherit;
   border-end-end-radius: inherit;
+  border-radius: inherit;
   color: inherit;
   cursor: pointer;
-  opacity: 0.65;
+  opacity: 0.75;
   transition:
     opacity 120ms ease,
     background-color 120ms ease;
 }
 
 .delete:hover:not(:disabled) {
-  background-color: color-mix(in srgb, currentcolor, transparent 88%);
+  background-color: color-mix(in srgb, currentcolor, transparent 80%);
   opacity: 1;
 }
 
@@ -319,6 +321,6 @@
 }
 
 .deleteIcon {
-  width: 1.1em;
-  height: 1.1em;
+  width: 1.3em;
+  height: 1.3em;
 }

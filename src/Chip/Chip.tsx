@@ -57,7 +57,7 @@ const DeleteCross = () => (
     viewBox="0 0 16 16"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2.5"
+    strokeWidth="2.2"
     strokeLinecap="round"
     aria-hidden="true"
     focusable="false"
