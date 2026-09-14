@@ -1,0 +1,18 @@
+/* Headline — the structural titles of an application screen.
+   1 page title · 2 section heading · 3 card and dialog title.
+   Level 3 is the largest type allowed inside a component. */
+.headline {
+  font-weight: var(--fw-semibold);
+  text-wrap: balance;
+}
+
+.level1 { font-size: var(--fs-3xl); line-height: var(--lh-3xl); letter-spacing: var(--ls-3xl); }
+.level2 { font-size: var(--fs-2xl); line-height: var(--lh-2xl); letter-spacing: var(--ls-2xl); }
+.level3 { font-size: var(--fs-xl); line-height: var(--lh-xl); letter-spacing: var(--ls-xl); }
+
+/* The single hairline under a section title. If the block that follows also
+   carries a top border you get a double line — pick one owner. */
+.ruled {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}

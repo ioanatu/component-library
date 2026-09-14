@@ -1,0 +1,135 @@
+/* OFFSET type foundation — shared by every family in this folder.
+ *
+ * Custom properties are declared on :root (global, as intended); the classes
+ * below are local CSS-module classes consumed via `import base from
+ * '../Typography.module.css'`. Nothing here is imported by app code directly.
+ * ------------------------------------------------------------------ */
+
+/* Self-hosted variable fonts. Drop the four .woff2 files in ./fonts/.
+   Using the CDN instead? Delete these blocks and add to the document head:
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"> */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('./fonts/HankenGrotesk-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Hanken Grotesk';
+  src: url('./fonts/HankenGrotesk-Italic-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./fonts/JetBrainsMono-Variable.woff2') format('woff2-variations');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./fonts/JetBrainsMono-Italic-Variable.woff2') format('woff2-variations');
+  font-weight: 100 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Families — two, with strictly separated jobs.
+     sans: all human language.  mono: anything a machine wrote or will read. */
+  --font-sans: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', Helvetica, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  /* Size scale — rem so browser text-size settings still work.
+     Root is assumed 16px; the comment is the px equivalent. */
+  --fs-4xl: 3.5rem;    /* 56 */
+  --fs-3xl: 2.5rem;    /* 40 */
+  --fs-2xl: 1.875rem;  /* 30 */
+  --fs-xl: 1.375rem;   /* 22 */
+  --fs-lg: 1.125rem;   /* 18 */
+  --fs-md: 1rem;       /* 16 */
+  --fs-sm: 0.875rem;   /* 14 */
+  --fs-xs: 0.75rem;    /* 12 */
+
+  /* The only viewport-relative size in the system. Heroes only. */
+  --fs-display-fluid: clamp(2.75rem, 7vw, 4.75rem);
+
+  --lh-4xl: 1.02;
+  --lh-3xl: 1.1;
+  --lh-2xl: 1.2;
+  --lh-xl: 1.3;
+  --lh-lg: 1.55;
+  --lh-md: 1.7;
+  --lh-sm: 1.6;
+  --lh-xs: 1.5;
+
+  --ls-4xl: -0.03em;
+  --ls-3xl: -0.025em;
+  --ls-2xl: -0.02em;
+  --ls-xl: 0em;
+  --ls-lg: 0em;
+  --ls-md: 0em;
+  --ls-sm: 0em;
+  --ls-xs: 0.14em;
+
+  --measure-display: 24ch;
+  --measure-lead: 52ch;
+  --measure-body: 72ch;
+}
+
+/* Compact density tightens running text only; headings keep their rhythm
+   so page structure does not shift. */
+[data-density='compact'] {
+  --lh-md: 1.6;
+  --lh-sm: 1.5;
+}
+
+/* Base — every family starts here. */
+.typography {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+}
+
+/* Tones. Full-opacity ink values only, so contrast holds on any ground. */
+.default { color: var(--ink); }
+.muted { color: var(--ink-muted); }
+.subtle { color: var(--ink-subtle); }
+.danger { color: var(--danger); }
+.success { color: var(--success); }
+.warning { color: var(--warning); }
+.accent { color: var(--accent); }
+.onAccent { color: var(--on-accent); }
+.inherit { color: inherit; }
+
+/* Weight overrides. Bold belongs to headings; semibold is the heaviest
+   running text should get. */
+.regular { font-weight: var(--fw-regular); }
+.medium { font-weight: var(--fw-medium); }
+.semibold { font-weight: var(--fw-semibold); }
+.bold { font-weight: var(--fw-bold); }
+
+/* Let the parent own the width when the family's measure is wrong. */
+.unbounded { max-inline-size: none; }
+
+/* Truncate after N lines; --typography-lines is set inline by the component. */
+.clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--typography-lines, 2);
+  line-clamp: var(--typography-lines, 2);
+  overflow: hidden;
+  max-inline-size: none;
+}
+
+.balance { text-wrap: balance; }
+.pretty { text-wrap: pretty; }

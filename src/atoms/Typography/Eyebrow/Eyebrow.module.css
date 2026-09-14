@@ -1,0 +1,15 @@
+/* Eyebrow — a category above a title. Mono, uppercase, tracked out.
+   It is scanned, not read, which is the only reason 12px and 11px are legal
+   here. Never put a sentence in one. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-xs);
+  letter-spacing: var(--ls-xs);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  max-inline-size: none;
+}
+
+.level1 { font-size: var(--fs-xs); }
+.level2 { font-size: 0.6875rem; /* 11 — inside dense cards only */ }

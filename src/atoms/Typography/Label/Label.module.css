@@ -1,0 +1,23 @@
+/* Label — form control labels. Sans, heavier than body, sits directly above
+   its control. 1 is the default; 2 is for dense inline forms and toolbars. */
+.label {
+  display: block;
+  font-weight: var(--fw-semibold);
+}
+
+.level1 { font-size: var(--fs-sm); line-height: var(--lh-sm); margin-bottom: 0.5rem; }
+.level2 { font-size: var(--fs-xs); line-height: var(--lh-xs); margin-bottom: 0.25rem; letter-spacing: 0; }
+
+.disabled { color: var(--ink-subtle); }
+
+.required {
+  margin-left: 2px;
+  color: var(--danger);
+}
+
+/* "optional" in words is clearer than marking everything else required. */
+.optional {
+  margin-left: 0.5rem;
+  font-weight: var(--fw-regular);
+  color: var(--ink-subtle);
+}

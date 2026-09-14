@@ -1,0 +1,13 @@
+/* Display — marketing heroes and empty states. Once per screen, never twice.
+   Level 1 is the only viewport-scaled type in the system; level 2 is its
+   fixed-size sibling for places where the container, not the viewport, rules. */
+.display {
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-4xl);
+  line-height: var(--lh-4xl);
+  max-inline-size: var(--measure-display);
+  text-wrap: balance;
+}
+
+.level1 { font-size: var(--fs-display-fluid); }
+.level2 { font-size: var(--fs-4xl); }

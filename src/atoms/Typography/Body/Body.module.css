@@ -1,0 +1,18 @@
+/* Body — everything that is a sentence.
+   1 lead · 2 body (the default) · 3 small.
+   Level 3 is the floor: nothing a user must read goes below 14px. */
+.body {
+  font-weight: var(--fw-regular);
+  text-wrap: pretty;
+}
+
+.level1 { font-size: var(--fs-lg); line-height: var(--lh-lg); max-inline-size: var(--measure-lead); }
+.level2 { font-size: var(--fs-md); line-height: var(--lh-md); max-inline-size: var(--measure-body); }
+.level3 { font-size: var(--fs-sm); line-height: var(--lh-sm); max-inline-size: var(--measure-body); }
+
+/* Machine output inside running text — IDs, keys, raw values. Not emphasis. */
+.mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+}
