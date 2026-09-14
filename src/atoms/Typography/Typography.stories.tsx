@@ -13,6 +13,7 @@ import { Display, Headline, Body, Label, Eyebrow, Caption, Code } from '.';
 const meta: Meta = {
   title: 'Atoms/Typography',
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
         component:
@@ -33,14 +34,16 @@ export const Scale: StoryObj = {
       <Headline level={2}>Section heading</Headline>
       <Headline level={3}>Card &amp; dialog title</Headline>
       <Body level={1} tone="muted">
-        Lead paragraph — the one sentence that explains the screen before anyone reads the rest of it.
+        Lead paragraph — the one sentence that explains the screen before anyone reads the rest of
+        it.
       </Body>
       <Body level={2}>
-        Body. The default for all running text; 1.7 line height and a 72-character measure keep long passages readable
-        at this weight.
+        Body. The default for all running text; 1.7 line height and a 72-character measure keep long
+        passages readable at this weight.
       </Body>
       <Body level={3} tone="muted">
-        Small — helper text, table cells, card body, captions. The floor for any sentence a user must read.
+        Small — helper text, table cells, card body, captions. The floor for any sentence a user
+        must read.
       </Body>
       <Eyebrow>Eyebrow &amp; code label</Eyebrow>
     </div>
@@ -75,14 +78,16 @@ export const Families: StoryObj = {
           Body · mono and clamping
         </Eyebrow>
         <Body level={2}>
-          Request <Body as="span" mono>
+          Request{' '}
+          <Body as="span" mono>
             req_8f2a91
           </Body>{' '}
           completed in 240ms.
         </Body>
         <Body level={3} lines={2} style={{ marginTop: 12 }}>
-          Clamped to two lines. Anything past the second line is hidden, which is only acceptable where the full text is
-          reachable some other way — a tooltip, a detail view, an expand control.
+          Clamped to two lines. Anything past the second line is hidden, which is only acceptable
+          where the full text is reachable some other way — a tooltip, a detail view, an expand
+          control.
         </Body>
       </section>
 
@@ -93,7 +98,10 @@ export const Families: StoryObj = {
         <Label htmlFor="story-card" required>
           Card number
         </Label>
-        <input id="story-card" style={{ font: 'inherit', padding: '10px 12px', border: '2px solid var(--ink)' }} />
+        <input
+          id="story-card"
+          style={{ font: 'inherit', padding: '10px 12px', border: '2px solid var(--ink)' }}
+        />
         <Caption level={1} style={{ marginTop: 8 }}>
           We never store the full number.
         </Caption>
@@ -123,11 +131,13 @@ export const Families: StoryObj = {
 export const Tones: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gap: 12, maxWidth: 520 }}>
-      {(['default', 'muted', 'subtle', 'danger', 'success', 'warning', 'accent'] as const).map((tone) => (
-        <Body key={tone} level={2} tone={tone}>
-          {tone} — full-opacity ink, so contrast holds on any surface.
-        </Body>
-      ))}
+      {(['default', 'muted', 'subtle', 'danger', 'success', 'warning', 'accent'] as const).map(
+        (tone) => (
+          <Body key={tone} level={2} tone={tone}>
+            {tone} — full-opacity ink, so contrast holds on any surface.
+          </Body>
+        ),
+      )}
     </div>
   ),
 };
