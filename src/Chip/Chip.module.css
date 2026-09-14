@@ -188,6 +188,7 @@
   --chip-pad: 8px;
   height: 24px;
   font-size: 11px;
+  border: 1.5px solid;
 }
 
 .md {

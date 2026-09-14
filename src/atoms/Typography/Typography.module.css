@@ -9,7 +9,6 @@
    Using the CDN instead? Delete these blocks and add to the document head:
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"> */
 @font-face {
-  font-family: 'Hanken Grotesk';
   src: url('./fonts/HankenGrotesk-Variable.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
@@ -51,14 +50,14 @@
 
   /* Size scale — rem so browser text-size settings still work.
      Root is assumed 16px; the comment is the px equivalent. */
-  --fs-4xl: 3.5rem;    /* 56 */
-  --fs-3xl: 2.5rem;    /* 40 */
-  --fs-2xl: 1.875rem;  /* 30 */
-  --fs-xl: 1.375rem;   /* 22 */
-  --fs-lg: 1.125rem;   /* 18 */
-  --fs-md: 1rem;       /* 16 */
-  --fs-sm: 0.875rem;   /* 14 */
-  --fs-xs: 0.75rem;    /* 12 */
+  --fs-4xl: 3.5rem; /* 56 */
+  --fs-3xl: 2.5rem; /* 40 */
+  --fs-2xl: 1.875rem; /* 30 */
+  --fs-xl: 1.375rem; /* 22 */
+  --fs-lg: 1.125rem; /* 18 */
+  --fs-md: 1rem; /* 16 */
+  --fs-sm: 0.875rem; /* 14 */
+  --fs-xs: 0.75rem; /* 12 */
 
   /* The only viewport-relative size in the system. Heroes only. */
   --fs-display-fluid: clamp(2.75rem, 7vw, 4.75rem);
@@ -98,28 +97,57 @@
   margin: 0;
   font-family: var(--font-sans);
   color: var(--ink);
+  font-family: 'Hanken Grotesk' !important;
 }
 
 /* Tones. Full-opacity ink values only, so contrast holds on any ground. */
-.default { color: var(--ink); }
-.muted { color: var(--ink-muted); }
-.subtle { color: var(--ink-subtle); }
-.danger { color: var(--danger); }
-.success { color: var(--success); }
-.warning { color: var(--warning); }
-.accent { color: var(--accent); }
-.onAccent { color: var(--on-accent); }
-.inherit { color: inherit; }
+.default {
+  color: var(--ink);
+}
+.muted {
+  color: var(--ink-muted);
+}
+.subtle {
+  color: var(--ink-subtle);
+}
+.danger {
+  color: var(--danger);
+}
+.success {
+  color: var(--success);
+}
+.warning {
+  color: var(--warning);
+}
+.accent {
+  color: var(--accent);
+}
+.onAccent {
+  color: var(--on-accent);
+}
+.inherit {
+  color: inherit;
+}
 
 /* Weight overrides. Bold belongs to headings; semibold is the heaviest
    running text should get. */
-.regular { font-weight: var(--fw-regular); }
-.medium { font-weight: var(--fw-medium); }
-.semibold { font-weight: var(--fw-semibold); }
-.bold { font-weight: var(--fw-bold); }
+.regular {
+  font-weight: var(--fw-regular);
+}
+.medium {
+  font-weight: var(--fw-medium);
+}
+.semibold {
+  font-weight: var(--fw-semibold);
+}
+.bold {
+  font-weight: var(--fw-bold);
+}
 
 /* Let the parent own the width when the family's measure is wrong. */
-.unbounded { max-inline-size: none; }
+.unbounded {
+  max-inline-size: none;
+}
 
 /* Truncate after N lines; --typography-lines is set inline by the component. */
 .clamp {
@@ -131,5 +159,9 @@
   max-inline-size: none;
 }
 
-.balance { text-wrap: balance; }
-.pretty { text-wrap: pretty; }
+.balance {
+  text-wrap: balance;
+}
+.pretty {
+  text-wrap: pretty;
+}

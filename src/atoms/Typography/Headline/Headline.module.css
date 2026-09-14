@@ -6,9 +6,21 @@
   text-wrap: balance;
 }
 
-.level1 { font-size: var(--fs-3xl); line-height: var(--lh-3xl); letter-spacing: var(--ls-3xl); }
-.level2 { font-size: var(--fs-2xl); line-height: var(--lh-2xl); letter-spacing: var(--ls-2xl); }
-.level3 { font-size: var(--fs-xl); line-height: var(--lh-xl); letter-spacing: var(--ls-xl); }
+.level1 {
+  font-size: var(--fs-3xl);
+  line-height: var(--lh-3xl);
+  letter-spacing: var(--ls-3xl);
+}
+.level2 {
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-2xl);
+  letter-spacing: var(--ls-2xl);
+}
+.level3 {
+  font-size: var(--fs-xl);
+  line-height: var(--lh-xl);
+  letter-spacing: var(--ls-xl);
+}
 
 /* The single hairline under a section title. If the block that follows also
    carries a top border you get a double line — pick one owner. */
