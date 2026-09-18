@@ -38,9 +38,6 @@ import { Card } from './Card';
 const meta: Meta<typeof Card> = {
   title: 'Molecules/Card',
   component: Card,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   argTypes: {
     variant: { control: 'inline-radio', options: cardVariants },

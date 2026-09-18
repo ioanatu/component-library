@@ -42,9 +42,6 @@ import { Chip } from './Chip';
 const meta: Meta<typeof Chip> = {
   title: 'Molecules/Chip',
   component: Chip,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   argTypes: {
     variant: { control: 'inline-radio', options: chipVariants },

@@ -32,9 +32,6 @@ import { Button } from './Button';
 const meta: Meta<typeof Button> = {
   title: 'Molecules/Button',
   component: Button,
-  parameters: {
-    layout: 'centered',
-  },
   tags: ['autodocs'],
   argTypes: {
     size: { control: 'inline-radio', options: libSizes },
