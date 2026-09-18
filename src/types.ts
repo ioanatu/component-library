@@ -1,5 +1,5 @@
-export const libSizes = ['sm', 'md', 'lg'] as const;
-export type LibSize = (typeof libSizes)[number];
+export const sizes = ['sm', 'md', 'lg'] as const;
+export type Size = (typeof sizes)[number];
 
 export const buttonVariants = ['primary', 'secondary', 'danger', 'success', 'accent'];
 export type ButtonVariant = (typeof buttonVariants)[number];

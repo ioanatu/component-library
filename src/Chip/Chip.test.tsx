@@ -1,6 +1,6 @@
 import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { chipFills, chipVariants, libSizes } from '../types';
+import { chipFills, chipVariants, sizes } from '../types';
 import { Chip } from './Chip';
 import styles from './Chip.module.css';
 
@@ -38,7 +38,7 @@ describe('Chip', () => {
     expect(container.firstChild).toHaveClass(styles.chip, styles[variant]);
   });
 
-  it.each(libSizes)('renders chip %s', (size) => {
+  it.each(sizes)('renders chip %s', (size) => {
     const { container } = render(<Chip label="Sized" size={size} />);
     expect(container.firstChild).toHaveClass(styles.chip, styles[size]);
   });

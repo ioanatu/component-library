@@ -13,13 +13,15 @@ import { Display, Headline, Body, Label, Eyebrow, Caption, Code } from '.';
 const meta: Meta = {
   title: 'Atoms/Typography',
   parameters: {
-    layout: 'centered',
     docs: {
       description: {
         component:
           'Pick a step, never a size. Line height and tracking are part of the step; a one-off font-size with the wrong leading is the most common way this system degrades.',
       },
     },
+  },
+  args: {
+    label: 'Click here',
   },
 };
 

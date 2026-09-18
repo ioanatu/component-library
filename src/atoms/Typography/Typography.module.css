@@ -92,7 +92,6 @@
   --lh-sm: 1.5;
 }
 
-/* Base — every family starts here. */
 .typography {
   margin: 0;
   font-family: var(--font-sans);
@@ -100,7 +99,6 @@
   font-family: 'Hanken Grotesk' !important;
 }
 
-/* Tones. Full-opacity ink values only, so contrast holds on any ground. */
 .default {
   color: var(--ink);
 }
@@ -129,8 +127,6 @@
   color: inherit;
 }
 
-/* Weight overrides. Bold belongs to headings; semibold is the heaviest
-   running text should get. */
 .regular {
   font-weight: var(--fw-regular);
 }

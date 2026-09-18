@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
-import { chipFills, chipVariants, libSizes } from '../types';
+import { chipFills, chipVariants, sizes } from '../types';
 import { Chip } from './Chip';
 
 /**
@@ -46,7 +46,7 @@ const meta: Meta<typeof Chip> = {
   argTypes: {
     variant: { control: 'inline-radio', options: chipVariants },
     fill: { control: 'inline-radio', options: chipFills },
-    size: { control: 'inline-radio', options: libSizes },
+    size: { control: 'inline-radio', options: sizes },
     href: { control: 'text' },
     disabled: { control: 'boolean' },
     icon: { control: false },
@@ -140,7 +140,7 @@ export const ChipSizes: Story = {
   },
   render: (args) => (
     <div style={row}>
-      {libSizes.map((size) => (
+      {sizes.map((size) => (
         <Chip {...args} key={size} size={size} label={size} />
       ))}
     </div>

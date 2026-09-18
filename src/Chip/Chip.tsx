@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import type { ChipFill, ChipVariant, LibSize } from '../types';
+import type { ChipFill, ChipVariant, Size } from '../types';
 import styles from './Chip.module.css';
 
 type ChipMouseEvent = React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>;
@@ -39,7 +39,7 @@ export interface ChipProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick'> 
   label: string;
   variant?: ChipVariant;
   fill?: ChipFill;
-  size?: LibSize;
+  size?: Size;
   icon?: ReactNode;
   avatar?: ReactNode;
   href?: string;
