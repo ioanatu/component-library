@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ComponentType } from 'react';
 import { fn } from 'storybook/test';
-import { buttonVariants, libSizes } from '../types';
+import { buttonVariants, sizes } from '../types';
+import type { ButtonElementProps, ButtonProps } from './Button';
 import { Button } from './Button';
 
 /**
@@ -20,27 +22,33 @@ import { Button } from './Button';
  *
  * ** Simplest example: **
  *
- * `<Button type="button" label="Click me" onClick={onClick} />`
+ * `<Button type="button" onClick={onClick}>Click me</Button>`
  *
  *
  * ** All props example: **
  *
- * `<Button variant="secondary" size="lg" type="submit" label="Click me" onClick={onClick} disabled loading />`
+ * `<Button variant="secondary" size="lg" type="submit" onClick={onClick} disabled loading>Click me</Button>`
  *
  */
 
-const meta: Meta<typeof Button> = {
+/**
+ * Storybook renders one flat control table, so the union is widened for stories:
+ * href sits alongside the button props and each render casts back to ButtonProps.
+ */
+type ButtonStoryArgs = Omit<ButtonElementProps, 'href'> & { href?: string };
+
+const meta: Meta<ButtonStoryArgs> = {
   title: 'Molecules/Button',
-  component: Button,
+  component: Button as ComponentType<ButtonStoryArgs>,
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'inline-radio', options: libSizes },
+    size: { control: 'inline-radio', options: sizes },
     href: { control: 'text' },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
   },
   args: {
-    label: 'Click here',
+    children: 'Click here',
     onClick: fn(),
     size: 'md',
     variant: 'primary',
@@ -58,11 +66,11 @@ export const ButtonSizes: Story = {
   },
   render: (args) => (
     <div style={{ margin: 'auto' }}>
-      <Button {...args} size="sm" />
+      <Button {...(args as ButtonProps)} size="sm" />
       <div style={{ margin: '14px 0' }}>
-        <Button {...args} size="md" />
+        <Button {...(args as ButtonProps)} size="md" />
       </div>
-      <Button {...args} size="lg" />
+      <Button {...(args as ButtonProps)} size="lg" />
     </div>
   ),
 };
@@ -74,7 +82,9 @@ export const ButtonVariants: Story = {
   render: (args) => (
     <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
       {buttonVariants.map((variant) => (
-        <Button {...args} key={variant} variant={variant} label={variant} />
+        <Button {...(args as ButtonProps)} key={variant} variant={variant}>
+          {variant}
+        </Button>
       ))}
     </div>
   ),
@@ -88,13 +98,17 @@ export const AsLink: Story = {
   args: {
     href: '#start',
     variant: 'accent',
-    label: 'Get started',
+    children: 'Get started',
   },
   render: (args) => (
     <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-      <Button {...args} />
-      <Button {...args} variant="primary" label="Docs" />
-      <Button {...args} variant="primary" label="Disabled link" disabled />
+      <Button {...(args as ButtonProps)} />
+      <Button {...(args as ButtonProps)} variant="primary">
+        Docs
+      </Button>
+      <Button {...(args as ButtonProps)} variant="primary" disabled>
+        Disabled link
+      </Button>
     </div>
   ),
 };

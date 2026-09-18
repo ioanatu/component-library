@@ -164,7 +164,23 @@
   height: 1.2em;
   width: 1.2em;
   position: absolute;
-  top: 18%;
+  top: 16%;
+  left: 41%;
+}
+
+.md .loadingSpinner {
+  border: 2.5px solid color-mix(in srgb, currentColor, transparent 70%);
+  border-top-color: currentColor;
+  height: 1.2em;
+  width: 1.3em;
+  top: 17%;
+  left: 41%;
+}
+.lg .loadingSpinner {
+  border: 3px solid color-mix(in srgb, currentColor, transparent 70%);
+  border-top-color: currentColor;
+  height: 1.3em;
+  width: 1.3em;
   left: 41%;
 }
 
