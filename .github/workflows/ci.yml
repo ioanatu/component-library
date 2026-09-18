@@ -1,0 +1,45 @@
+name: CI
+
+env:
+  NPM_AUTH_TOKEN: ${{ secrets.NPM_GITHUB_TOKEN }}
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, format and test
+    runs-on: ubuntu-latest
+    environment: default
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: yarn
+
+      - name: Install packages
+        run: yarn install --immutable
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Check formatting
+        run: yarn format
+
+      - name: Run tests
+        run: yarn test:run
