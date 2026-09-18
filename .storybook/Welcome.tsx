@@ -1,4 +1,4 @@
-import { useState, useRef, useId } from 'react';
+import { useId, useRef, useState } from 'react';
 import { Button, Card, Chip } from '../src';
 
 /* ============================================================
@@ -417,17 +417,12 @@ export default function Welcome() {
                 marginTop: 24,
               }}
             >
-              <Button
-                variant="accent"
-                label="Get started"
-                onClick={scrollTo('start')}
-                href="#start"
-              />
-              <Button
-                label="Browse components"
-                onClick={scrollTo('components')}
-                href="#components"
-              />
+              <Button variant="accent" onClick={scrollTo('start')} href="#start">
+                Get started
+              </Button>
+              <Button onClick={scrollTo('components')} href="#components">
+                Browse components
+              </Button>
             </div>
           </div>
           <Mark size={180} />
@@ -757,14 +752,18 @@ export default function Welcome() {
               gap: 16,
             }}
           >
-            <Button href="#" label="Storybook" size="sm" />
-            <Button href="https://github.com/ioanatu/component-library" label="GitHub" size="sm" />
-            <Button
-              href="https://github.com/ioanatu/component-library"
-              label="Figma library"
-              size="sm"
-            />
-            <Button href="#" label="Changelog" size="sm" />
+            <Button href="#" size="sm">
+              Storybook
+            </Button>
+            <Button href="https://github.com/ioanatu/component-library" size="sm">
+              GitHub
+            </Button>
+            <Button href="https://github.com/ioanatu/component-library" size="sm">
+              Figma library
+            </Button>
+            <Button href="#" size="sm">
+              Changelog
+            </Button>
           </div>
         </section>
       </main>
