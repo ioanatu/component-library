@@ -8,8 +8,12 @@
   max-inline-size: none;
 }
 
-.level1 { font-size: var(--fs-sm); }
-.level2 { font-size: 0.8125rem; /* 13 — inside dense tables */ }
+.level1 {
+  font-size: var(--fs-sm);
+}
+.level2 {
+  font-size: 0.8125rem; /* 13 — inside dense tables */
+}
 
 .inline {
   padding: 0.125rem 0.375rem;

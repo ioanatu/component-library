@@ -1,7 +1,7 @@
 import type { ElementType } from 'react';
-import styles from './Headline.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Headline.module.css';
 
 export type HeadlineLevel = 1 | 2 | 3;
 

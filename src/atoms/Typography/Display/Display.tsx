@@ -1,8 +1,7 @@
 import type { ElementType } from 'react';
-import base from '../Typography.module.css';
-import styles from './Display.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Display.module.css';
 
 export type DisplayLevel = 1 | 2;
 
@@ -32,7 +31,12 @@ export function Display({
 
   return (
     <Tag
-      className={cx(sharedClasses({ tone, unbounded, lines }), styles.display, styles[`level${level}`], className)}
+      className={cx(
+        sharedClasses({ tone, unbounded, lines }),
+        styles.display,
+        styles[`level${level}`],
+        className,
+      )}
       style={sharedStyle(style, lines)}
       {...rest}
     >

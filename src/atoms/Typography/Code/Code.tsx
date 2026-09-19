@@ -1,6 +1,6 @@
-import styles from './Code.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Code.module.css';
 
 export type CodeLevel = 1 | 2;
 

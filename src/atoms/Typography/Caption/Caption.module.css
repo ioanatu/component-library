@@ -8,8 +8,13 @@
   text-wrap: pretty;
 }
 
-.level1 { font-size: var(--fs-sm); }
-.level2 { font-size: var(--fs-xs); line-height: var(--lh-xs); /* legal notices, timestamps */ }
+.level1 {
+  font-size: var(--fs-sm);
+}
+.level2 {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-xs); /* legal notices, timestamps */
+}
 
 /* Error helper text. Paired with an icon by the field, never colour alone. */
 .error {

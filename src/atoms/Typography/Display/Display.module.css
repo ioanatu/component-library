@@ -9,5 +9,9 @@
   text-wrap: balance;
 }
 
-.level1 { font-size: var(--fs-display-fluid); }
-.level2 { font-size: var(--fs-4xl); }
+.level1 {
+  font-size: var(--fs-display-fluid);
+}
+.level2 {
+  font-size: var(--fs-4xl);
+}

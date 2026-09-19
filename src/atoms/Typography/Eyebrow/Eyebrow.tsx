@@ -1,7 +1,7 @@
 import type { ElementType } from 'react';
-import styles from './Eyebrow.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Eyebrow.module.css';
 
 export type EyebrowLevel = 1 | 2;
 

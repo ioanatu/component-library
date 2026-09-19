@@ -1,6 +1,6 @@
-import styles from './Label.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Label.module.css';
 
 export type LabelLevel = 1 | 2;
 

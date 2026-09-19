@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Display, Headline, Body, Label, Eyebrow, Caption, Code } from '.';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '.';
 
 /**
  * OFFSET typography. Two families with strictly separated jobs: Hanken Grotesk

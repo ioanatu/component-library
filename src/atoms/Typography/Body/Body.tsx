@@ -1,7 +1,7 @@
 import type { ElementType } from 'react';
-import styles from './Body.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Body.module.css';
 
 export type BodyLevel = 1 | 2 | 3;
 
@@ -14,10 +14,6 @@ export interface BodyProps extends BaseTypographyProps {
   as?: ElementType;
 }
 
-/**
- * Body — running text. Each level carries its own line height and measure,
- * so long passages stay readable without per-instance tuning.
- */
 export function Body({
   level = 2,
   tone = 'default',

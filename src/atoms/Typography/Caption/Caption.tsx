@@ -1,7 +1,7 @@
 import type { ElementType } from 'react';
-import styles from './Caption.module.css';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
+import styles from './Caption.module.css';
 
 export type CaptionLevel = 1 | 2;
 

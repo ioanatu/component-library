@@ -26,7 +26,10 @@ export function sharedClasses({ tone, weight, unbounded, lines }: SharedArgs): s
 }
 
 /** Merges the caller's style with the line-clamp custom property. */
-export function sharedStyle(style: CSSProperties | undefined, lines?: number): CSSProperties | undefined {
+export function sharedStyle(
+  style: CSSProperties | undefined,
+  lines?: number,
+): CSSProperties | undefined {
   if (!lines) return style;
   return { ...style, ['--typography-lines' as string]: lines } as CSSProperties;
 }
