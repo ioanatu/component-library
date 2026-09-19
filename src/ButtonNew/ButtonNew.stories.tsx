@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ComponentType, ReactNode } from 'react';
 import { fn } from 'storybook/test';
-import { buttonNewVariants, sizes } from '../types';
+import { buttonNewVariants, elevations, sizes } from '../types';
 import type { ButtonNewElementProps, ButtonNewProps } from './ButtonNew';
 import { ButtonNew } from './ButtonNew';
 
@@ -72,6 +72,7 @@ const meta: Meta<ButtonNewStoryArgs> = {
   argTypes: {
     variant: { control: 'inline-radio', options: buttonNewVariants },
     size: { control: 'inline-radio', options: sizes },
+    elevation: { control: 'inline-radio', options: elevations },
     href: { control: 'text' },
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
@@ -100,6 +101,10 @@ export const Variants: Story = {
   argTypes: {
     variant: { control: false, table: { disable: true } },
     children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
   },
   render: (args) => (
     <Row>
@@ -130,6 +135,10 @@ export const Sizes: Story = {
   argTypes: {
     size: { control: false, table: { disable: true } },
     children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
   },
   render: (args) => (
     <>
@@ -158,6 +167,60 @@ export const Sizes: Story = {
 };
 
 /**
+ * Elevation is the offset distance, and the system defines three: sm 2px, md 4px,
+ * lg 8px. The shadow travels down-right at 45°, never blurs and never uses alpha,
+ * so the distance is the whole of it.
+ *
+ * It is also the press distance — pressing lands the face flush in its own
+ * shadow — so press one of each to feel the difference.
+ *
+ * The shadow rule decides the colour, not this prop: a neutral surface casts an
+ * accent shadow (top row), an accent or tonal fill casts an ink one (bottom row).
+ * Left unset, a button takes its size's own distance: 2px for sm, 4px for md and
+ * lg. Ghost carries no shadow, so elevation does nothing to it.
+ */
+export const Elevation: Story = {
+  argTypes: {
+    elevation: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
+    variant: { control: false, table: { disable: true } },
+    href: { control: false, table: { disable: true } },
+  },
+  render: (args) => (
+    <div style={{ display: 'grid', gap: '18px', justifyItems: 'start' }}>
+      <Row>
+        {elevations.map((elevation) => (
+          <ButtonNew
+            key={elevation}
+            {...(args as ButtonNewProps)}
+            variant="secondary"
+            elevation={elevation}
+          >
+            {`Neutral · ${elevation}`}
+          </ButtonNew>
+        ))}
+      </Row>
+      <Row>
+        {elevations.map((elevation) => (
+          <ButtonNew
+            key={elevation}
+            {...(args as ButtonNewProps)}
+            variant="primary"
+            elevation={elevation}
+          >
+            {`Accent · ${elevation}`}
+          </ButtonNew>
+        ))}
+      </Row>
+    </div>
+  ),
+};
+
+/**
  * Loading never widens the button — compare each pair, which is the same button
  * at rest and busy.
  *
@@ -174,6 +237,11 @@ export const Loading: Story = {
   argTypes: {
     loading: { control: false, table: { disable: true } },
     children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
+    href: { control: false, table: { disable: true } },
   },
   render: (args) => (
     <div style={{ display: 'grid', gap: '18px', justifyItems: 'start' }}>
@@ -226,7 +294,15 @@ export const Loading: Story = {
  * while it loads.
  */
 export const IconOnly: Story = {
-  // args: { children: { control: false, table: { disable: true } } },
+  argTypes: {
+    loading: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
+    href: { control: false, table: { disable: true } },
+  },
 
   render: (args) => (
     <Row>
@@ -261,6 +337,15 @@ export const AsLink: Story = {
   args: {
     href: '#start',
     children: 'Get started',
+  },
+  argTypes: {
+    loading: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
+    elevation: { control: false, table: { disable: true } },
   },
   render: (args) => (
     <Row>

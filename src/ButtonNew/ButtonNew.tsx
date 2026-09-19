@@ -1,9 +1,16 @@
 import clsx from 'clsx';
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode, Ref } from 'react';
-import type { ButtonNewVariant, Size } from '../types';
+import type { ButtonNewVariant, Elevation, Size } from '../types';
 import styles from './ButtonNew.module.css';
 
 type ButtonType = 'button' | 'reset' | 'submit';
+
+/** The design system's three offset distances: 2px, 4px and 8px. */
+const ELEVATION_CLASS: Record<Elevation, string> = {
+  sm: styles.elevationSm,
+  md: styles.elevationMd,
+  lg: styles.elevationLg,
+};
 
 /**
  * CTA button following the OFFSET design system: a 2px ink border, a hard offset
@@ -19,6 +26,10 @@ type ButtonType = 'button' | 'reset' | 'submit';
  *
  * @param variant - Names the intent. Default is primary.
  * @param size - Button size. Default is md.
+ * @param elevation - How far the offset shadow sits from the face, and so how far
+ * the face travels when it is pressed: sm 2px, md 4px, lg 8px. Left unset, the
+ * button takes its size's own distance — 2px for sm, 4px for md and lg. Ghost
+ * carries no shadow, so it ignores this.
  * @param type - HTML button type. Default is 'button'. Ignored when href is set.
  * @param href - When set, the button renders as an anchor that navigates instead
  * of a button.
@@ -41,6 +52,7 @@ type ButtonType = 'button' | 'reset' | 'submit';
 interface BaseButtonNewProps {
   variant?: ButtonNewVariant;
   size?: Size;
+  elevation?: Elevation;
   icon?: ReactNode;
   loading?: boolean;
   loadingLabel?: string;
@@ -94,6 +106,7 @@ export function ButtonNew({
   className,
   variant = 'primary',
   size = 'md',
+  elevation,
   icon,
   loading = false,
   loadingLabel = 'Loading',
@@ -112,6 +125,7 @@ export function ButtonNew({
     styles.button,
     styles[variant],
     styles[size],
+    elevation && ELEVATION_CLASS[elevation],
     { [styles.iconOnly]: isIconOnly, [styles.fullWidth]: fullWidth },
     className,
   );

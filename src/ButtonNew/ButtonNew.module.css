@@ -216,6 +216,30 @@
   inline-size: 100%;
 }
 
+/* ---------- Elevation ---------- */
+
+/**
+ * The offset travels down-right at 45°, never blurs and never uses alpha, so the
+ * distance is the whole of the elevation. It also sets how far the face travels
+ * when pressed, because the press lands it flush in its own shadow — hover and
+ * :active both read --btn-offset, so the two can never disagree.
+ *
+ * Declared after the sizes, which set a distance of their own, so an explicit
+ * elevation wins on equal specificity. Ghost pins box-shadow to none, which means
+ * passing an elevation to it changes nothing.
+ */
+.elevationSm {
+  --btn-offset: 2px;
+}
+
+.elevationMd {
+  --btn-offset: 4px;
+}
+
+.elevationLg {
+  --btn-offset: 8px;
+}
+
 /* ---------- Parts ---------- */
 
 .content {
