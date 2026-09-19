@@ -139,6 +139,7 @@ export const Sizes: Story = {
     loadingLabel: { control: false, table: { disable: true } },
     type: { control: false, table: { disable: true } },
     icon: { control: false, table: { disable: true } },
+    href: { control: false, table: { disable: true } },
   },
   render: (args) => (
     <>
@@ -294,6 +295,7 @@ export const Loading: Story = {
  * while it loads.
  */
 export const IconOnly: Story = {
+  args: { children: undefined },
   argTypes: {
     loading: { control: false, table: { disable: true } },
     children: { control: false, table: { disable: true } },
@@ -305,25 +307,23 @@ export const IconOnly: Story = {
   },
 
   render: (args) => (
-    <Row>
-      <ButtonNew {...(args as ButtonNewProps)} size="sm" icon={<PlusIcon />} aria-label="Add" />
-      <ButtonNew {...(args as ButtonNewProps)} size="md" icon={<PlusIcon />} aria-label="Add" />
-      <ButtonNew {...(args as ButtonNewProps)} size="lg" icon={<PlusIcon />} aria-label="Add" />
-      <ButtonNew
-        {...(args as ButtonNewProps)}
-        variant="secondary"
-        icon={<PlusIcon />}
-        aria-label="Add"
-        loading
-      />
-      <ButtonNew
-        {...(args as ButtonNewProps)}
-        variant="secondary"
-        icon={<PlusIcon />}
-        aria-label="Add"
-        disabled
-      />
-    </Row>
+    <>
+      <Row>
+        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" />
+        <ButtonNew size="md" icon={<PlusIcon />} aria-label="Add" />
+        <ButtonNew size="lg" icon={<PlusIcon />} aria-label="Add" />
+        <ButtonNew variant="secondary" icon={<PlusIcon />} aria-label="Add" loading />
+        <ButtonNew variant="secondary" icon={<PlusIcon />} aria-label="Add" disabled />
+      </Row>
+      <Row>
+        <p></p>
+      </Row>
+      <Row>
+        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" {...(args as ButtonNewProps)} />
+        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" {...(args as ButtonNewProps)} />
+        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" {...(args as ButtonNewProps)} />
+      </Row>
+    </>
   ),
 };
 
@@ -363,7 +363,7 @@ export const AsLink: Story = {
   ),
 };
 
-export const FullWidth: Story = {
+export const AllProps: Story = {
   args: { fullWidth: true, children: 'Publish project' },
   render: (args) => (
     <div style={{ display: 'grid', gap: '14px', inlineSize: '320px' }}>
