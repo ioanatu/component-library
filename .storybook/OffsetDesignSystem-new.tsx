@@ -1,14 +1,15 @@
 import React, {
   createContext,
+  type CSSProperties,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
-  type ReactNode,
 } from 'react';
+import { ButtonNew } from '../src/ButtonNew/ButtonNew';
 
 /* ------------------------------------------------------------------ *
  * Tokens
@@ -324,108 +325,10 @@ const Grid = ({
 );
 
 /* ------------------------------------------------------------------ *
- * Button
+ * Button — the library component, imported at the top of this file.
+ * The local copy this page used to carry has been retired; ButtonNew reads the
+ * same semantic tokens, so it re-themes with the switch and the accent picker.
  * ------------------------------------------------------------------ */
-
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
-export type ButtonSize = 'sm' | 'md' | 'lg';
-
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  loading?: boolean;
-  fullWidth?: boolean;
-  iconStart?: ReactNode;
-}
-
-/** Intent selects the variant; the variant selects the color. There is no `color` prop. */
-export const Button = ({
-  variant = 'secondary',
-  size = 'md',
-  loading = false,
-  fullWidth = false,
-  iconStart,
-  disabled,
-  children,
-  style,
-  ...rest
-}: ButtonProps) => {
-  const sizes: Record<ButtonSize, CSSProperties> = {
-    sm: { fontSize: 13, padding: '7px 14px', borderRadius: 'var(--r-sm)' },
-    md: { fontSize: 15, padding: '11px 22px', borderRadius: 'var(--r-md)' },
-    lg: { fontSize: 17, padding: '15px 30px', borderRadius: 'var(--r-md)' },
-  };
-  const offset = size === 'sm' ? 2 : 4;
-
-  const fills: Record<ButtonVariant, CSSProperties> = {
-    primary: {
-      background: 'var(--accent)',
-      color: 'var(--on-accent)',
-      boxShadow: `${offset}px ${offset}px 0 var(--ink)`,
-    },
-    secondary: {
-      background: 'var(--surface)',
-      color: 'var(--ink)',
-      boxShadow: `${offset}px ${offset}px 0 var(--accent)`,
-    },
-    ghost: {
-      background: 'transparent',
-      color: 'var(--ink)',
-      border: 'var(--bw) solid transparent',
-      boxShadow: 'none',
-    },
-    destructive: {
-      background: 'var(--danger)',
-      color: '#FFFFFF',
-      boxShadow: `${offset}px ${offset}px 0 var(--ink)`,
-    },
-  };
-
-  const isOff = disabled || loading;
-
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      aria-busy={loading || undefined}
-      className={
-        variant === 'ghost'
-          ? 'off-ghost'
-          : isOff
-            ? undefined
-            : size === 'sm'
-              ? 'off-press off-press-sm'
-              : 'off-press'
-      }
-      style={{
-        fontFamily: FONT_SANS,
-        fontWeight: 600,
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 9,
-        width: fullWidth ? '100%' : undefined,
-        border: 'var(--bw) solid var(--ink)',
-        cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-        ...sizes[size],
-        ...fills[variant],
-        ...(disabled
-          ? {
-              background: 'var(--sunken)',
-              color: 'var(--ink-subtle)',
-              borderColor: 'var(--ink-subtle)',
-              boxShadow: 'none',
-            }
-          : null),
-        ...style,
-      }}
-      {...rest}
-    >
-      {loading ? <Spinner size={14} color="currentColor" /> : iconStart}
-      {children}
-    </button>
-  );
-};
 
 const Spinner = ({ size = 22, color = 'var(--ink)' }: { size?: number; color?: string }) => (
   <span
@@ -1033,10 +936,12 @@ const Hero = () => (
           )}
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginTop: 30 }}>
-          <Button variant="primary" size="md" onClick={() => (location.hash = '#install')}>
+          <ButtonNew variant="primary" size="md" onClick={() => (location.hash = '#install')}>
             Get started
-          </Button>
-          <Button onClick={() => (location.hash = '#components')}>Browse components</Button>
+          </ButtonNew>
+          <ButtonNew variant="secondary" onClick={() => (location.hash = '#components')}>
+            Browse components
+          </ButtonNew>
         </div>
       </div>
       <div style={{ display: 'grid', gap: 14 }}>
@@ -1453,13 +1358,13 @@ export default function OffsetDesignSystem({
                 </p>
                 <Pre>npm install @ioanatu/offset</Pre>
                 <div style={{ marginTop: 14 }}>
-                  <Pre>{`import { Button, ThemeProvider } from '@ioanatu/offset';
+                  <Pre>{`import { ButtonNew, ThemeProvider } from '@ioanatu/offset';
 
 export function Toolbar() {
   return (
-    <Button variant="primary" onClick={createProject}>
+    <ButtonNew variant="primary" onClick={createProject}>
       Add new project
-    </Button>
+    </ButtonNew>
   );
 }`}</Pre>
                 </div>
@@ -2030,7 +1935,7 @@ export function Toolbar() {
                   Try it — the button moves exactly the offset distance, so it lands flush on the
                   surface.
                 </p>
-                <Button variant="primary">Press me</Button>
+                <ButtonNew variant="primary">Press me</ButtonNew>
                 <div style={{ marginTop: 16 }}>
                   <Pre dark={false}>{`:active {
   transform: translate(4px, 4px);
@@ -2130,7 +2035,7 @@ export function Toolbar() {
           <Section
             id="components"
             eyebrow="Components"
-            title="Coverage, honestly stated"
+            title="Coverage"
             lead="v1 shipped nine components — a strong core with no way to build a real screen: no way to confirm an action, report an error, page through data, or say that something is loading. The matrix below is deliberately public about status, because a design system that hides its gaps gets worked around instead of extended."
             last
           >
@@ -2215,44 +2120,47 @@ export function Toolbar() {
                   marginBottom: 24,
                 }}
               >
-                <Button variant="primary">Primary</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="destructive">Destructive</Button>
-                <Button disabled>Disabled</Button>
-                <Button variant="primary" loading>
+                <ButtonNew variant="primary">Primary</ButtonNew>
+                <ButtonNew variant="secondary">Secondary</ButtonNew>
+                <ButtonNew variant="ghost">Ghost</ButtonNew>
+                <ButtonNew variant="destructive">Destructive</ButtonNew>
+                <ButtonNew variant="secondary" disabled>
+                  Disabled
+                </ButtonNew>
+                <ButtonNew variant="primary" loading>
                   Saving
-                </Button>
+                </ButtonNew>
               </div>
               <Eyebrow style={{ marginBottom: 14 }}>
                 Sizes — every size clears a 44px touch target with its 8px gap
               </Eyebrow>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, alignItems: 'center' }}>
-                <Button size="sm">Small</Button>
-                <Button size="md">Medium</Button>
-                <Button size="lg">Large</Button>
-                <button
-                  type="button"
+                <ButtonNew variant="secondary" size="sm">
+                  Small
+                </ButtonNew>
+                <ButtonNew variant="secondary" size="md">
+                  Medium
+                </ButtonNew>
+                <ButtonNew variant="secondary" size="lg">
+                  Large
+                </ButtonNew>
+                <ButtonNew
+                  variant="secondary"
                   aria-label="Add"
-                  className="off-press"
-                  style={{
-                    width: 44,
-                    height: 44,
-                    flex: 'none',
-                    border: 'var(--bw) solid var(--ink)',
-                    borderRadius: 'var(--r-md)',
-                    background: 'var(--surface)',
-                    boxShadow: '4px 4px 0 var(--accent)',
-                    display: 'grid',
-                    placeItems: 'center',
-                    fontSize: 20,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    color: 'var(--ink)',
-                  }}
-                >
-                  +
-                </button>
+                  icon={
+                    <svg
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path d="M8 3.5v9M3.5 8h9" />
+                    </svg>
+                  }
+                />
               </div>
             </Card>
 
@@ -2284,7 +2192,7 @@ export function Toolbar() {
                   ],
                   ['size', <span style={mono(11.5)}>'sm' | 'md' | 'lg'</span>],
                   ['loading', <span style={mono(11.5)}>boolean</span>],
-                  ['iconStart', <span style={mono(11.5)}>ReactNode</span>],
+                  ['icon', <span style={mono(11.5)}>ReactNode</span>],
                   ['fullWidth', <span style={mono(11.5)}>boolean</span>],
                   ['...rest', <span style={mono(11.5)}>ButtonHTMLAttributes</span>],
                 ]}
@@ -2652,7 +2560,11 @@ export function Toolbar() {
                 <Alert
                   tone="danger"
                   title="Error — we couldn't publish this project"
-                  action={<Button size="sm">Review</Button>}
+                  action={
+                    <ButtonNew variant="secondary" size="sm">
+                      Review
+                    </ButtonNew>
+                  }
                 >
                   Two required fields are empty. Fix them and publish again.
                 </Alert>
@@ -2765,9 +2677,9 @@ export function Toolbar() {
                     Create one to start tracking a migration.
                   </p>
                   <div style={{ justifySelf: 'center', marginTop: 6 }}>
-                    <Button variant="primary" size="sm" onClick={openModal}>
+                    <ButtonNew variant="primary" size="sm" onClick={openModal}>
                       New project
-                    </Button>
+                    </ButtonNew>
                   </div>
                 </Card>
               </Grid>
@@ -2798,12 +2710,12 @@ export function Toolbar() {
                   is polite and auto-dismisses.
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                  <Button variant="primary" size="sm" onClick={openModal}>
+                  <ButtonNew variant="primary" size="sm" onClick={openModal}>
                     Open dialog
-                  </Button>
-                  <Button size="sm" onClick={fireToast}>
+                  </ButtonNew>
+                  <ButtonNew variant="secondary" size="sm" onClick={fireToast}>
                     Fire toast
-                  </Button>
+                  </ButtonNew>
                 </div>
               </Card>
 
@@ -3193,7 +3105,9 @@ export function Toolbar() {
                     <p style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>Migration batches</p>
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                       <Badge>128 rows</Badge>
-                      <Button size="sm">Export</Button>
+                      <ButtonNew variant="secondary" size="sm">
+                        Export
+                      </ButtonNew>
                     </div>
                   </div>
                 }
@@ -3352,12 +3266,12 @@ export function Toolbar() {
                   ✓ DO
                 </p>
                 <div style={{ display: 'flex', gap: 12, marginBottom: 18 }}>
-                  <Button variant="primary" size="sm">
+                  <ButtonNew variant="primary" size="sm">
                     Publish
-                  </Button>
-                  <Button variant="ghost" size="sm">
+                  </ButtonNew>
+                  <ButtonNew variant="ghost" size="sm">
                     Cancel
-                  </Button>
+                  </ButtonNew>
                 </div>
                 <p
                   style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
@@ -3387,15 +3301,15 @@ export function Toolbar() {
                   ✕ DON'T
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
-                  <Button variant="primary" size="sm">
+                  <ButtonNew variant="primary" size="sm">
                     Publish
-                  </Button>
-                  <Button variant="primary" size="sm">
+                  </ButtonNew>
+                  <ButtonNew variant="primary" size="sm">
                     Save draft
-                  </Button>
-                  <Button variant="destructive" size="sm">
+                  </ButtonNew>
+                  <ButtonNew variant="destructive" size="sm">
                     Delete
-                  </Button>
+                  </ButtonNew>
                 </div>
                 <p
                   style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
@@ -3940,10 +3854,10 @@ export function Toolbar() {
                 />
               </Field>
               <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24 }}>
-                <Button variant="ghost" size="sm" onClick={closeModal}>
+                <ButtonNew variant="ghost" size="sm" onClick={closeModal}>
                   Cancel
-                </Button>
-                <Button
+                </ButtonNew>
+                <ButtonNew
                   variant="primary"
                   size="sm"
                   onClick={() => {
@@ -3952,7 +3866,7 @@ export function Toolbar() {
                   }}
                 >
                   Create project
-                </Button>
+                </ButtonNew>
               </div>
             </div>
           </div>
