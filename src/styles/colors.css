@@ -1,3 +1,18 @@
+/**
+ * Colour tokens.
+ *
+ * Two independent sets live here.
+ *
+ * The first is the original component palette (--surface-*, --text-*,
+ * --border-*, --shadow-*), which Button, Card and Chip read.
+ *
+ * The second is the OFFSET palette extracted from the design system document
+ * (.storybook/OffsetDesignSystem-new.tsx). It is two-tier: tier 1 primitives are
+ * named after what they are and are never referenced by a component; tier 2
+ * semantic aliases are named after what they do, and are the only tier a
+ * component may use. Typography and ButtonNew read tier 2.
+ */
+
 :root {
   /* Surfaces */
   --surface-default: #ffffff;
@@ -44,4 +59,120 @@
   --shadow-warning: #f59e0b;
   --shadow-danger: #ef4444;
   --shadow-info: #4f7eff;
+}
+
+/* ---------- OFFSET tier 1 — primitives ---------- */
+
+/**
+ * Descriptive, theme-independent, never used in a component. A component that
+ * reads --blue-500 is a bug, because it will not follow a theme or a brand
+ * override.
+ */
+:root {
+  --neutral-0: #ffffff;
+  --neutral-50: #f7f5f5;
+  --neutral-100: #edebea;
+  --neutral-200: #dcd9d7;
+  --neutral-400: #8a8683;
+  --neutral-500: #605c59;
+  --neutral-800: #1a1a1a;
+  --neutral-900: #0c0c0e;
+
+  --blue-50: #edf2fe;
+  --blue-500: #3367f6;
+  --blue-700: #1a3fa8;
+
+  --green-50: #e8f8f1;
+  --green-500: #1fa971;
+  --green-700: #158257;
+
+  --amber-50: #fef5e7;
+  --amber-500: #e8960c;
+  --amber-700: #b87508;
+
+  --red-50: #feedec;
+  --red-500: #f5453b;
+  --red-700: #d22c23;
+}
+
+/* ---------- OFFSET tier 2 — semantic aliases ---------- */
+
+/**
+ * Functional, theme-dependent, the public contract.
+ *
+ * --ink draws both body text and every structural border, which is what keeps
+ * the border contrast tied to the text beside it in any theme.
+ */
+:root {
+  --page: var(--neutral-50);
+  --surface: var(--neutral-0);
+  --sunken: var(--neutral-100);
+
+  --ink: var(--neutral-800);
+  --ink-muted: var(--neutral-500);
+  --ink-subtle: var(--neutral-400);
+  --border-subtle: var(--neutral-200);
+
+  --accent: var(--blue-500);
+  --accent-strong: var(--blue-700);
+  --accent-wash: var(--blue-50);
+  --on-accent: var(--neutral-0);
+
+  --danger: var(--red-500);
+  --danger-wash: var(--red-50);
+  --success: var(--green-500);
+  --success-wash: var(--green-50);
+  --warning: var(--amber-500);
+  --warning-wash: var(--amber-50);
+
+  /**
+   * Text on a danger fill. The design document writes #FFFFFF straight into the
+   * destructive button; the alias exists so no component carries a raw hex.
+   */
+  --on-danger: var(--neutral-0);
+
+  --code-bg: var(--neutral-900);
+  --code-ink: #f2f2f0;
+  --scrim: rgb(12 12 14 / 60%);
+}
+
+/**
+ * A theme is a set of semantic values under one attribute — scope, don't fork.
+ * Only tier 2 is restated; the primitives above do not move.
+ */
+[data-theme='dark'] {
+  --page: #121214;
+  --surface: #1d1d21;
+  --sunken: #26262b;
+
+  --ink: #f2f2f0;
+  --ink-muted: #a9a9a4;
+  --ink-subtle: #7a7a76;
+  --border-subtle: #3a3a40;
+
+  --accent: #5b82ff;
+  --accent-strong: #7c9bff;
+  --accent-wash: #1b2340;
+  --on-accent: #101014;
+
+  --danger: #ff6b61;
+  --danger-wash: #3a1e1c;
+  --success: #3fcb92;
+  --success-wash: #12301f;
+  --warning: #f2b33d;
+  --warning-wash: #33260d;
+
+  --code-bg: #0c0c0e;
+  --code-ink: #f2f2f0;
+}
+
+/**
+ * Brand accents offered by the design system's accent picker. A brand override
+ * is the same move as a theme: point --accent at one of these under a scope.
+ */
+:root {
+  --accent-blue: #3367f6;
+  --accent-violet: #7a3bf6;
+  --accent-green: #0e9f6e;
+  --accent-red: #f5453b;
 }

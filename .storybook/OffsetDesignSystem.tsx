@@ -1808,7 +1808,7 @@ export function Toolbar() {
           <Section
             id="components"
             eyebrow="Components"
-            title="Coverage, honestly stated"
+            title="Coverage"
             lead="v1 shipped nine components — a strong core with no way to build a real screen: no way to confirm an action, report an error, page through data, or say that something is loading. The matrix below is deliberately public about status, because a design system that hides its gaps gets worked around instead of extended."
             last
           >

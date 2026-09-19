@@ -1,0 +1,344 @@
+.button {
+  --btn-offset: 4px;
+  --btn-radius: 12px;
+  --btn-gap: var(--space-2);
+
+  /**
+   * The spinner and the icon share one box. Size and border weight are declared
+   * here so the slot and the ring inside it can never disagree; --btn-spinner-gap
+   * is the distance from the spinner to the label when there is no icon, and is
+   * read both by that spinner's margin and by the shift that re-centres the pair.
+   */
+  --btn-spinner-size: 1em;
+  --btn-spinner-border: 2.5px;
+  --btn-spinner-gap: var(--btn-gap);
+
+  --btn-surface: var(--surface);
+  --btn-ink: var(--ink);
+  --btn-border: var(--ink);
+  --btn-shadow: var(--accent);
+  --btn-hover-surface: var(--btn-surface);
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--btn-surface);
+  border: 2px solid var(--btn-border);
+  border-radius: var(--btn-radius);
+  box-shadow: var(--btn-offset) var(--btn-offset) 0 var(--btn-shadow);
+  color: var(--btn-ink);
+
+  font-family: var(--font-sans, 'Hanken Grotesk', system-ui, sans-serif);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 80ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 80ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/**
+ * Consumer stylesheets commonly underline anchors on hover or once visited, and
+ * those selectors outrank a single class. Matching the states keeps the
+ * link-flavoured button undecorated without resorting to !important.
+ */
+.button:link,
+.button:visited,
+.button:hover,
+.button:focus,
+.button:active {
+  text-decoration: none;
+}
+
+/**
+ * A loading button carries aria-disabled, so the press states below switch
+ * themselves off while it is busy without needing a rule of their own.
+ */
+.button:hover:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--btn-hover-surface);
+  box-shadow: calc(var(--btn-offset) - 1px) calc(var(--btn-offset) - 1px) 0 var(--btn-shadow);
+  transform: translate(1px, 1px);
+}
+
+.button:active:not(:disabled):not([aria-disabled='true']) {
+  box-shadow: 0 0 0 transparent;
+  transform: translate(var(--btn-offset), var(--btn-offset));
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/**
+ * Busy is excluded here: a loading button keeps its variant colours, because it
+ * is reporting work in progress rather than refusing input.
+ */
+.button:disabled,
+.button[aria-disabled='true']:not([aria-busy='true']) {
+  background-color: var(--sunken);
+  border-color: var(--ink-subtle);
+  box-shadow: none;
+  color: var(--ink-subtle);
+  cursor: not-allowed;
+}
+
+.button[aria-busy='true'] {
+  cursor: progress;
+}
+
+/* ---------- Variants ---------- */
+
+/**
+ * The shadow rule: a neutral surface casts an accent shadow, an accent or tonal
+ * fill casts an ink one.
+ */
+.primary {
+  --btn-surface: var(--accent);
+  --btn-ink: var(--on-accent);
+  --btn-shadow: var(--ink);
+}
+
+.secondary {
+  --btn-surface: var(--surface);
+  --btn-ink: var(--ink);
+  --btn-shadow: var(--accent);
+}
+
+.destructive {
+  --btn-surface: var(--danger);
+  --btn-ink: var(--on-danger);
+  --btn-shadow: var(--ink);
+}
+
+/**
+ * Ghost carries no border and no shadow, so there is no offset for it to travel
+ * into: the surface reports both states instead. Hover lifts it onto --sunken and
+ * the press goes one step deeper still, which is the move a flat Card and a Chip
+ * already make for the same reason.
+ *
+ * Deriving that step by mixing --sunken towards --ink keeps it tied to whatever
+ * the theme sets: it darkens in light mode and lightens in dark, which is the
+ * direction a surface travels as it comes forward in each.
+ */
+.ghost {
+  --btn-surface: transparent;
+  --btn-ink: var(--ink);
+  --btn-border: transparent;
+  --btn-hover-surface: var(--sunken);
+  --btn-active-surface: color-mix(in srgb, var(--sunken), var(--ink) 10%);
+
+  box-shadow: none;
+}
+
+.ghost:hover:not(:disabled):not([aria-disabled='true']) {
+  box-shadow: none;
+  transform: none;
+}
+
+/**
+ * The travel stays at zero: the press rule is that an element moves exactly its
+ * own offset distance, and ghost's is none, so the deeper surface carries the
+ * whole press. Equal specificity to the base :active rule, and later in the file,
+ * so it wins without !important.
+ */
+.ghost:active:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--btn-active-surface);
+  box-shadow: none;
+  transform: none;
+}
+
+/* ---------- Sizes ---------- */
+
+/* Each height clears the 44px touch target once its 8px gap is counted. */
+.sm {
+  --btn-offset: 2px;
+  --btn-radius: 10px;
+  --btn-spinner-size: 0.85em;
+  --btn-spinner-border: 2px;
+  --btn-spinner-gap: 6px;
+
+  min-block-size: 36px;
+  padding-inline: 18px;
+  font-size: 14px;
+}
+
+.md {
+  --btn-radius: 12px;
+  --btn-spinner-size: 1em;
+  --btn-spinner-border: 2.5px;
+  --btn-spinner-gap: 6px;
+
+  min-block-size: 44px;
+  padding-inline: var(--space-6);
+  font-size: 16px;
+}
+
+.lg {
+  --btn-radius: 13px;
+  --btn-spinner-size: 1.15em;
+  --btn-spinner-border: 3px;
+
+  min-block-size: 52px;
+  padding-inline: var(--space-8);
+  font-size: 18px;
+}
+
+/**
+ * An icon-only button is square, so it drops the inline padding entirely and
+ * carries a slightly larger glyph. This rule follows the size classes, so its
+ * spinner size wins over theirs.
+ */
+.iconOnly {
+  --btn-spinner-size: 1.1em;
+
+  padding-inline: 0;
+}
+
+.sm.iconOnly {
+  inline-size: 36px;
+}
+
+.md.iconOnly {
+  inline-size: 44px;
+}
+
+.lg.iconOnly {
+  inline-size: 52px;
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+/* ---------- Parts ---------- */
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  min-inline-size: 0;
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/**
+ * Loading with no icon to replace: the spinner hangs in a zero-width slot, so it
+ * adds nothing to the button's width, and the group slides right by half of what
+ * the spinner and its gap occupy. That re-centres spinner and label together
+ * inside the width the button already had at rest.
+ *
+ * The shift and the spinner's own margin read the same two properties, so the
+ * arithmetic cannot drift apart.
+ */
+.shifted {
+  gap: 0;
+  transform: translateX(calc((var(--btn-spinner-size) + var(--btn-spinner-gap)) / 2));
+}
+
+.spinnerSlot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  inline-size: 0;
+}
+
+.spinnerSlot > .spinner {
+  margin-inline-end: var(--btn-spinner-gap);
+}
+
+/**
+ * A fixed box, so swapping the spinner in for the icon moves nothing. Both fill
+ * it exactly, which is what centres them: the grid has one square area and its
+ * single child is the same square, so there is nothing left to offset.
+ */
+.iconSlot {
+  box-sizing: border-box;
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--btn-spinner-size);
+  block-size: var(--btn-spinner-size);
+}
+
+.iconSlot > svg {
+  inline-size: 100%;
+  block-size: 100%;
+  fill: currentcolor;
+}
+
+.label {
+  overflow: hidden;
+  min-inline-size: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * border-box is what keeps the ring honest: the border is drawn inside the
+ * declared size rather than added to it, so the circle is exactly
+ * --btn-spinner-size across and matches the slot it sits in. Sized in content-box
+ * it would render two border widths wider than its slot and lean into the gap.
+ */
+.spinner {
+  box-sizing: border-box;
+  flex: none;
+  inline-size: var(--btn-spinner-size);
+  block-size: var(--btn-spinner-size);
+
+  border: var(--btn-spinner-border) solid color-mix(in srgb, currentcolor, transparent 70%);
+  border-top-color: currentcolor;
+  border-radius: var(--radius-round);
+  animation: spin 700ms linear infinite;
+}
+
+/* Announces the busy state without taking up space. */
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * Reduced motion
+ * It applies only when the user has asked their OS
+ * to minimize animation (macOS "Reduce motion",
+ * Windows "Show animations off", etc.)
+ */
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .content {
+    transition: none;
+  }
+
+  .button:hover:not(:disabled):not([aria-disabled='true']),
+  .button:active:not(:disabled):not([aria-disabled='true']) {
+    transform: none;
+  }
+
+  .spinner {
+    animation-duration: 1600ms;
+  }
+}

@@ -1,0 +1,46 @@
+/**
+ * Spacing tokens, extracted from the design system document
+ * (.storybook/OffsetDesignSystem-new.tsx).
+ *
+ * Two tiers, same rule as the colours: tier 1 --size-* is the raw 4px grid and
+ * is never referenced by a component; tier 2 --space-* is what components use.
+ *
+ * Steps 5, 7, 9, 10 and 11 exist on the grid but are deliberately absent — if a
+ * layout needs one, it usually needs a different component.
+ */
+
+/* ---------- Tier 1 — primitives ---------- */
+
+:root {
+  --size-1: 4px;
+  --size-2: 8px;
+  --size-3: 12px;
+  --size-4: 16px;
+  --size-6: 24px;
+  --size-8: 32px;
+  --size-12: 48px;
+}
+
+/* ---------- Tier 2 — semantic aliases ---------- */
+
+/**
+ * 1 icon gap · 2 label to field · 3 inline group · 4 card padding
+ * 6 block gap · 8 card to card · 12 section
+ */
+:root {
+  --space-1: var(--size-1);
+  --space-2: var(--size-2);
+  --space-3: var(--size-3);
+  --space-4: var(--size-4);
+  --space-6: var(--size-6);
+  --space-8: var(--size-8);
+  --space-12: var(--size-12);
+
+  /* Rhythm between top-level page sections. */
+  --sec-gap: 80px;
+}
+
+/* Compact density tightens section rhythm without touching a component. */
+[data-density='compact'] {
+  --sec-gap: 48px;
+}
