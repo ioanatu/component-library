@@ -17,7 +17,7 @@ const CSS = `
 .offset-docs{
   /* ---------- LIGHT THEME TOKENS ---------- */
   --page:#F7F5F5; --surface:#FFFFFF; --ink:#1A1A1A; --accent:#3367F6; --on-accent:#FFFFFF;
-  --danger:#F5453B; --success:#1FA971; --muted:#A1A1AA; --muted-surface:#ECECEC; --field-tint:#FBFBFA;
+  --danger:#D63F38; --success:#1FA971; --muted:#A1A1AA; --muted-surface:#ECECEC; --field-tint:#FBFBFA;
   --code-bg:#16161A; --code-fg:#EDEDEA; --code-blue:#9DB2FF; --code-green:#7FD1A8; --code-dim:#7A7A85;
 
   --border-w:2px; --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-full:999px;
@@ -526,7 +526,7 @@ export default function Welcome() {
             <Swatch name="--surface" light="#FFFFFF" dark="#1D1D21" isDark={isDark} />
             <Swatch name="--ink" light="#1A1A1A" dark="#F2F2F0" isDark={isDark} />
             <Swatch name="--accent" light="#3367F6" dark="#5B82FF" isDark={isDark} />
-            <Swatch name="--danger" light="#F5453B" dark="#FF6B61" isDark={isDark} />
+            <Swatch name="--danger" light="#D63F38" dark="#FF6B61" isDark={isDark} />
             <Swatch name="--success" light="#1FA971" dark="#3DD68C" isDark={isDark} />
           </div>
           <div className="grid grid-2">

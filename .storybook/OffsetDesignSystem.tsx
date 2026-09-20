@@ -28,7 +28,7 @@ const TOKENS_CSS = `
   --blue-50:#EDF2FE;  --blue-500:#3367F6; --blue-700:#1A3FA8;
   --green-50:#E8F8F1; --green-500:#1FA971; --green-700:#158257;
   --amber-50:#FEF5E7; --amber-500:#E8960C; --amber-700:#B87508;
-  --red-50:#FEEDEC;   --red-500:#F5453B;   --red-700:#D22C23;
+  --red-50:#FEEDEC;   --red-500:#D63F38;   --red-700:#D22C23;
 
   --size-1:4px;  --size-2:8px;  --size-3:12px; --size-4:16px;
   --size-6:24px; --size-8:32px; --size-12:48px;
@@ -1391,7 +1391,7 @@ export function Toolbar() {
                 ],
                 [
                   'Danger · red',
-                  ['#FEEDEC', '#F5453B', '#D22C23'],
+                  ['#FEEDEC', '#D63F38', '#D22C23'],
                   'Destructive, error, invalid',
                   false,
                 ],

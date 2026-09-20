@@ -3,12 +3,6 @@
   --btn-radius: 12px;
   --btn-gap: var(--space-2);
 
-  /**
-   * The spinner and the icon share one box. Size and border weight are declared
-   * here so the slot and the ring inside it can never disagree; --btn-spinner-gap
-   * is the distance from the spinner to the label when there is no icon, and is
-   * read both by that spinner's margin and by the shift that re-centres the pair.
-   */
   --btn-spinner-size: 1em;
   --btn-spinner-border: 2.5px;
   --btn-spinner-gap: var(--btn-gap);
@@ -75,10 +69,6 @@
   outline-offset: 2px;
 }
 
-/**
- * Busy is excluded here: a loading button keeps its variant colours, because it
- * is reporting work in progress rather than refusing input.
- */
 .button:disabled,
 .button[aria-disabled='true']:not([aria-busy='true']) {
   background-color: var(--sunken);
@@ -94,10 +84,6 @@
 
 /* ---------- Variants ---------- */
 
-/**
- * The shadow rule: a neutral surface casts an accent shadow, an accent or tonal
- * fill casts an ink one.
- */
 .primary {
   --btn-surface: var(--accent);
   --btn-ink: var(--on-accent);
@@ -116,16 +102,6 @@
   --btn-shadow: var(--ink);
 }
 
-/**
- * Ghost carries no border and no shadow, so there is no offset for it to travel
- * into: the surface reports both states instead. Hover lifts it onto --sunken and
- * the press goes one step deeper still, which is the move a flat Card and a Chip
- * already make for the same reason.
- *
- * Deriving that step by mixing --sunken towards --ink keeps it tied to whatever
- * the theme sets: it darkens in light mode and lightens in dark, which is the
- * direction a surface travels as it comes forward in each.
- */
 .ghost {
   --btn-surface: transparent;
   --btn-ink: var(--ink);
@@ -140,17 +116,16 @@
   box-shadow: none;
   transform: none;
 }
-
-/**
- * The travel stays at zero: the press rule is that an element moves exactly its
- * own offset distance, and ghost's is none, so the deeper surface carries the
- * whole press. Equal specificity to the base :active rule, and later in the file,
- * so it wins without !important.
- */
 .ghost:active:not(:disabled):not([aria-disabled='true']) {
   background-color: var(--btn-active-surface);
   box-shadow: none;
   transform: none;
+}
+.ghost:disabled,
+.ghost[aria-disabled='true']:not([aria-busy='true']) {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--ink-subtle);
 }
 
 /* ---------- Sizes ---------- */
@@ -189,11 +164,6 @@
   font-size: 18px;
 }
 
-/**
- * An icon-only button is square, so it drops the inline padding entirely and
- * carries a slightly larger glyph. This rule follows the size classes, so its
- * spinner size wins over theirs.
- */
 .iconOnly {
   --btn-spinner-size: 1.1em;
 
@@ -277,11 +247,6 @@
   margin-inline-end: var(--btn-spinner-gap);
 }
 
-/**
- * A fixed box, so swapping the spinner in for the icon moves nothing. Both fill
- * it exactly, which is what centres them: the grid has one square area and its
- * single child is the same square, so there is nothing left to offset.
- */
 .iconSlot {
   box-sizing: border-box;
   display: grid;
@@ -304,12 +269,6 @@
   white-space: nowrap;
 }
 
-/**
- * border-box is what keeps the ring honest: the border is drawn inside the
- * declared size rather than added to it, so the circle is exactly
- * --btn-spinner-size across and matches the slot it sits in. Sized in content-box
- * it would render two border widths wider than its slot and lean into the gap.
- */
 .spinner {
   box-sizing: border-box;
   flex: none;
