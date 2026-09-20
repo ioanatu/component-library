@@ -5,37 +5,6 @@
  * '../Typography.module.css'`. Nothing here is imported by app code directly.
  * ------------------------------------------------------------------ */
 
-/* Self-hosted variable fonts. Drop the four .woff2 files in ./fonts/.
-   Using the CDN instead? Delete these blocks and add to the document head:
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:ital,wght@0,400..700;1,400..700&display=swap"> */
-@font-face {
-  src: url('./fonts/HankenGrotesk-Variable.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Hanken Grotesk';
-  src: url('./fonts/HankenGrotesk-Italic-Variable.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('./fonts/JetBrainsMono-Variable.woff2') format('woff2-variations');
-  font-weight: 100 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('./fonts/JetBrainsMono-Italic-Variable.woff2') format('woff2-variations');
-  font-weight: 100 800;
-  font-style: italic;
-  font-display: swap;
-}
-
 :root {
   /* Families — two, with strictly separated jobs.
      sans: all human language.  mono: anything a machine wrote or will read. */
@@ -92,11 +61,16 @@
   --lh-sm: 1.5;
 }
 
+/**
+ * The family comes from --font-sans so that Eyebrow, Code and Body's mono
+ * variant can switch to --font-mono. A hard-coded `font-family: 'Hanken Grotesk'
+ * !important` here overrides all three, which is what made mono text render in
+ * the sans face wherever it appeared.
+ */
 .typography {
   margin: 0;
   font-family: var(--font-sans);
   color: var(--ink);
-  font-family: 'Hanken Grotesk' !important;
 }
 
 .default {

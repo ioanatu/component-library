@@ -10,6 +10,7 @@ import React, {
   useState,
 } from 'react';
 import { ButtonNew } from '../src/ButtonNew/ButtonNew';
+import { Body, Display, Eyebrow as TypeEyebrow, Headline } from '../src/atoms/Typography';
 
 /* ------------------------------------------------------------------ *
  * Tokens
@@ -993,17 +994,9 @@ const PRINCIPLES: [string, string, string][] = [
 const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string }[] = [
   {
     sample: (
-      <p
-        style={{
-          margin: 0,
-          fontSize: 56,
-          lineHeight: 1.02,
-          fontWeight: 700,
-          letterSpacing: '-0.03em',
-        }}
-      >
+      <Display level={2} as="p">
         Display
-      </p>
+      </Display>
     ),
     token: '--fs-4xl',
     spec: '56 / 57 · 700 · -3%',
@@ -1011,17 +1004,9 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
   },
   {
     sample: (
-      <p
-        style={{
-          margin: 0,
-          fontSize: 40,
-          lineHeight: 1.1,
-          fontWeight: 600,
-          letterSpacing: '-0.025em',
-        }}
-      >
+      <Headline level={1} as="p">
         Page title
-      </p>
+      </Headline>
     ),
     token: '--fs-3xl',
     spec: '40 / 44 · 600 · -2.5%',
@@ -1029,17 +1014,9 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
   },
   {
     sample: (
-      <p
-        style={{
-          margin: 0,
-          fontSize: 30,
-          lineHeight: 1.2,
-          fontWeight: 600,
-          letterSpacing: '-0.02em',
-        }}
-      >
+      <Headline level={2} as="p">
         Section heading
-      </p>
+      </Headline>
     ),
     token: '--fs-2xl',
     spec: '30 / 36 · 600 · -2%',
@@ -1047,9 +1024,9 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
   },
   {
     sample: (
-      <p style={{ margin: 0, fontSize: 22, lineHeight: 1.3, fontWeight: 600 }}>
+      <Headline level={3} as="p">
         Card &amp; dialog title
-      </p>
+      </Headline>
     ),
     token: '--fs-xl',
     spec: '22 / 29 · 600 · 0',
@@ -1057,10 +1034,10 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
   },
   {
     sample: (
-      <p style={{ margin: 0, fontSize: 18, lineHeight: 1.55, color: 'var(--ink-muted)' }}>
+      <Body level={1} tone="muted">
         Lead paragraph — the one sentence that explains the screen before anyone reads the rest of
         it.
-      </p>
+      </Body>
     ),
     token: '--fs-lg',
     spec: '18 / 28 · 400',
@@ -1068,10 +1045,10 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
   },
   {
     sample: (
-      <p style={{ margin: 0, fontSize: 16, lineHeight: 1.7 }}>
+      <Body level={2}>
         Body. The default for all running text; 1.7 line height and a 72–76 character measure keep
         long passages readable at this weight.
-      </p>
+      </Body>
     ),
     token: '--fs-md',
     spec: '16 / 27 · 400',
@@ -1079,21 +1056,17 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
   },
   {
     sample: (
-      <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--ink-muted)' }}>
+      <Body level={3} tone="muted">
         Small — helper text, table cells, card body, captions. The floor for any sentence a user
         must read.
-      </p>
+      </Body>
     ),
     token: '--fs-sm',
     spec: '14 / 22 · 400',
     use: 'Minimum for prose',
   },
   {
-    sample: (
-      <p style={{ margin: 0, ...mono(12), letterSpacing: '.14em', textTransform: 'uppercase' }}>
-        Eyebrow &amp; code label
-      </p>
-    ),
+    sample: <TypeEyebrow>Eyebrow &amp; code label</TypeEyebrow>,
     token: '--fs-xs',
     spec: '12 / 16 · 500 · +14%',
     use: 'Mono, uppercase, never a sentence',
@@ -1642,7 +1615,7 @@ export function Toolbar() {
             title="Typography"
             lead={
               <>
-                Two families with strictly separated jobs.{' '}
+                Two families with separated jobs.{' '}
                 <strong style={{ color: 'var(--ink)' }}>Hanken Grotesk</strong> carries all human
                 language. <strong style={{ color: 'var(--ink)' }}>JetBrains Mono</strong> carries
                 anything a machine produced or a machine will read: code, tokens, keys, IDs, eyebrow
@@ -1675,14 +1648,17 @@ export function Toolbar() {
                     style={{
                       padding: '16px 22px',
                       borderLeft: '1px solid var(--border-subtle)',
-                      ...mono(11.5),
-                      lineHeight: 1.9,
-                      color: 'var(--ink-muted)',
                     }}
                   >
-                    <p style={{ margin: 0, color: 'var(--ink)' }}>{row.token}</p>
-                    <p style={{ margin: 0 }}>{row.spec}</p>
-                    <p style={{ margin: 0 }}>{row.use}</p>
+                    <Body level={3} mono>
+                      {row.token}
+                    </Body>
+                    <Body level={3} mono tone="muted">
+                      {row.spec}
+                    </Body>
+                    <Body level={3} mono tone="muted">
+                      {row.use}
+                    </Body>
                   </div>
                 </div>
               ))}
