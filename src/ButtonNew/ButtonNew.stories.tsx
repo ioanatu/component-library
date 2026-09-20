@@ -5,34 +5,6 @@ import { buttonNewVariants, elevations, sizes } from '../types';
 import type { ButtonNewElementProps, ButtonNewProps } from './ButtonNew';
 import { ButtonNew } from './ButtonNew';
 
-/**
- *
- * CTA button following the OFFSET design system: a 2px ink border, a hard offset
- * shadow, and one primary action per view.
- *
- * Intent selects the variant and the variant selects the colour, so there is no
- * `color` prop. Every colour and every gap comes from a token.
- *
- *
- * Import
- * ---
- *
- * `import { ButtonNew } from '@ioanatu/component-library';`
- *
- * Usage
- * ---
- *
- * ** Simplest example: **
- *
- * `<ButtonNew onClick={onClick}>Click me</ButtonNew>`
- *
- *
- * ** All props example: **
- *
- * `<ButtonNew variant="secondary" size="lg" type="submit" icon={<PlusIcon />} onClick={onClick} fullWidth loading>Click me</ButtonNew>`
- *
- */
-
 const sizesText = ['Small', 'Medium', 'Large'] as const;
 
 const PlusIcon = () => (
@@ -55,15 +27,56 @@ const Row = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-/**
- * Storybook renders one flat control table, so the union is widened for stories:
- * href sits alongside the button props and each render casts back to ButtonNewProps.
- */
 type ButtonNewStoryArgs = Omit<ButtonNewElementProps, 'href'> & {
   href?: string;
   children?: ReactNode;
   icon?: ReactNode;
 };
+
+/**
+ * CTA button following the OFFSET design system: a 2px ink border, a hard offset
+ * shadow, and one primary action per view.
+ *
+ * Intent selects the variant and the variant selects the colour, so there is no
+ * `color` prop. Every colour and every gap comes from a token.
+ *
+ * - **Press** — the face travels its own offset distance and lands flush in its
+ *   shadow. `elevation` sets that distance: sm 2px, md 4px, lg 8px.
+ * - **Ghost** — no border and no shadow, so surface and ink carry every state.
+ *   Disabled steps down to the label alone rather than gaining a fill.
+ * - **Loading** — the width never changes. The spinner takes the icon's slot, or
+ *   hangs in a zero-width one and re-centres with the label.
+ * - **Busy, not disabled** — loading sets `aria-busy` and `aria-disabled`, so
+ *   focus survives the work instead of being dropped mid-task.
+ * - **Icon-only** — drop the children and it turns square; the type then requires
+ *   an `aria-label`.
+ * - **Link** — `href` renders an anchor. Disabled keeps it focusable and blocks
+ *   both click and Enter.
+ *
+ *
+ * Import
+ * ---
+ *
+ * `import { ButtonNew } from '@ioanatu/component-library';`
+ *
+ * Usage
+ * ---
+ *
+ * ** Simplest example: **
+ *
+ * `<ButtonNew onClick={onClick}>Click me</ButtonNew>`
+ *
+ *
+ * ** All props example: **
+ *
+ * `<ButtonNew variant="secondary" size="lg" elevation="lg" type="submit" icon={<PlusIcon />} onClick={onClick} fullWidth loading>Click me</ButtonNew>`
+ *
+ */
+
+/**
+ * Storybook renders one flat control table, so the union is widened for stories:
+ * href sits alongside the button props and each render casts back to ButtonNewProps.
+ */
 
 const meta: Meta<ButtonNewStoryArgs> = {
   title: 'Molecules/ButtonNew',
@@ -81,7 +94,7 @@ const meta: Meta<ButtonNewStoryArgs> = {
   },
   args: {
     children: 'Click here',
-    onClick: fn(),
+    onClick: () => window.alert('Button clicked!'),
     variant: 'primary',
     size: 'md',
     disabled: false,
@@ -98,6 +111,10 @@ type Story = StoryObj<typeof meta>;
  * an accent shadow, an accent or tonal fill casts an ink one.
  */
 export const Variants: Story = {
+  args: {
+    elevation: 'md',
+  },
+
   argTypes: {
     variant: { control: false, table: { disable: true } },
     children: { control: false, table: { disable: true } },
@@ -105,7 +122,9 @@ export const Variants: Story = {
     loadingLabel: { control: false, table: { disable: true } },
     type: { control: false, table: { disable: true } },
     icon: { control: false, table: { disable: true } },
+    href: { control: false, table: { disable: true } },
   },
+
   render: (args) => (
     <Row>
       <ButtonNew {...(args as ButtonNewProps)} variant="primary">
@@ -192,7 +211,12 @@ export const Elevation: Story = {
     href: { control: false, table: { disable: true } },
   },
   render: (args) => (
-    <div style={{ display: 'grid', gap: '18px', justifyItems: 'start' }}>
+    <div
+      style={{
+        display: 'grid',
+        gap: '18px',
+      }}
+    >
       <Row>
         {elevations.map((elevation) => (
           <ButtonNew
@@ -201,7 +225,7 @@ export const Elevation: Story = {
             variant="secondary"
             elevation={elevation}
           >
-            {`Neutral · ${elevation}`}
+            {`Neutral - ${elevation}`}
           </ButtonNew>
         ))}
       </Row>
@@ -213,10 +237,60 @@ export const Elevation: Story = {
             variant="primary"
             elevation={elevation}
           >
-            {`Accent · ${elevation}`}
+            {`Accent - ${elevation}`}
           </ButtonNew>
         ))}
       </Row>
+      <Row>
+        {elevations.map((elevation) => (
+          <ButtonNew
+            key={elevation}
+            {...(args as ButtonNewProps)}
+            variant="destructive"
+            elevation={elevation}
+          >
+            {`Destructive - ${elevation}`}
+          </ButtonNew>
+        ))}
+      </Row>
+    </div>
+  ),
+};
+
+/**
+ * Each pair is one variant at rest and disabled.
+ *
+ * Disabled drops the offset shadow and takes border and ink down to their subtle
+ * step, so the control reads as inert without changing size or moving anything
+ * around it.
+ *
+ * Ghost is the exception. The shared treatment would hand it a fill and a border
+ * it does not carry at rest, which makes the disabled state louder than the live
+ * one, so it steps down instead: the label alone, in the faintest ink.
+ */
+export const Disabled: Story = {
+  argTypes: {
+    variant: { control: false, table: { disable: true } },
+    disabled: { control: false, table: { disable: true } },
+    children: { control: false, table: { disable: true } },
+    onClick: { control: false, table: { disable: true } },
+    loadingLabel: { control: false, table: { disable: true } },
+    type: { control: false, table: { disable: true } },
+    icon: { control: false, table: { disable: true } },
+    href: { control: false, table: { disable: true } },
+  },
+  render: (args) => (
+    <div style={{ display: 'grid', gap: '18px', justifyItems: 'start' }}>
+      {buttonNewVariants.map((variant) => (
+        <Row key={variant}>
+          <ButtonNew {...(args as ButtonNewProps)} variant={variant}>
+            {variant}
+          </ButtonNew>
+          <ButtonNew {...(args as ButtonNewProps)} variant={variant} disabled>
+            {variant}
+          </ButtonNew>
+        </Row>
+      ))}
     </div>
   ),
 };
@@ -297,13 +371,14 @@ export const Loading: Story = {
 export const IconOnly: Story = {
   args: { children: undefined },
   argTypes: {
-    loading: { control: false, table: { disable: true } },
     children: { control: false, table: { disable: true } },
     onClick: { control: false, table: { disable: true } },
     loadingLabel: { control: false, table: { disable: true } },
     type: { control: false, table: { disable: true } },
     icon: { control: false, table: { disable: true } },
     href: { control: false, table: { disable: true } },
+    elevation: { control: false, table: { disable: true } },
+    fullWidth: { control: false, table: { disable: true } },
   },
 
   render: (args) => (
@@ -319,9 +394,27 @@ export const IconOnly: Story = {
         <p></p>
       </Row>
       <Row>
-        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" {...(args as ButtonNewProps)} />
-        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" {...(args as ButtonNewProps)} />
-        <ButtonNew size="sm" icon={<PlusIcon />} aria-label="Add" {...(args as ButtonNewProps)} />
+        <ButtonNew
+          size="sm"
+          icon={<PlusIcon />}
+          aria-label="Add"
+          {...(args as ButtonNewProps)}
+          elevation="sm"
+        />
+        <ButtonNew
+          size="sm"
+          icon={<PlusIcon />}
+          aria-label="Add"
+          {...(args as ButtonNewProps)}
+          elevation="md"
+        />
+        <ButtonNew
+          size="sm"
+          icon={<PlusIcon />}
+          aria-label="Add"
+          {...(args as ButtonNewProps)}
+          elevation="lg"
+        />
       </Row>
     </>
   ),
