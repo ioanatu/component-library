@@ -3,10 +3,16 @@ import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
 import styles from './Headline.module.css';
 
-export type HeadlineLevel = 1 | 2 | 3;
+export type HeadlineLevel = 1 | 2 | 3 | 4 | 5;
 
 export interface HeadlineProps extends BaseTypographyProps {
-  /** 1 — page title (40). 2 — section heading (30). 3 — card/dialog title (22). */
+  /**
+   * 1 — page title (40). 2 — section heading (30). 3 — card/dialog title (22).
+   * 4 — subsection title (18). 5 — dense card and panel title (16).
+   *
+   * 4 and 5 share their steps with Body 1 and 2 but keep the heading's semibold
+   * weight and tight leading, so they read as titles rather than running text.
+   */
   level?: HeadlineLevel;
   /** Hairline rule beneath the heading. */
   ruled?: boolean;

@@ -12,7 +12,7 @@
   font-size: var(--fs-sm);
 }
 .level2 {
-  font-size: 0.8125rem; /* 13 — inside dense tables */
+  font-size: 12.5px;
 }
 
 .inline {

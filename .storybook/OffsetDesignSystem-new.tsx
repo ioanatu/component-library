@@ -10,7 +10,7 @@ import React, {
   useState,
 } from 'react';
 import { ButtonNew } from '../src/ButtonNew/ButtonNew';
-import { Body, Display, Eyebrow as TypeEyebrow, Headline } from '../src/atoms/Typography';
+import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '../src/atoms/Typography';
 
 /* ------------------------------------------------------------------ *
  * Tokens
@@ -18,9 +18,6 @@ import { Body, Display, Eyebrow as TypeEyebrow, Headline } from '../src/atoms/Ty
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
-
-const FONT_SANS = "'Hanken Grotesk', system-ui, sans-serif";
-const FONT_MONO = "'JetBrains Mono', ui-monospace, monospace";
 
 const TOKENS_CSS = `
 /* Colour lives in src/styles/colors.css now — both tiers, the dark theme and the
@@ -46,7 +43,7 @@ const TOKENS_CSS = `
 [data-density="compact"] { --sec-gap:48px; }
 
 .offset-root *, .offset-root *::before, .offset-root *::after { box-sizing:border-box; }
-.offset-root { background:var(--page); color:var(--ink); font-family:${FONT_SANS}; -webkit-font-smoothing:antialiased; }
+.offset-root { background:var(--page); color:var(--ink); font-family:var(--font-sans); -webkit-font-smoothing:antialiased; }
 .offset-root a { color:var(--accent); text-decoration:none; }
 .offset-root a:hover { color:var(--accent-strong); text-decoration:underline; }
 .offset-root :focus-visible { outline:var(--bw-thick) solid var(--accent); outline-offset:2px; border-radius:2px; }
@@ -79,21 +76,6 @@ const TOKENS_CSS = `
  * Primitives
  * ------------------------------------------------------------------ */
 
-const mono = (size = 12): CSSProperties => ({ fontFamily: FONT_MONO, fontSize: size });
-
-const eyebrowStyle: CSSProperties = {
-  margin: 0,
-  fontFamily: FONT_MONO,
-  fontSize: 11,
-  letterSpacing: '.1em',
-  textTransform: 'uppercase',
-  color: 'var(--ink-subtle)',
-};
-
-const Eyebrow = ({ children, style }: { children: ReactNode; style?: CSSProperties }) => (
-  <p style={{ ...eyebrowStyle, ...style }}>{children}</p>
-);
-
 /** Bordered surface with the offset shadow. Neutral fill → accent shadow. */
 const Card = ({
   children,
@@ -121,35 +103,27 @@ const Card = ({
   </div>
 );
 
-const Code = ({ children }: { children: ReactNode }) => (
-  <code
-    style={{
-      ...mono(12.5),
-      padding: '1px 5px',
-      border: '1px solid var(--border-subtle)',
-      borderRadius: 5,
-      background: 'var(--sunken)',
-    }}
-  >
-    {children}
-  </code>
-);
-
+/**
+ * Code samples. The dark form is the library's block treatment; the light form
+ * strips the inverted surface back to plain muted text for inline token lists.
+ */
 const Pre = ({ children, dark = true }: { children: ReactNode; dark?: boolean }) => (
-  <pre
-    style={{
-      ...mono(12.5),
-      lineHeight: 1.8,
-      background: dark ? 'var(--code-bg)' : 'transparent',
-      color: dark ? 'var(--code-ink)' : 'var(--ink-muted)',
-      borderRadius: 'var(--r-md)',
-      padding: dark ? 20 : 0,
-      overflowX: 'auto',
-      whiteSpace: 'pre-wrap',
-    }}
+  <Code
+    block
+    level={2}
+    style={
+      dark
+        ? { borderRadius: 'var(--r-md)' }
+        : {
+            padding: 0,
+            border: 'none',
+            background: 'transparent',
+            color: 'var(--ink-muted)',
+          }
+    }
   >
     {children}
-  </pre>
+  </Code>
 );
 
 const Tag = ({
@@ -161,9 +135,10 @@ const Tag = ({
 }) => {
   const color = tone === 'muted' ? 'var(--ink-subtle)' : `var(--${tone})`;
   return (
-    <span
+    <Eyebrow
+      as="span"
+      level={2}
       style={{
-        ...mono(10.5),
         padding: '3px 9px',
         border: `var(--bw) solid ${color}`,
         borderRadius: 'var(--r-full)',
@@ -172,7 +147,7 @@ const Tag = ({
       }}
     >
       {children}
-    </span>
+    </Eyebrow>
   );
 };
 
@@ -192,43 +167,17 @@ const Section = ({
   last?: boolean;
 }) => (
   <section id={id} style={{ paddingBottom: last ? 44 : 'var(--sec-gap)' }}>
-    {eyebrow ? (
-      <p
-        style={{
-          margin: '0 0 6px',
-          fontFamily: FONT_MONO,
-          fontSize: 12,
-          letterSpacing: '.14em',
-          textTransform: 'uppercase',
-          color: 'var(--ink-muted)',
-        }}
-      >
-        {eyebrow}
-      </p>
-    ) : null}
+    {eyebrow ? <Eyebrow style={{ marginBottom: 6 }}>{eyebrow}</Eyebrow> : null}
+    {/* `ruled` draws the hairline the standalone <hr> used to. */}
     {title ? (
-      <h2 style={{ margin: '0 0 10px', fontSize: 32, fontWeight: 600, letterSpacing: '-0.02em' }}>
+      <Headline level={2} ruled style={{ marginBottom: 24 }}>
         {title}
-      </h2>
-    ) : null}
-    {title ? (
-      <hr
-        style={{ margin: '0 0 24px', border: 'none', borderTop: '1px solid var(--border-subtle)' }}
-      />
+      </Headline>
     ) : null}
     {lead ? (
-      <p
-        style={{
-          margin: '0 0 22px',
-          fontSize: 16,
-          lineHeight: 1.7,
-          color: 'var(--ink-muted)',
-          maxWidth: '76ch',
-          textWrap: 'pretty' as CSSProperties['textWrap'],
-        }}
-      >
+      <Body level={2} tone="muted" style={{ marginBottom: 22 }}>
         {lead}
-      </p>
+      </Body>
     ) : null}
     {children}
   </section>
@@ -248,26 +197,18 @@ const SubSection = ({
   children: ReactNode;
 }) => (
   <section id={id} style={{ paddingBottom: 'var(--sec-gap)' }}>
-    <h3 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 600 }}>
+    <Headline level={3} style={{ marginBottom: 4 }}>
       {title}
       {badge ? (
         <span style={{ marginLeft: 8, verticalAlign: 'middle' }}>
           <Tag>{badge}</Tag>
         </span>
       ) : null}
-    </h3>
+    </Headline>
     {lead ? (
-      <p
-        style={{
-          margin: '0 0 22px',
-          fontSize: 15,
-          lineHeight: 1.65,
-          color: 'var(--ink-muted)',
-          maxWidth: '72ch',
-        }}
-      >
+      <Body level={2} tone="muted" style={{ marginBottom: 22 }}>
         {lead}
-      </p>
+      </Body>
     ) : null}
     {children}
   </section>
@@ -343,45 +284,25 @@ export const Field = ({
   children,
 }: FieldProps) => (
   <div>
-    <label
-      htmlFor={htmlFor}
-      style={{
-        display: 'block',
-        marginBottom: 8,
-        fontSize: 13.5,
-        fontWeight: 600,
-        color: disabled ? 'var(--ink-subtle)' : 'var(--ink)',
-      }}
-    >
+    <Label htmlFor={htmlFor} required={required} disabled={disabled}>
       {label}
-      {required ? <span style={{ color: 'var(--danger)' }}> *</span> : null}
-    </label>
+    </Label>
     {children}
     {error ? (
-      <p
-        id={`${htmlFor}-msg`}
-        style={{
-          margin: '7px 0 0',
-          fontSize: 12.5,
-          fontWeight: 500,
-          color: 'var(--danger)',
-          display: 'flex',
-          gap: 6,
-        }}
-      >
+      <Caption id={`${htmlFor}-msg`} error style={{ marginTop: 7, display: 'flex', gap: 6 }}>
         <span aria-hidden="true">⚠</span>
         {error}
-      </p>
+      </Caption>
     ) : helper ? (
-      <p style={{ margin: '7px 0 0', fontSize: 12.5, color: 'var(--ink-muted)' }}>{helper}</p>
+      <Caption style={{ marginTop: 7 }}>{helper}</Caption>
     ) : null}
   </div>
 );
 
 const inputStyle = (state?: 'error' | 'disabled'): CSSProperties => ({
   width: '100%',
-  fontFamily: FONT_SANS,
-  fontSize: 15,
+  fontFamily: 'var(--font-sans)',
+  fontSize: 'var(--fs-md)',
   padding: '11px 14px',
   border: `var(--bw) solid ${state === 'error' ? 'var(--danger)' : state === 'disabled' ? 'var(--ink-subtle)' : 'var(--ink)'}`,
   borderRadius: 'var(--r-sm)',
@@ -441,11 +362,13 @@ export const Alert = ({
       {TONE_ICON[tone]}
     </span>
     <div style={{ minWidth: 0 }}>
-      <p style={{ margin: '0 0 3px', fontSize: 14.5, fontWeight: 600 }}>{title}</p>
+      <Body level={3} weight="semibold" style={{ marginBottom: 3 }}>
+        {title}
+      </Body>
       {children ? (
-        <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: 'var(--ink-muted)' }}>
+        <Body level={3} tone="muted">
           {children}
-        </p>
+        </Body>
       ) : null}
     </div>
     {action ? <div style={{ marginLeft: 'auto', flex: 'none' }}>{action}</div> : null}
@@ -463,11 +386,13 @@ export const Badge = ({
 }) => {
   const neutral = tone === 'neutral';
   return (
-    <span
+    <Body
+      as="span"
+      level={3}
+      mono
+      weight="medium"
       style={{
-        ...mono(11.5),
-        fontWeight: 500,
-        padding: '5px 12px',
+        padding: '4px 12px',
         border: `var(--bw) solid ${neutral ? 'var(--ink-subtle)' : 'var(--ink)'}`,
         borderRadius: 'var(--r-full)',
         background: solid ? 'var(--accent)' : neutral ? 'var(--sunken)' : TONE_WASH[tone as Tone],
@@ -476,7 +401,7 @@ export const Badge = ({
       }}
     >
       {children}
-    </span>
+    </Body>
   );
 };
 
@@ -535,12 +460,15 @@ const DataTable = <T,>({
             }}
           >
             {columns.map((c) => (
-              <p
+              <Body
                 key={c.key}
-                style={{ margin: 0, padding: '11px 18px', fontSize: 12.5, fontWeight: 600 }}
+                level={3}
+                weight="semibold"
+                tone="inherit"
+                style={{ padding: '11px 18px' }}
               >
                 {c.label}
-              </p>
+              </Body>
             ))}
           </div>
           {rows.map((row, i) => (
@@ -576,18 +504,14 @@ const SpecTable = ({ title, rows }: { title: string; rows: [string, ReactNode][]
       boxShadow: '4px 4px 0 var(--accent)',
     }}
   >
-    <p
-      style={{
-        margin: 0,
-        padding: '12px 16px',
-        background: 'var(--ink)',
-        color: 'var(--surface)',
-        fontSize: 13,
-        fontWeight: 600,
-      }}
+    <Body
+      level={3}
+      weight="semibold"
+      tone="inherit"
+      style={{ padding: '12px 16px', background: 'var(--ink)', color: 'var(--surface)' }}
     >
       {title}
-    </p>
+    </Body>
     <div style={{ background: 'var(--surface)' }}>
       {rows.map(([k, v], i) => (
         <div
@@ -598,10 +522,12 @@ const SpecTable = ({ title, rows }: { title: string; rows: [string, ReactNode][]
             borderTop: i === 0 ? 'var(--bw) solid var(--ink)' : '1px solid var(--border-subtle)',
           }}
         >
-          <p style={{ margin: 0, padding: '9px 16px', ...mono(12) }}>{k}</p>
-          <p style={{ margin: 0, padding: '9px 16px', fontSize: 13, color: 'var(--ink-muted)' }}>
+          <Body level={3} mono style={{ padding: '9px 16px' }}>
+            {k}
+          </Body>
+          <Body level={3} tone="muted" style={{ padding: '9px 16px' }}>
             {v}
-          </p>
+          </Body>
         </div>
       ))}
     </div>
@@ -817,30 +743,41 @@ const Header = () => (
           style={{ width: 12, height: 10, border: '2px solid var(--on-accent)', borderRadius: 2 }}
         />
       </div>
-      <span style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-0.01em' }}>OFFSET</span>
-      <span
+      <Body as="span" level={1} weight="bold">
+        OFFSET
+      </Body>
+      <Body
+        as="span"
+        level={3}
+        mono
+        tone="muted"
         style={{
-          ...mono(11),
           padding: '2px 8px',
           border: 'var(--bw) solid var(--ink)',
           borderRadius: 'var(--r-full)',
-          color: 'var(--ink-muted)',
         }}
       >
         v2.0.0
-      </span>
+      </Body>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-      <nav style={{ display: 'flex', gap: 22, fontSize: 14, fontWeight: 500 }}>
+      <nav style={{ display: 'flex', gap: 22 }}>
         {[
           ['#foundations', 'Foundations'],
           ['#components', 'Components'],
           ['#guidelines', 'Guidelines'],
           ['#governance', 'Governance'],
         ].map(([href, label]) => (
-          <a key={href} href={href} style={{ color: 'var(--ink-muted)' }}>
+          <Body
+            key={href}
+            as="a"
+            href={href}
+            level={3}
+            weight="medium"
+            style={{ color: 'var(--ink-muted)' }}
+          >
             {label}
-          </a>
+          </Body>
         ))}
       </nav>
       <AccentPicker />
@@ -851,59 +788,31 @@ const Header = () => (
 
 const Hero = () => (
   <section id="top" style={{ padding: '64px 0 40px' }}>
-    <p
-      style={{
-        margin: '0 0 18px',
-        fontFamily: FONT_MONO,
-        fontSize: 12,
-        letterSpacing: '.14em',
-        textTransform: 'uppercase',
-        color: 'var(--ink-muted)',
-      }}
-    >
-      React · TypeScript · Design System
-    </p>
+    <Eyebrow style={{ marginBottom: 18 }}>React · TypeScript · Design System</Eyebrow>
     <Grid min={280} gap={40} style={{ alignItems: 'start' }}>
       <div>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 'clamp(44px,7vw,76px)',
-            lineHeight: 0.98,
-            fontWeight: 700,
-            letterSpacing: '-0.03em',
-          }}
-        >
-          OFFSET
-        </h1>
-        <p
-          style={{
-            margin: '20px 0 0',
-            fontSize: 19,
-            lineHeight: 1.55,
-            color: 'var(--ink-muted)',
-            maxWidth: '44ch',
-            textWrap: 'pretty' as CSSProperties['textWrap'],
-          }}
-        >
+        <Display level={1}>OFFSET</Display>
+        <Body level={1} tone="muted" style={{ marginTop: 20 }}>
           A neo-brutalist component library built on one idea: a bold border and a hard,
           unapologetic offset shadow. Two-tier tokens, one-attribute theming, WCAG 2.1 AA from the
           first commit.
-        </p>
+        </Body>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
           {['React 19', 'TypeScript', 'WCAG 2.1 AA', 'Zero-runtime CSS vars', '32 components'].map(
             (t) => (
-              <span
+              <Body
                 key={t}
+                as="span"
+                level={3}
+                mono
                 style={{
-                  ...mono(12),
                   padding: '6px 14px',
                   border: 'var(--bw) solid var(--ink)',
                   borderRadius: 'var(--r-full)',
                 }}
               >
                 {t}
-              </span>
+              </Body>
             ),
           )}
         </div>
@@ -919,15 +828,7 @@ const Hero = () => (
       <div style={{ display: 'grid', gap: 14 }}>
         <Card pad={20}>
           <Eyebrow style={{ marginBottom: 10 }}>What changed in v2</Eyebrow>
-          <ul
-            style={{
-              margin: 0,
-              paddingLeft: 18,
-              fontSize: 14,
-              lineHeight: 1.75,
-              color: 'var(--ink-muted)',
-            }}
-          >
+          <Body as="ul" level={3} tone="muted" style={{ paddingLeft: 18 }}>
             <li>
               <strong style={{ color: 'var(--ink)' }}>Two-tier tokens</strong> — primitives are now
               separate from semantic aliases.
@@ -944,7 +845,7 @@ const Hero = () => (
               <strong style={{ color: 'var(--ink)' }}>Motion + density tokens</strong>, a warning
               tone, and a governance model.
             </li>
-          </ul>
+          </Body>
         </Card>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 14 }}>
           {[
@@ -953,10 +854,12 @@ const Hero = () => (
             ['2', 'Themes'],
           ].map(([n, label]) => (
             <Card key={label} pad={14} shadow={2}>
-              <p style={{ margin: 0, fontSize: 26, fontWeight: 700, letterSpacing: '-0.02em' }}>
+              <Headline as="p" level={2} weight="bold">
                 {n}
-              </p>
-              <Eyebrow style={{ marginTop: 2, fontSize: 10 }}>{label}</Eyebrow>
+              </Headline>
+              <Eyebrow level={2} style={{ marginTop: 2 }}>
+                {label}
+              </Eyebrow>
             </Card>
           ))}
         </div>
@@ -1066,7 +969,7 @@ const TYPE_SCALE: { sample: ReactNode; token: string; spec: string; use: string 
     use: 'Minimum for prose',
   },
   {
-    sample: <TypeEyebrow>Eyebrow &amp; code label</TypeEyebrow>,
+    sample: <Eyebrow>Eyebrow &amp; code label</Eyebrow>,
     token: '--fs-xs',
     spec: '12 / 16 · 500 · +14%',
     use: 'Mono, uppercase, never a sentence',
@@ -1273,13 +1176,15 @@ export default function OffsetDesignSystem({
             <Grid min={230}>
               {PRINCIPLES.map(([n, title, body]) => (
                 <Card key={n}>
-                  <p style={{ margin: '0 0 8px', ...mono(11), color: 'var(--accent)' }}>{n}</p>
-                  <h3 style={{ margin: '0 0 8px', fontSize: 17, fontWeight: 600 }}>{title}</h3>
-                  <p
-                    style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-                  >
+                  <Eyebrow level={2} style={{ marginBottom: 8, color: 'var(--accent)' }}>
+                    {n}
+                  </Eyebrow>
+                  <Headline level={4} style={{ marginBottom: 8 }}>
+                    {title}
+                  </Headline>
+                  <Body level={3} tone="muted">
                     {body}
-                  </p>
+                  </Body>
                 </Card>
               ))}
             </Grid>
@@ -1289,17 +1194,10 @@ export default function OffsetDesignSystem({
           <Section id="install" eyebrow="Getting started" title="Install & use">
             <Grid min={300} gap={20} style={{ alignItems: 'start' }}>
               <div>
-                <p
-                  style={{
-                    margin: '0 0 14px',
-                    fontSize: 15,
-                    lineHeight: 1.65,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Body level={2} tone="muted" style={{ marginBottom: 14 }}>
                   Add the package, then import components directly — styles inject on import, so
                   there is no separate CSS entry to wire up.
-                </p>
+                </Body>
                 <Pre>npm install @ioanatu/offset</Pre>
                 <div style={{ marginTop: 14 }}>
                   <Pre>{`import { ButtonNew, ThemeProvider } from '@ioanatu/offset';
@@ -1314,21 +1212,13 @@ export function Toolbar() {
                 </div>
               </div>
               <Card>
-                <h3 style={{ margin: '0 0 14px', fontSize: 16, fontWeight: 600 }}>
+                <Headline level={4} style={{ marginBottom: 14 }}>
                   Adoption checklist
-                </h3>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 11,
-                    fontSize: 14,
-                    lineHeight: 1.5,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                </Headline>
+                <div style={{ display: 'grid', gap: 11 }}>
                   {[
                     <>
-                      Wrap the app in <Code>ThemeProvider</Code> to own the root{' '}
+                      Wrap the app in <Code level={2}>ThemeProvider</Code> to own the root{' '}
                       <Code>data-theme</Code>.
                     </>,
                     <>Load the two font families once, in the document head.</>,
@@ -1338,10 +1228,12 @@ export function Toolbar() {
                       Add the ESLint rule <Code>offset/no-raw-color</Code> to keep it that way.
                     </>,
                   ].map((line, i) => (
-                    <p key={i} style={{ margin: 0 }}>
-                      <span style={{ color: 'var(--success)', fontWeight: 700 }}>{i + 1}.</span>{' '}
+                    <Body key={i} level={3} tone="muted">
+                      <Body as="span" level={3} weight="bold" tone="success">
+                        {i + 1}.
+                      </Body>{' '}
                       {line}
-                    </p>
+                    </Body>
                   ))}
                 </div>
               </Card>
@@ -1368,52 +1260,38 @@ export function Toolbar() {
             <Grid min={260}>
               <Card pad={20}>
                 <Eyebrow style={{ marginBottom: 6 }}>Tier 1</Eyebrow>
-                <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>Primitives</h3>
-                <p
-                  style={{
-                    margin: '0 0 10px',
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Headline level={4} weight="semibold" style={{ marginBottom: 8 }}>
+                  Primitives
+                </Headline>
+                <Body level={3} tone="muted" style={{ marginBottom: 10 }}>
                   Descriptive, theme-independent, never used in a component.
-                </p>
+                </Body>
                 <Pre dark={false}>{`--blue-500: #3367F6
 --neutral-800: #1A1A1A
 --size-4: 16px`}</Pre>
               </Card>
               <Card pad={20}>
                 <Eyebrow style={{ marginBottom: 6 }}>Tier 2</Eyebrow>
-                <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>
+                <Headline level={4} style={{ marginBottom: 8 }}>
                   Semantic aliases
-                </h3>
-                <p
-                  style={{
-                    margin: '0 0 10px',
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                </Headline>
+                <Body level={3} tone="muted" style={{ marginBottom: 10 }}>
                   Functional, theme-dependent, the public contract.
-                </p>
+                </Body>
                 <Pre dark={false}>{`--accent: var(--blue-500)
 --ink: var(--neutral-800)
 --space-4: var(--size-4)`}</Pre>
               </Card>
               <Card pad={20}>
                 <Eyebrow style={{ marginBottom: 6 }}>Rule</Eyebrow>
-                <h3 style={{ margin: '0 0 8px', fontSize: 16, fontWeight: 600 }}>
+                <Headline level={4} style={{ marginBottom: 8 }}>
                   One direction only
-                </h3>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: 'var(--ink-muted)' }}
-                >
+                </Headline>
+                <Body level={3} tone="muted">
                   Components → semantic → primitive. A component that reads <Code>--blue-500</Code>{' '}
                   is a bug, because it will not follow a theme, a brand override, or a density
                   change.
-                </p>
+                </Body>
               </Card>
             </Grid>
           </Section>
@@ -1455,8 +1333,12 @@ export function Toolbar() {
                 >
                   <div style={{ height: 46, background: token }} />
                   <div style={{ padding: '7px 9px', borderTop: 'var(--bw) solid var(--ink)' }}>
-                    <p style={{ margin: 0, ...mono(11) }}>{stop}</p>
-                    <p style={{ margin: 0, ...mono(10), color: 'var(--ink-subtle)' }}>{hex}</p>
+                    <Body level={3} mono>
+                      {stop}
+                    </Body>
+                    <Caption level={2} tone="subtle">
+                      {hex}
+                    </Caption>
                   </div>
                 </div>
               ))}
@@ -1513,17 +1395,17 @@ export function Toolbar() {
                       background: 'var(--surface)',
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: 14, fontWeight: 600 }}>
+                    <Headline level={5}>
                       {name as string}
                       {isNew ? (
                         <span style={{ marginLeft: 6, verticalAlign: 'middle' }}>
                           <Tag>NEW</Tag>
                         </span>
                       ) : null}
-                    </p>
-                    <p style={{ margin: '3px 0 0', ...mono(11), color: 'var(--ink-subtle)' }}>
+                    </Headline>
+                    <Caption level={2} tone="subtle" style={{ marginTop: 3 }}>
                       {use as string}
-                    </p>
+                    </Caption>
                   </div>
                 </div>
               ))}
@@ -1549,12 +1431,15 @@ export function Toolbar() {
                 }}
               >
                 {['Token', 'Swatch', 'Use it for'].map((h) => (
-                  <p
+                  <Body
                     key={h}
-                    style={{ margin: 0, padding: '12px 16px', fontSize: 13, fontWeight: 600 }}
+                    level={3}
+                    weight="semibold"
+                    tone="inherit"
+                    style={{ padding: '12px 16px' }}
                   >
                     {h}
-                  </p>
+                  </Body>
                 ))}
               </div>
               {SEMANTIC_ROWS.map(([token, swatch, use], i) => (
@@ -1569,7 +1454,9 @@ export function Toolbar() {
                     background: 'var(--surface)',
                   }}
                 >
-                  <p style={{ margin: 0, padding: '11px 16px', ...mono(12.5) }}>{token}</p>
+                  <Body level={3} mono style={{ padding: '11px 16px' }}>
+                    {token}
+                  </Body>
                   <div style={{ padding: '11px 16px' }}>
                     <span
                       style={{
@@ -1582,31 +1469,17 @@ export function Toolbar() {
                       }}
                     />
                   </div>
-                  <p
-                    style={{
-                      margin: 0,
-                      padding: '11px 16px',
-                      fontSize: 13.5,
-                      color: 'var(--ink-muted)',
-                    }}
-                  >
+                  <Body level={3} tone="muted" style={{ padding: '11px 16px' }}>
                     {use}
-                  </p>
+                  </Body>
                 </div>
               ))}
             </div>
-            <p
-              style={{
-                margin: '14px 0 0',
-                fontSize: 13.5,
-                lineHeight: 1.6,
-                color: 'var(--ink-muted)',
-              }}
-            >
+            <Body level={3} tone="muted" style={{ marginTop: 14 }}>
               Because <Code>--ink</Code> draws both text and borders, the brutalist outline is
               guaranteed to keep contrast in any theme — a border can never fade below the
               legibility of the text beside it.
-            </p>
+            </Body>
           </SubSection>
 
           {/* Typography ------------------------------------------------ */}
@@ -1673,9 +1546,9 @@ export function Toolbar() {
           >
             <Grid min={280}>
               <Card>
-                <h4 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
                   Spacing — 4px base
-                </h4>
+                </Body>
                 <div style={{ display: 'grid', gap: 8 }}>
                   {[
                     ['--space-1', 4, 'icon gap'],
@@ -1690,16 +1563,15 @@ export function Toolbar() {
                       key={token as string}
                       style={{ display: 'flex', alignItems: 'center', gap: 12 }}
                     >
-                      <span
-                        style={{
-                          ...mono(11.5),
-                          width: 74,
-                          flex: 'none',
-                          color: 'var(--ink-muted)',
-                        }}
+                      <Body
+                        as="span"
+                        level={3}
+                        mono
+                        tone="muted"
+                        style={{ width: 92, flex: 'none' }}
                       >
                         {token}
-                      </span>
+                      </Body>
                       <span
                         style={{
                           height: 12,
@@ -1708,29 +1580,22 @@ export function Toolbar() {
                           border: '1px solid var(--ink)',
                         }}
                       />
-                      <span style={{ ...mono(11), color: 'var(--ink-subtle)' }}>
+                      <Caption as="span" level={2} tone="subtle">
                         {px} · {use}
-                      </span>
+                      </Caption>
                     </div>
                   ))}
                 </div>
-                <p
-                  style={{
-                    margin: '14px 0 0',
-                    fontSize: 13,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Body level={3} tone="muted" style={{ marginTop: 14 }}>
                   Steps 5, 7, 9, 10, 11 exist but are reserved — if a layout needs one, it usually
                   needs a different component.
-                </p>
+                </Body>
               </Card>
 
               <Card>
-                <h4 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
                   Radius &amp; border
-                </h4>
+                </Body>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 16 }}>
                   {[
                     ['sm · 8', 8],
@@ -1748,46 +1613,30 @@ export function Toolbar() {
                           background: 'var(--sunken)',
                         }}
                       />
-                      <p style={{ margin: '6px 0 0', ...mono(10.5), color: 'var(--ink-muted)' }}>
+                      <Caption level={2} style={{ marginTop: 6 }}>
                         {label}
-                      </p>
+                      </Caption>
                     </div>
                   ))}
                 </div>
-                <p
-                  style={{
-                    margin: '0 0 8px',
-                    fontSize: 13.5,
-                    lineHeight: 1.65,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Body level={3} tone="muted" style={{ marginBottom: 8 }}>
                   <strong style={{ color: 'var(--ink)' }}>2px</strong> is the only structural border
                   weight. <strong style={{ color: 'var(--ink)' }}>3px</strong> is reserved for focus
                   rings and the selected edge of a tab, so emphasis never competes with structure.
-                </p>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-                >
+                </Body>
+                <Body level={3} tone="muted">
                   Nested corners subtract: a 12px card containing a field uses 8px, never 12px
                   again.
-                </p>
+                </Body>
               </Card>
 
               <Card>
-                <h4 style={{ margin: '0 0 6px', fontSize: 15, fontWeight: 600 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 6 }}>
                   Elevation — the offset rule
-                </h4>
-                <p
-                  style={{
-                    margin: '0 0 16px',
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                </Body>
+                <Body level={3} tone="muted" style={{ marginBottom: 16 }}>
                   Offset always travels down-right at 45°, never blurs, never uses alpha.
-                </p>
+                </Body>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginBottom: 16 }}>
                   {[
                     ['sm · 2px', 2],
@@ -1805,9 +1654,9 @@ export function Toolbar() {
                           boxShadow: `${d}px ${d}px 0 var(--accent)`,
                         }}
                       />
-                      <p style={{ margin: '8px 0 0', ...mono(10.5), color: 'var(--ink-muted)' }}>
+                      <Caption level={2} style={{ marginTop: 8 }}>
                         {label}
-                      </p>
+                      </Caption>
                     </div>
                   ))}
                 </div>
@@ -1817,27 +1666,24 @@ export function Toolbar() {
                     paddingTop: 14,
                     display: 'grid',
                     gap: 7,
-                    fontSize: 13,
-                    lineHeight: 1.55,
-                    color: 'var(--ink-muted)',
                   }}
                 >
-                  <p style={{ margin: 0 }}>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>Neutral surface</strong> → accent
                     shadow.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>Accent or tonal fill</strong> → ink
                     shadow.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>Overlay</strong> → lg, plus a page
                     scrim.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>Pressed</strong> → shadow collapses to 0
                     and the element translates by the same distance.
-                  </p>
+                  </Body>
                 </div>
               </Card>
             </Grid>
@@ -1852,37 +1698,25 @@ export function Toolbar() {
           >
             <Grid min={260}>
               <Card>
-                <h4 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Tokens</h4>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 12 }}>
+                  Tokens
+                </Body>
                 <Pre dark={false}>{`--dur-instant: 80ms   /* press   */
 --dur-fast:   140ms   /* hover   */
 --dur-slow:   240ms   /* overlay */
 --ease: cubic-bezier(.2,.8,.2,1)`}</Pre>
-                <p
-                  style={{
-                    margin: '12px 0 0',
-                    fontSize: 13,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Body level={3} tone="muted" style={{ marginTop: 12 }}>
                   Nothing in the library animates longer than 240ms, and nothing animates on load.
-                </p>
+                </Body>
               </Card>
               <Card>
-                <h4 style={{ margin: '0 0 6px', fontSize: 15, fontWeight: 600 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 6 }}>
                   The press, specified
-                </h4>
-                <p
-                  style={{
-                    margin: '0 0 16px',
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                </Body>
+                <Body level={3} tone="muted" style={{ marginBottom: 16 }}>
                   Try it — the button moves exactly the offset distance, so it lands flush on the
                   surface.
-                </p>
+                </Body>
                 <ButtonNew variant="primary">Press me</ButtonNew>
                 <div style={{ marginTop: 16 }}>
                   <Pre dark={false}>{`:active {
@@ -1892,31 +1726,25 @@ export function Toolbar() {
                 </div>
               </Card>
               <Card>
-                <h4 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>Rules</h4>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 9,
-                    fontSize: 13.5,
-                    lineHeight: 1.55,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
-                  <p style={{ margin: 0 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 12 }}>
+                  Rules
+                </Body>
+                <div style={{ display: 'grid', gap: 9 }}>
+                  <Body level={3} tone="muted">
                     Animate{' '}
                     <strong style={{ color: 'var(--ink)' }}>transform, opacity, box-shadow</strong>{' '}
                     only.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     Overlays enter by translating up 12px; they never scale or fade in from zero.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     Loading uses a single continuous spinner, not a staged sequence.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <Code>prefers-reduced-motion</Code> reduces every duration to zero — states
                     still change, they just arrive instantly.
-                  </p>
+                  </Body>
                 </div>
               </Card>
             </Grid>
@@ -1942,38 +1770,32 @@ export function Toolbar() {
   --accent: #7A3BF6;
 }`}</Pre>
               <Card>
-                <h4 style={{ margin: '0 0 12px', fontSize: 15, fontWeight: 600 }}>What v2 fixes</h4>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 11,
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
-                  <p style={{ margin: 0 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 12 }}>
+                  What v2 fixes
+                </Body>
+                <div style={{ display: 'grid', gap: 11 }}>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>
                       Accent is no longer assumed dark.
                     </strong>{' '}
                     <Code>--on-accent</Code> is a real token in both themes, so a lighter brand
                     accent stays legible instead of silently failing contrast.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>Washes are tokenised.</strong> Tonal
                     backgrounds for alerts and badges were hand-mixed per component in v1; each hue
                     now ships a wash stop that is dark-mode aware.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>The scrim is a token.</strong>{' '}
                     <Code>--scrim</Code> is 60% ink, defined once, used by modal, drawer, and
                     popover alike.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <strong style={{ color: 'var(--ink)' }}>Density is themeable.</strong>{' '}
                     <Code>[data-density="compact"]</Code> tightens control heights and section
                     rhythm without touching a component.
-                  </p>
+                  </Body>
                 </div>
               </Card>
             </Grid>
@@ -2004,12 +1826,15 @@ export function Toolbar() {
                 }}
               >
                 {['Group', 'Components', 'Status'].map((h) => (
-                  <p
+                  <Body
                     key={h}
-                    style={{ margin: 0, padding: '12px 16px', fontSize: 13, fontWeight: 600 }}
+                    level={3}
+                    weight="semibold"
+                    tone="inherit"
+                    style={{ padding: '12px 16px' }}
                   >
                     {h}
-                  </p>
+                  </Body>
                 ))}
               </div>
               {COVERAGE.map(([group, list, status], i) => (
@@ -2023,21 +1848,13 @@ export function Toolbar() {
                     background: 'var(--surface)',
                   }}
                 >
-                  <p style={{ margin: 0, padding: '12px 16px', fontSize: 13.5, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ padding: '12px 16px' }}>
                     {group}
-                  </p>
-                  <p
-                    style={{
-                      margin: 0,
-                      padding: '12px 16px',
-                      fontSize: 13.5,
-                      lineHeight: 1.6,
-                      color: 'var(--ink-muted)',
-                    }}
-                  >
+                  </Body>
+                  <Body level={3} tone="muted" style={{ padding: '12px 16px' }}>
                     {list}
-                  </p>
-                  <p style={{ margin: 0, padding: '12px 16px' }}>
+                  </Body>
+                  <div style={{ padding: '12px 16px' }}>
                     <Tag
                       tone={
                         status === 'STABLE' ? 'success' : status === 'PLANNED' ? 'muted' : 'accent'
@@ -2045,7 +1862,7 @@ export function Toolbar() {
                     >
                       {status}
                     </Tag>
-                  </p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -2134,31 +1951,48 @@ export function Toolbar() {
                 rows={[
                   [
                     'variant',
-                    <span style={mono(11.5)}>
+                    <Body as="span" level={3} mono tone="inherit">
                       'primary' | 'secondary' | 'ghost' | 'destructive'
-                    </span>,
+                    </Body>,
                   ],
-                  ['size', <span style={mono(11.5)}>'sm' | 'md' | 'lg'</span>],
-                  ['loading', <span style={mono(11.5)}>boolean</span>],
-                  ['icon', <span style={mono(11.5)}>ReactNode</span>],
-                  ['fullWidth', <span style={mono(11.5)}>boolean</span>],
-                  ['...rest', <span style={mono(11.5)}>ButtonHTMLAttributes</span>],
+                  [
+                    'size',
+                    <Body as="span" level={3} mono tone="inherit">
+                      'sm' | 'md' | 'lg'
+                    </Body>,
+                  ],
+                  [
+                    'loading',
+                    <Body as="span" level={3} mono tone="inherit">
+                      boolean
+                    </Body>,
+                  ],
+                  [
+                    'icon',
+                    <Body as="span" level={3} mono tone="inherit">
+                      ReactNode
+                    </Body>,
+                  ],
+                  [
+                    'fullWidth',
+                    <Body as="span" level={3} mono tone="inherit">
+                      boolean
+                    </Body>,
+                  ],
+                  [
+                    '...rest',
+                    <Body as="span" level={3} mono tone="inherit">
+                      ButtonHTMLAttributes
+                    </Body>,
+                  ],
                 ]}
               />
             </Grid>
-            <p
-              style={{
-                margin: '14px 0 0',
-                fontSize: 13.5,
-                lineHeight: 1.65,
-                color: 'var(--ink-muted)',
-                maxWidth: '76ch',
-              }}
-            >
+            <Body level={3} tone="muted" style={{ marginTop: 14 }}>
               There is no <Code>color</Code> prop, and there never will be. Intent selects the
               variant; the variant selects the color. That is the difference between a system and a
               set of styles.
-            </p>
+            </Body>
           </SubSection>
 
           {/* Forms ----------------------------------------------------- */}
@@ -2234,9 +2068,9 @@ export function Toolbar() {
 
               <Card pad={24} style={{ display: 'grid', gap: 22, alignContent: 'start' }}>
                 <div>
-                  <p style={{ margin: '0 0 8px', fontSize: 13.5, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                     Select — listbox pattern
-                  </p>
+                  </Body>
                   <div style={{ position: 'relative' }}>
                     <button
                       type="button"
@@ -2277,8 +2111,10 @@ export function Toolbar() {
                         }}
                       >
                         {['Small', 'Medium', 'Large'].map((o) => (
-                          <li
+                          <Body
                             key={o}
+                            as="li"
+                            level={3}
                             role="option"
                             aria-selected={o === sel}
                             onClick={() => {
@@ -2288,13 +2124,12 @@ export function Toolbar() {
                             style={{
                               padding: '9px 12px',
                               borderRadius: 6,
-                              fontSize: 14.5,
                               cursor: 'pointer',
                               background: o === sel ? 'var(--accent-wash)' : 'transparent',
                             }}
                           >
                             {o}
-                          </li>
+                          </Body>
                         ))}
                       </ul>
                     ) : null}
@@ -2302,18 +2137,14 @@ export function Toolbar() {
                 </div>
 
                 <div>
-                  <p style={{ margin: '0 0 10px', fontSize: 13.5, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
                     Checkbox &amp; radio
-                  </p>
+                  </Body>
                   <div style={{ display: 'grid', gap: 11 }}>
-                    <label
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 11,
-                        fontSize: 14.5,
-                        cursor: 'pointer',
-                      }}
+                    <Body
+                      as="label"
+                      level={3}
+                      style={{ display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer' }}
                     >
                       <span
                         style={{
@@ -2333,15 +2164,11 @@ export function Toolbar() {
                         ✓
                       </span>
                       Notify the team
-                    </label>
-                    <label
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 11,
-                        fontSize: 14.5,
-                        cursor: 'pointer',
-                      }}
+                    </Body>
+                    <Body
+                      as="label"
+                      level={3}
+                      style={{ display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer' }}
                     >
                       <span
                         style={{
@@ -2354,15 +2181,12 @@ export function Toolbar() {
                         }}
                       />
                       Archive when finished
-                    </label>
-                    <label
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 11,
-                        fontSize: 14.5,
-                        color: 'var(--ink-subtle)',
-                      }}
+                    </Body>
+                    <Body
+                      as="label"
+                      level={3}
+                      tone="subtle"
+                      style={{ display: 'flex', alignItems: 'center', gap: 11 }}
                     >
                       <span
                         style={{
@@ -2374,17 +2198,16 @@ export function Toolbar() {
                           background: 'var(--sunken)',
                         }}
                       />
-                      Require approval <span style={mono(10.5)}>(pro)</span>
-                    </label>
+                      Require approval{' '}
+                      <Body as="span" level={3} mono tone="inherit">
+                        (pro)
+                      </Body>
+                    </Body>
                     <div style={{ display: 'flex', gap: 20, marginTop: 2 }}>
-                      <label
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 9,
-                          fontSize: 14.5,
-                          cursor: 'pointer',
-                        }}
+                      <Body
+                        as="label"
+                        level={3}
+                        style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}
                       >
                         <span
                           style={{
@@ -2408,15 +2231,11 @@ export function Toolbar() {
                           />
                         </span>
                         Private
-                      </label>
-                      <label
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 9,
-                          fontSize: 14.5,
-                          cursor: 'pointer',
-                        }}
+                      </Body>
+                      <Body
+                        as="label"
+                        level={3}
+                        style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}
                       >
                         <span
                           style={{
@@ -2429,18 +2248,18 @@ export function Toolbar() {
                           }}
                         />
                         Public
-                      </label>
+                      </Body>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <p style={{ margin: '0 0 10px', fontSize: 13.5, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
                     Slider{' '}
                     <span style={{ marginLeft: 4, verticalAlign: 'middle' }}>
                       <Tag>NEW</Tag>
                     </span>
-                  </p>
+                  </Body>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                     <input
                       type="range"
@@ -2451,9 +2270,11 @@ export function Toolbar() {
                       aria-label="Storage limit"
                       style={{ flex: 1, minWidth: 0, accentColor: 'var(--accent)', height: 22 }}
                     />
-                    <span
+                    <Body
+                      as="span"
+                      level={3}
+                      mono
                       style={{
-                        ...mono(12.5),
                         padding: '4px 10px',
                         border: 'var(--bw) solid var(--ink)',
                         borderRadius: 'var(--r-full)',
@@ -2462,19 +2283,19 @@ export function Toolbar() {
                       }}
                     >
                       {slider}%
-                    </span>
+                    </Body>
                   </div>
                 </div>
 
                 <div>
-                  <p style={{ margin: '0 0 10px', fontSize: 13.5, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
                     Toggle — <Code>role=switch</Code>
-                  </p>
+                  </Body>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <ThemeToggle />
-                    <span style={{ fontSize: 14.5, color: 'var(--ink-muted)' }}>
+                    <Body as="span" level={3} tone="muted">
                       Dark mode — {theme === 'dark' ? 'on' : 'off'}
-                    </span>
+                    </Body>
                   </div>
                 </div>
               </Card>
@@ -2528,15 +2349,14 @@ export function Toolbar() {
                 <Card>
                   <Eyebrow style={{ marginBottom: 14 }}>Progress</Eyebrow>
                   <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      marginBottom: 8,
-                      fontSize: 13,
-                    }}
+                    style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}
                   >
-                    <span style={{ color: 'var(--ink-muted)' }}>Migrating records</span>
-                    <span style={mono(13)}>{slider}%</span>
+                    <Body as="span" level={3} tone="muted">
+                      Migrating records
+                    </Body>
+                    <Body as="span" level={3} mono>
+                      {slider}%
+                    </Body>
                   </div>
                   <div
                     role="progressbar"
@@ -2565,9 +2385,9 @@ export function Toolbar() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20 }}>
                     <Spinner />
-                    <span style={{ fontSize: 13.5, color: 'var(--ink-muted)' }}>
+                    <Body as="span" level={3} tone="muted">
                       Spinner — indeterminate only
-                    </span>
+                    </Body>
                   </div>
                 </Card>
 
@@ -2579,17 +2399,10 @@ export function Toolbar() {
                     <Skeleton w="88%" />
                     <Skeleton h={70} />
                   </div>
-                  <p
-                    style={{
-                      margin: '14px 0 0',
-                      fontSize: 13,
-                      lineHeight: 1.6,
-                      color: 'var(--ink-muted)',
-                    }}
-                  >
+                  <Body level={3} tone="muted" style={{ marginTop: 14 }}>
                     Mirrors the real layout's shape. Screen readers get a polite{' '}
                     <Code>Loading…</Code> instead.
-                  </p>
+                  </Body>
                 </Card>
 
                 <Card
@@ -2611,19 +2424,12 @@ export function Toolbar() {
                   >
                     +
                   </span>
-                  <p style={{ margin: '6px 0 0', fontSize: 15, fontWeight: 600 }}>
+                  <Body level={2} weight="semibold" style={{ marginTop: 6 }}>
                     No projects yet
-                  </p>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: 13.5,
-                      lineHeight: 1.6,
-                      color: 'var(--ink-muted)',
-                    }}
-                  >
+                  </Body>
+                  <Body level={3} tone="muted">
                     Create one to start tracking a migration.
-                  </p>
+                  </Body>
                   <div style={{ justifySelf: 'center', marginTop: 6 }}>
                     <ButtonNew variant="primary" size="sm" onClick={openModal}>
                       New project
@@ -2651,12 +2457,10 @@ export function Toolbar() {
             <Grid min={280}>
               <Card style={{ display: 'grid', gap: 14, alignContent: 'start' }}>
                 <Eyebrow>Modal &amp; toast — live</Eyebrow>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: 'var(--ink-muted)' }}
-                >
+                <Body level={3} tone="muted">
                   Open the dialog to see the scrim, the returned focus, and the lg offset. The toast
                   is polite and auto-dismisses.
-                </p>
+                </Body>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
                   <ButtonNew variant="primary" size="sm" onClick={openModal}>
                     Open dialog
@@ -2669,12 +2473,10 @@ export function Toolbar() {
 
               <Card style={{ display: 'grid', gap: 14, alignContent: 'start' }}>
                 <Eyebrow>Tooltip — live</Eyebrow>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: 'var(--ink-muted)' }}
-                >
+                <Body level={3} tone="muted">
                   Hover or focus the trigger. A tooltip may only ever label — never hold an action
                   or the only copy of information.
-                </p>
+                </Body>
                 <div style={{ position: 'relative', justifySelf: 'start' }}>
                   <button
                     type="button"
@@ -2684,9 +2486,9 @@ export function Toolbar() {
                     onFocus={() => setTip(true)}
                     onBlur={() => setTip(false)}
                     style={{
-                      fontFamily: FONT_SANS,
-                      fontSize: 14,
-                      fontWeight: 600,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: 'var(--fs-sm)',
+                      fontWeight: 'var(--fw-semibold)' as CSSProperties['fontWeight'],
                       padding: '10px 20px',
                       border: 'var(--bw) solid var(--ink)',
                       borderRadius: 'var(--r-md)',
@@ -2699,9 +2501,12 @@ export function Toolbar() {
                     What is drift?
                   </button>
                   {tip ? (
-                    <span
+                    <Body
+                      as="span"
                       id="off-tip"
                       role="tooltip"
+                      level={3}
+                      tone="inherit"
                       style={{
                         position: 'absolute',
                         bottom: 'calc(100% + 12px)',
@@ -2709,8 +2514,6 @@ export function Toolbar() {
                         zIndex: 20,
                         width: 230,
                         padding: '11px 14px',
-                        fontSize: 13,
-                        lineHeight: 1.55,
                         border: 'var(--bw) solid var(--ink)',
                         borderRadius: 'var(--r-sm)',
                         background: 'var(--ink)',
@@ -2721,22 +2524,14 @@ export function Toolbar() {
                     >
                       Drift is the gap between the schema on record and the schema actually
                       deployed.
-                    </span>
+                    </Body>
                   ) : null}
                 </div>
               </Card>
 
               <Card>
                 <Eyebrow style={{ marginBottom: 14 }}>Choosing one</Eyebrow>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 10,
-                    fontSize: 13.5,
-                    lineHeight: 1.55,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <div style={{ display: 'grid', gap: 10 }}>
                   {[
                     ['Tooltip', 'a label for something already visible.'],
                     ['Popover', 'secondary content or a small form, anchored to its trigger.'],
@@ -2747,9 +2542,9 @@ export function Toolbar() {
                       'an outcome the user does not need to acknowledge. Never for errors that need a decision.',
                     ],
                   ].map(([name, body]) => (
-                    <p key={name} style={{ margin: 0 }}>
+                    <Body key={name} level={3} tone="muted">
                       <strong style={{ color: 'var(--ink)' }}>{name}</strong> — {body}
-                    </p>
+                    </Body>
                   ))}
                 </div>
               </Card>
@@ -2764,16 +2559,16 @@ export function Toolbar() {
           >
             <Card pad={24} style={{ marginBottom: 16 }}>
               <nav aria-label="Breadcrumb" style={{ marginBottom: 26 }}>
-                <ol
+                <Body
+                  as="ol"
+                  level={3}
                   style={{
-                    margin: 0,
                     padding: 0,
                     listStyle: 'none',
                     display: 'flex',
                     flexWrap: 'wrap',
                     alignItems: 'center',
                     gap: 10,
-                    fontSize: 13.5,
                   }}
                 >
                   <li>
@@ -2792,10 +2587,10 @@ export function Toolbar() {
                   <li aria-hidden="true" style={{ color: 'var(--ink-subtle)' }}>
                     /
                   </li>
-                  <li aria-current="page" style={{ fontWeight: 600 }}>
+                  <Body as="li" level={3} weight="semibold" aria-current="page">
                     Atlas migration
-                  </li>
-                </ol>
+                  </Body>
+                </Body>
               </nav>
 
               <Eyebrow style={{ marginBottom: 12 }}>Tabs — browser-tab silhouette</Eyebrow>
@@ -2821,9 +2616,9 @@ export function Toolbar() {
                       tabIndex={on ? 0 : -1}
                       onClick={() => setTab(t.id)}
                       style={{
-                        fontFamily: FONT_SANS,
-                        fontSize: 14,
-                        fontWeight: 600,
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: 'var(--fs-sm)',
+                        fontWeight: 'var(--fw-semibold)' as CSSProperties['fontWeight'],
                         padding: '11px 22px',
                         border: 'var(--bw) solid var(--ink)',
                         borderBottom: 'none',
@@ -2849,17 +2644,9 @@ export function Toolbar() {
                   padding: 22,
                 }}
               >
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 14.5,
-                    lineHeight: 1.7,
-                    color: 'var(--ink-muted)',
-                    maxWidth: '72ch',
-                  }}
-                >
+                <Body level={2} tone="muted">
                   {activeTab.body}
-                </p>
+                </Body>
               </div>
 
               <Eyebrow style={{ margin: '28px 0 12px' }}>TabMenu — segmented sibling</Eyebrow>
@@ -2887,9 +2674,9 @@ export function Toolbar() {
                         aria-selected={on}
                         onClick={() => setView(v)}
                         style={{
-                          fontFamily: FONT_SANS,
-                          fontSize: 14,
-                          fontWeight: 600,
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: 'var(--fs-sm)',
+                          fontWeight: 'var(--fw-semibold)' as CSSProperties['fontWeight'],
                           padding: '8px 22px',
                           border: 'none',
                           borderRadius: 'var(--r-full)',
@@ -2903,9 +2690,9 @@ export function Toolbar() {
                     );
                   })}
                 </div>
-                <span style={{ fontSize: 14, color: 'var(--ink-muted)' }}>
+                <Body as="span" level={3} tone="muted">
                   → showing <Code>{view}</Code>
-                </span>
+                </Body>
               </div>
             </Card>
 
@@ -2923,7 +2710,8 @@ export function Toolbar() {
                     aria-label="Previous page"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     style={{
-                      ...mono(13),
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 13,
                       width: 38,
                       height: 38,
                       border: 'var(--bw) solid var(--ink)',
@@ -2942,7 +2730,8 @@ export function Toolbar() {
                       aria-current={n === page ? 'page' : undefined}
                       onClick={() => setPage(n)}
                       style={{
-                        ...mono(13),
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: 13,
                         width: 38,
                         height: 38,
                         border: 'var(--bw) solid var(--ink)',
@@ -2960,7 +2749,8 @@ export function Toolbar() {
                     aria-label="Next page"
                     onClick={() => setPage((p) => Math.min(5, p + 1))}
                     style={{
-                      ...mono(13),
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 13,
                       width: 38,
                       height: 38,
                       border: 'var(--bw) solid var(--ink)',
@@ -2973,9 +2763,9 @@ export function Toolbar() {
                     →
                   </button>
                 </nav>
-                <p style={{ margin: '14px 0 0', fontSize: 13, color: 'var(--ink-muted)' }}>
+                <Body level={3} tone="muted" style={{ marginTop: 14 }}>
                   Page {page} of 5 · 128 records
-                </p>
+                </Body>
               </Card>
 
               <Card>
@@ -2984,9 +2774,12 @@ export function Toolbar() {
                 </Eyebrow>
                 <nav style={{ display: 'grid', gap: 5 }}>
                   {['Overview', 'Records', 'Schema drift', 'Settings'].map((item, i) => (
-                    <a
+                    <Body
                       key={item}
+                      as="a"
                       href="#navigation"
+                      level={3}
+                      weight={i === 0 ? 'semibold' : 'regular'}
                       aria-current={i === 0 ? 'page' : undefined}
                       className={i === 0 ? undefined : 'off-navlink'}
                       style={{
@@ -2994,8 +2787,6 @@ export function Toolbar() {
                         alignItems: 'center',
                         gap: 10,
                         padding: '10px 14px',
-                        fontSize: 14,
-                        fontWeight: i === 0 ? 600 : 400,
                         border: `var(--bw) solid ${i === 0 ? 'var(--ink)' : 'transparent'}`,
                         borderRadius: 'var(--r-sm)',
                         background: i === 0 ? 'var(--accent)' : undefined,
@@ -3003,20 +2794,13 @@ export function Toolbar() {
                       }}
                     >
                       {item}
-                    </a>
+                    </Body>
                   ))}
                 </nav>
-                <p
-                  style={{
-                    margin: '14px 0 0',
-                    fontSize: 13,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Body level={3} tone="muted" style={{ marginTop: 14 }}>
                   Current page is marked by fill <em>and</em> <Code>aria-current</Code> — never by
                   color alone.
-                </p>
+                </Body>
               </Card>
             </Grid>
           </SubSection>
@@ -3050,7 +2834,9 @@ export function Toolbar() {
                       borderBottom: 'var(--bw) solid var(--ink)',
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: 15, fontWeight: 600 }}>Migration batches</p>
+                    <Body level={2} weight="semibold">
+                      Migration batches
+                    </Body>
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                       <Badge>128 rows</Badge>
                       <ButtonNew variant="secondary" size="sm">
@@ -3063,13 +2849,21 @@ export function Toolbar() {
                   if (key === 'status') return <Badge tone={row.tone}>{row.status}</Badge>;
                   if (key === 'count')
                     return (
-                      <span style={{ ...mono(13), color: 'var(--ink-muted)' }}>{row.count}</span>
+                      <Body as="span" level={3} mono tone="muted">
+                        {row.count}
+                      </Body>
                     );
                   if (key === 'owner')
                     return (
-                      <span style={{ fontSize: 13.5, color: 'var(--ink-muted)' }}>{row.owner}</span>
+                      <Body as="span" level={3} tone="muted">
+                        {row.owner}
+                      </Body>
                     );
-                  return <span style={{ fontSize: 13.5, fontWeight: 500 }}>{row.name}</span>;
+                  return (
+                    <Body as="span" level={3} weight="medium">
+                      {row.name}
+                    </Body>
+                  );
                 }}
               />
             </div>
@@ -3120,7 +2914,7 @@ export function Toolbar() {
                         placeItems: 'center',
                         fontSize: initials === '+9' ? 11 : 13,
                         fontWeight: 600,
-                        fontFamily: initials === '+9' ? FONT_MONO : FONT_SANS,
+                        fontFamily: initials === '+9' ? 'var(--font-mono)' : 'var(--font-sans)',
                       }}
                     >
                       {initials}
@@ -3131,30 +2925,15 @@ export function Toolbar() {
 
               <Card>
                 <Eyebrow style={{ marginBottom: 16 }}>Stat</Eyebrow>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: 40,
-                    fontWeight: 700,
-                    letterSpacing: '-0.03em',
-                    lineHeight: 1,
-                  }}
-                >
+                <Headline as="p" level={1} weight="bold">
                   94.2%
-                </p>
-                <p style={{ margin: '6px 0 0', fontSize: 13.5, color: 'var(--ink-muted)' }}>
+                </Headline>
+                <Body level={3} tone="muted" style={{ marginTop: 6 }}>
                   Records reconciled
-                </p>
-                <p
-                  style={{
-                    margin: '10px 0 0',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: 'var(--success)',
-                  }}
-                >
+                </Body>
+                <Body level={3} weight="semibold" tone="success" style={{ marginTop: 10 }}>
                   ▲ 2.4 pts this week
-                </p>
+                </Body>
               </Card>
 
               <Card>
@@ -3176,8 +2955,12 @@ export function Toolbar() {
                           i === arr.length - 1 ? undefined : '1px solid var(--border-subtle)',
                       }}
                     >
-                      <span style={{ fontSize: 13.5, color: 'var(--ink-muted)' }}>{k}</span>
-                      <span style={mono(13)}>{v}</span>
+                      <Body as="span" level={3} tone="muted">
+                        {k}
+                      </Body>
+                      <Body as="span" level={3} mono>
+                        {v}
+                      </Body>
                     </div>
                   ))}
                 </div>
@@ -3203,16 +2986,9 @@ export function Toolbar() {
                   padding: 22,
                 }}
               >
-                <p
-                  style={{
-                    margin: '0 0 16px',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: 'var(--success)',
-                  }}
-                >
+                <Body level={3} weight="bold" tone="success" style={{ marginBottom: 16 }}>
                   ✓ DO
-                </p>
+                </Body>
                 <div style={{ display: 'flex', gap: 12, marginBottom: 18 }}>
                   <ButtonNew variant="primary" size="sm">
                     Publish
@@ -3221,12 +2997,10 @@ export function Toolbar() {
                     Cancel
                   </ButtonNew>
                 </div>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-                >
+                <Body level={3} tone="muted">
                   One accent action per view, with the alternative as a ghost. The hierarchy is
                   doing the explaining, so the labels don't have to.
-                </p>
+                </Body>
               </div>
 
               <div
@@ -3238,16 +3012,9 @@ export function Toolbar() {
                   padding: 22,
                 }}
               >
-                <p
-                  style={{
-                    margin: '0 0 16px',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: 'var(--danger)',
-                  }}
-                >
+                <Body level={3} weight="bold" tone="danger" style={{ marginBottom: 16 }}>
                   ✕ DON'T
-                </p>
+                </Body>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
                   <ButtonNew variant="primary" size="sm">
                     Publish
@@ -3259,12 +3026,10 @@ export function Toolbar() {
                     Delete
                   </ButtonNew>
                 </div>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-                >
+                <Body level={3} tone="muted">
                   Three competing emphases and a destructive action in the same row. Nothing is
                   primary, and the riskiest option is the easiest to hit.
-                </p>
+                </Body>
               </div>
 
               <div
@@ -3276,39 +3041,31 @@ export function Toolbar() {
                   padding: 22,
                 }}
               >
-                <p
-                  style={{
-                    margin: '0 0 16px',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: 'var(--success)',
-                  }}
-                >
+                <Body level={3} weight="bold" tone="success" style={{ marginBottom: 16 }}>
                   ✓ DO
-                </p>
+                </Body>
                 <Card pad={16} style={{ marginBottom: 18 }}>
-                  <p style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                     Nested surfaces
-                  </p>
-                  <div
+                  </Body>
+                  <Body
+                    as="div"
+                    level={3}
+                    tone="muted"
                     style={{
                       border: 'var(--bw) solid var(--ink)',
                       borderRadius: 'var(--r-sm)',
                       background: 'var(--sunken)',
                       padding: 12,
-                      fontSize: 13,
-                      color: 'var(--ink-muted)',
                     }}
                   >
                     Inner blocks lose the shadow and shrink the radius.
-                  </div>
+                  </Body>
                 </Card>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-                >
+                <Body level={3} tone="muted">
                   Only one offset shadow per stacking context. Depth is a claim about layering, not
                   a texture to repeat.
-                </p>
+                </Body>
               </div>
 
               <div
@@ -3320,60 +3077,49 @@ export function Toolbar() {
                   padding: 22,
                 }}
               >
-                <p
-                  style={{
-                    margin: '0 0 16px',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: 'var(--danger)',
-                  }}
-                >
+                <Body level={3} weight="bold" tone="danger" style={{ marginBottom: 16 }}>
                   ✕ DON'T
-                </p>
+                </Body>
                 <Card pad={16} style={{ marginBottom: 18 }}>
-                  <p style={{ margin: '0 0 8px', fontSize: 14, fontWeight: 600 }}>
+                  <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                     Nested surfaces
-                  </p>
-                  <Card pad={12} style={{ fontSize: 13, color: 'var(--ink-muted)' }}>
-                    Every level shouting the same shadow at the same distance.
+                  </Body>
+                  <Card pad={12}>
+                    <Body level={3} tone="muted">
+                      Every level shouting the same shadow at the same distance.
+                    </Body>
                   </Card>
                 </Card>
-                <p
-                  style={{ margin: 0, fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-                >
+                <Body level={3} tone="muted">
                   Repeated identical offsets flatten the hierarchy they were meant to express, and
                   the page starts to vibrate.
-                </p>
+                </Body>
               </div>
             </Grid>
 
             <Card pad={24} style={{ marginTop: 16 }}>
-              <h4 style={{ margin: '0 0 14px', fontSize: 16, fontWeight: 600 }}>
+              <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
                 Voice — how components speak
-              </h4>
-              <Grid
-                min={230}
-                gap={18}
-                style={{ fontSize: 13.5, lineHeight: 1.65, color: 'var(--ink-muted)' }}
-              >
-                <p style={{ margin: 0 }}>
+              </Body>
+              <Grid min={230} gap={18}>
+                <Body level={3} tone="muted">
                   <strong style={{ color: 'var(--ink)' }}>Buttons are verbs.</strong> “Publish”, not
                   “OK”. The label states what happens when you press it.
-                </p>
-                <p style={{ margin: 0 }}>
+                </Body>
+                <Body level={3} tone="muted">
                   <strong style={{ color: 'var(--ink)' }}>Errors say what to do.</strong> Name the
                   field, name the fix. Never “invalid input”.
-                </p>
-                <p style={{ margin: 0 }}>
+                </Body>
+                <Body level={3} tone="muted">
                   <strong style={{ color: 'var(--ink)' }}>
                     Empty states offer the next action.
                   </strong>{' '}
                   An empty screen without a button is a dead end.
-                </p>
-                <p style={{ margin: 0 }}>
+                </Body>
+                <Body level={3} tone="muted">
                   <strong style={{ color: 'var(--ink)' }}>Sentence case everywhere</strong> except
                   mono eyebrows, which are uppercase by role.
-                </p>
+                </Body>
               </Grid>
             </Card>
           </Section>
@@ -3410,12 +3156,15 @@ export function Toolbar() {
                     }}
                   >
                     {['Component', 'Pattern', 'Keyboard', 'Announces'].map((h) => (
-                      <p
+                      <Body
                         key={h}
-                        style={{ margin: 0, padding: '12px 16px', fontSize: 12.5, fontWeight: 600 }}
+                        level={3}
+                        weight="semibold"
+                        tone="inherit"
+                        style={{ padding: '12px 16px' }}
                       >
                         {h}
-                      </p>
+                      </Body>
                     ))}
                   </div>
                   {A11Y_ROWS.map(([c, pattern, keys, announces], i) => (
@@ -3429,23 +3178,13 @@ export function Toolbar() {
                         background: i % 2 ? 'var(--sunken)' : 'var(--surface)',
                       }}
                     >
-                      <p
-                        style={{ margin: 0, padding: '11px 16px', fontSize: 13.5, fontWeight: 600 }}
-                      >
+                      <Body level={3} weight="semibold" style={{ padding: '11px 16px' }}>
                         {c}
-                      </p>
+                      </Body>
                       {[pattern, keys, announces].map((v) => (
-                        <p
-                          key={v}
-                          style={{
-                            margin: 0,
-                            padding: '11px 16px',
-                            fontSize: 13,
-                            color: 'var(--ink-muted)',
-                          }}
-                        >
+                        <Body key={v} level={3} tone="muted" style={{ padding: '11px 16px' }}>
                           {v}
-                        </p>
+                        </Body>
                       ))}
                     </div>
                   ))}
@@ -3485,26 +3224,12 @@ export function Toolbar() {
                 ],
               ].map(([title, body]) => (
                 <Card key={title as string}>
-                  <p
-                    style={{
-                      margin: '0 0 8px',
-                      fontSize: 15,
-                      fontWeight: 600,
-                      color: 'var(--success)',
-                    }}
-                  >
+                  <Body level={2} weight="semibold" tone="success" style={{ marginBottom: 8 }}>
                     ✓ {title}
-                  </p>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: 13.5,
-                      lineHeight: 1.65,
-                      color: 'var(--ink-muted)',
-                    }}
-                  >
+                  </Body>
+                  <Body level={3} tone="muted">
                     {body}
-                  </p>
+                  </Body>
                 </Card>
               ))}
             </Grid>
@@ -3519,18 +3244,10 @@ export function Toolbar() {
           >
             <Grid min={280} style={{ marginBottom: 16 }}>
               <Card>
-                <h4 style={{ margin: '0 0 14px', fontSize: 16, fontWeight: 600 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
                   Contribution path
-                </h4>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 12,
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                </Body>
+                <div style={{ display: 'grid', gap: 12 }}>
                   {[
                     [
                       '1 · Propose.',
@@ -3553,62 +3270,46 @@ export function Toolbar() {
                       'Documented, changelogged, announced with a migration note if anything shifted.',
                     ],
                   ].map(([step, body]) => (
-                    <p key={step} style={{ margin: 0 }}>
+                    <Body key={step} level={3} tone="muted">
                       <strong style={{ color: 'var(--ink)' }}>{step}</strong> {body}
-                    </p>
+                    </Body>
                   ))}
                 </div>
               </Card>
 
               <Card>
-                <h4 style={{ margin: '0 0 14px', fontSize: 16, fontWeight: 600 }}>
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
                   Versioning promise
-                </h4>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 12,
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
-                  <p style={{ margin: 0 }}>
+                </Body>
+                <div style={{ display: 'grid', gap: 12 }}>
+                  <Body level={3} tone="muted">
                     <Tag tone="danger">MAJOR</Tag> A prop or token is renamed or removed. Ships with
                     a codemod and a deprecation that lived one full minor first.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <Tag tone="accent">MINOR</Tag> New component, new variant, new token. Always
                     additive.
-                  </p>
-                  <p style={{ margin: 0 }}>
+                  </Body>
+                  <Body level={3} tone="muted">
                     <Tag tone="success">PATCH</Tag> Bug and accessibility fixes. May change pixels
                     if the old pixels were wrong.
-                  </p>
-                  <p
-                    style={{
-                      margin: 0,
-                      paddingTop: 4,
-                      borderTop: '1px solid var(--border-subtle)',
-                    }}
+                  </Body>
+                  <Body
+                    level={3}
+                    tone="muted"
+                    style={{ paddingTop: 4, borderTop: '1px solid var(--border-subtle)' }}
                   >
                     Token names are the public API. They are treated with the same care as props — a
                     renamed token is a breaking change.
-                  </p>
+                  </Body>
                 </div>
               </Card>
 
               <Card>
-                <h4 style={{ margin: '0 0 14px', fontSize: 16, fontWeight: 600 }}>Next</h4>
-                <div
-                  style={{
-                    display: 'grid',
-                    gap: 11,
-                    fontSize: 13.5,
-                    lineHeight: 1.6,
-                    color: 'var(--ink-muted)',
-                  }}
-                >
+                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
+                  Next
+                </Body>
+                <div style={{ display: 'grid', gap: 11 }}>
                   {[
                     [
                       '2.1',
@@ -3621,9 +3322,9 @@ export function Toolbar() {
                       'Figma variables published from the same token source, so design and code cannot drift.',
                     ],
                   ].map(([v, body]) => (
-                    <p key={v} style={{ margin: 0 }}>
+                    <Body key={v} level={3} tone="muted">
                       <strong style={{ color: 'var(--ink)' }}>{v}</strong> — {body}
-                    </p>
+                    </Body>
                   ))}
                 </div>
               </Card>
@@ -3637,18 +3338,14 @@ export function Toolbar() {
                 boxShadow: '4px 4px 0 var(--accent)',
               }}
             >
-              <p
-                style={{
-                  margin: 0,
-                  padding: '12px 18px',
-                  background: 'var(--ink)',
-                  color: 'var(--surface)',
-                  fontSize: 13,
-                  fontWeight: 600,
-                }}
+              <Body
+                level={3}
+                weight="semibold"
+                tone="inherit"
+                style={{ padding: '12px 18px', background: 'var(--ink)', color: 'var(--surface)' }}
               >
                 Changelog
-              </p>
+              </Body>
               <div style={{ background: 'var(--surface)' }}>
                 {[
                   [
@@ -3685,20 +3382,12 @@ export function Toolbar() {
                         i === 0 ? 'var(--bw) solid var(--ink)' : '1px solid var(--border-subtle)',
                     }}
                   >
-                    <p style={{ margin: 0, padding: '14px 18px', ...mono(13), fontWeight: 700 }}>
+                    <Body level={3} mono weight="bold" style={{ padding: '14px 18px' }}>
                       {v}
-                    </p>
-                    <p
-                      style={{
-                        margin: 0,
-                        padding: '14px 18px',
-                        fontSize: 13.5,
-                        lineHeight: 1.7,
-                        color: 'var(--ink-muted)',
-                      }}
-                    >
+                    </Body>
+                    <Body level={3} tone="muted" style={{ padding: '14px 18px' }}>
                       {body}
-                    </p>
+                    </Body>
                   </div>
                 ))}
               </div>
@@ -3716,18 +3405,19 @@ export function Toolbar() {
               justifyContent: 'space-between',
             }}
           >
-            <p style={{ margin: 0, fontSize: 13.5, color: 'var(--ink-muted)' }}>
+            <Body level={3} tone="muted">
               OFFSET Design System · v2.0.0 · React + TypeScript
-            </p>
+            </Body>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
               {['Storybook', 'GitHub', 'Figma library', 'Changelog'].map((label) => (
-                <a
+                <Body
                   key={label}
+                  as="a"
                   href={label === 'Changelog' ? '#governance' : '#top'}
+                  level={3}
+                  weight="semibold"
                   className="off-press off-press-sm"
                   style={{
-                    fontSize: 13.5,
-                    fontWeight: 600,
                     padding: '9px 18px',
                     border: 'var(--bw) solid var(--ink)',
                     borderRadius: 'var(--r-md)',
@@ -3738,7 +3428,7 @@ export function Toolbar() {
                   }}
                 >
                   {label}
-                </a>
+                </Body>
               ))}
             </div>
           </footer>
@@ -3775,23 +3465,13 @@ export function Toolbar() {
               }}
             >
               <Eyebrow style={{ marginBottom: 6 }}>New project</Eyebrow>
-              <h3
-                id="off-dialog-title"
-                style={{ margin: '0 0 10px', fontSize: 22, fontWeight: 600 }}
-              >
+              <Headline level={3} id="off-dialog-title" style={{ marginBottom: 10 }}>
                 Name this migration
-              </h3>
-              <p
-                style={{
-                  margin: '0 0 20px',
-                  fontSize: 14,
-                  lineHeight: 1.65,
-                  color: 'var(--ink-muted)',
-                }}
-              >
+              </Headline>
+              <Body level={3} tone="muted" style={{ marginBottom: 20 }}>
                 Focus moves here on open, is trapped while open, and returns to the button you
                 pressed when this closes.
-              </p>
+              </Body>
               <Field label="Project name" htmlFor="off-dialog-input">
                 <input
                   ref={dialogInput}
@@ -3846,10 +3526,12 @@ export function Toolbar() {
               ✓
             </span>
             <div style={{ minWidth: 0 }}>
-              <p style={{ margin: '0 0 2px', fontSize: 14, fontWeight: 600 }}>Project created</p>
-              <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: 'var(--ink-muted)' }}>
+              <Body level={3} weight="semibold" style={{ marginBottom: 2 }}>
+                Project created
+              </Body>
+              <Body level={3} tone="muted">
                 Polite live region — it announces without stealing focus.
-              </p>
+              </Body>
             </div>
             <button
               type="button"

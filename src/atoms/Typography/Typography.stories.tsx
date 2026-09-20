@@ -35,6 +35,8 @@ export const Scale: StoryObj = {
       <Headline level={1}>Page title</Headline>
       <Headline level={2}>Section heading</Headline>
       <Headline level={3}>Card &amp; dialog title</Headline>
+      <Headline level={4}>Subsection title</Headline>
+      <Headline level={5}>Dense card title</Headline>
       <Body level={1} tone="muted">
         Lead paragraph — the one sentence that explains the screen before anyone reads the rest of
         it.
@@ -68,7 +70,7 @@ export const Families: StoryObj = {
 
       <section>
         <Eyebrow level={2} style={{ marginBottom: 8 }}>
-          Headline · levels 1–3
+          Headline · levels 1–5
         </Eyebrow>
         <Headline level={2} ruled>
           Ruled section heading

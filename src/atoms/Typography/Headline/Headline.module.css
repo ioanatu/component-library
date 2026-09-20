@@ -1,6 +1,11 @@
 /* Headline — the structural titles of an application screen.
-   1 page title · 2 section heading · 3 card and dialog title.
-   Level 3 is the largest type allowed inside a component. */
+   1 page title · 2 section heading · 3 card and dialog title ·
+   4 subsection title · 5 dense card and panel title.
+   Level 3 is the largest type allowed inside a component.
+
+   4 and 5 land on the same steps as Body 1 and Body 2, and stay distinct from
+   them by weight and leading: they keep the heading's semibold and the tight
+   --lh-xl rather than the loose leading those steps carry for running text. */
 .headline {
   font-weight: var(--fw-semibold);
   text-wrap: balance;
@@ -18,6 +23,16 @@
 }
 .level3 {
   font-size: var(--fs-xl);
+  line-height: var(--lh-xl);
+  letter-spacing: var(--ls-xl);
+}
+.level4 {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-xl);
+  letter-spacing: var(--ls-xl);
+}
+.level5 {
+  font-size: var(--fs-md);
   line-height: var(--lh-xl);
   letter-spacing: var(--ls-xl);
 }
