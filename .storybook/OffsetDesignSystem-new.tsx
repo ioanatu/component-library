@@ -22,30 +22,12 @@ const FONT_SANS = "'Hanken Grotesk', system-ui, sans-serif";
 const FONT_MONO = "'JetBrains Mono', ui-monospace, monospace";
 
 const TOKENS_CSS = `
+/* Colour lives in src/styles/colors.css now — both tiers, the dark theme and the
+   brand accents — and Storybook loads it through src/index.css. What stays here
+   is the page's own spacing, shape and motion scale. */
 :root {
-  /* Tier 1 — primitives. Never referenced by a component. */
-  --neutral-0:#FFFFFF; --neutral-50:#F7F5F5; --neutral-100:#EDEBEA;
-  --neutral-200:#DCD9D7; --neutral-400:#8A8683; --neutral-500:#605C59;
-  --neutral-800:#1A1A1A; --neutral-900:#0C0C0E;
-  --blue-50:#EDF2FE;  --blue-500:#3367F6; --blue-700:#1A3FA8;
-  --green-50:#E8F8F1; --green-500:#1FA971; --green-700:#158257;
-  --amber-50:#FEF5E7; --amber-500:#E8960C; --amber-700:#B87508;
-  --red-50:#FEEDEC;   --red-500:#D63F38;   --red-700:#D22C23;
-
   --size-1:4px;  --size-2:8px;  --size-3:12px; --size-4:16px;
   --size-6:24px; --size-8:32px; --size-12:48px;
-
-  /* Tier 2 — semantic aliases. The public contract. */
-  --page:var(--neutral-50); --surface:var(--neutral-0); --sunken:var(--neutral-100);
-  --ink:var(--neutral-800); --ink-muted:var(--neutral-500); --ink-subtle:var(--neutral-400);
-  --border-subtle:var(--neutral-200);
-  --accent:var(--blue-500); --accent-strong:var(--blue-700);
-  --accent-wash:var(--blue-50); --on-accent:var(--neutral-0);
-  --danger:var(--red-500);    --danger-wash:var(--red-50);
-  --success:var(--green-500); --success-wash:var(--green-50);
-  --warning:var(--amber-500); --warning-wash:var(--amber-50);
-  --code-bg:var(--neutral-900); --code-ink:#F2F2F0;
-  --scrim:rgba(12,12,14,.6);
 
   --space-1:var(--size-1); --space-2:var(--size-2); --space-3:var(--size-3);
   --space-4:var(--size-4); --space-6:var(--size-6); --space-8:var(--size-8);
@@ -58,17 +40,6 @@ const TOKENS_CSS = `
   --ease:cubic-bezier(.2,.8,.2,1);
 
   --sec-gap:80px;
-}
-
-[data-theme="dark"] {
-  --page:#121214; --surface:#1D1D21; --sunken:#26262B;
-  --ink:#F2F2F0; --ink-muted:#A9A9A4; --ink-subtle:#7A7A76;
-  --border-subtle:#3A3A40;
-  --accent:#5B82FF; --accent-strong:#7C9BFF; --accent-wash:#1B2340; --on-accent:#101014;
-  --danger:#FF6B61;  --danger-wash:#3A1E1C;
-  --success:#3FCB92; --success-wash:#12301F;
-  --warning:#F2B33D; --warning-wash:#33260D;
-  --code-bg:#0C0C0E; --code-ink:#F2F2F0;
 }
 
 [data-density="compact"] { --sec-gap:48px; }
@@ -642,10 +613,10 @@ const SpecTable = ({ title, rows }: { title: string; rows: [string, ReactNode][]
 
 /** The curated accent set. A brand override is one token, not a fork. */
 export const ACCENTS: { name: string; value: string }[] = [
-  { name: 'Blue', value: '#3367F6' },
-  { name: 'Violet', value: '#7A3BF6' },
-  { name: 'Green', value: '#0E9F6E' },
-  { name: 'Red', value: '#D63F38' },
+  { name: 'Blue', value: 'var(--accent-blue)' },
+  { name: 'Violet', value: 'var(--accent-violet)' },
+  { name: 'Green', value: 'var(--accent-green)' },
+  { name: 'Red', value: 'var(--accent-red)' },
 ];
 
 interface ThemeCtx {
@@ -798,7 +769,7 @@ const AccentPicker = () => {
               cursor: 'pointer',
               display: 'grid',
               placeItems: 'center',
-              color: '#FFFFFF',
+              color: 'var(--neutral-0)',
               fontSize: 12,
               fontWeight: 700,
               lineHeight: 1,
@@ -1489,16 +1460,17 @@ export function Toolbar() {
                 marginBottom: 26,
               }}
             >
+              {/* The hex is the value this page documents; the token paints the swatch. */}
               {[
-                ['0', '#FFFFFF'],
-                ['50', '#F7F5F5'],
-                ['100', '#EDEBEA'],
-                ['200', '#DCD9D7'],
-                ['400', '#8A8683'],
-                ['500', '#605C59'],
-                ['800', '#1A1A1A'],
-                ['900', '#0C0C0E'],
-              ].map(([stop, hex]) => (
+                ['0', '#FFFFFF', 'var(--neutral-0)'],
+                ['50', '#F7F5F5', 'var(--neutral-50)'],
+                ['100', '#EDEBEA', 'var(--neutral-100)'],
+                ['200', '#DCD9D7', 'var(--neutral-200)'],
+                ['400', '#8A8683', 'var(--neutral-400)'],
+                ['500', '#605C59', 'var(--neutral-500)'],
+                ['800', '#1A1A1A', 'var(--neutral-800)'],
+                ['900', '#0C0C0E', 'var(--neutral-900)'],
+              ].map(([stop, hex, token]) => (
                 <div
                   key={stop}
                   style={{
@@ -1508,7 +1480,7 @@ export function Toolbar() {
                     background: 'var(--surface)',
                   }}
                 >
-                  <div style={{ height: 46, background: hex }} />
+                  <div style={{ height: 46, background: token }} />
                   <div style={{ padding: '7px 9px', borderTop: 'var(--bw) solid var(--ink)' }}>
                     <p style={{ margin: 0, ...mono(11) }}>{stop}</p>
                     <p style={{ margin: 0, ...mono(10), color: 'var(--ink-subtle)' }}>{hex}</p>
@@ -1522,25 +1494,25 @@ export function Toolbar() {
               {[
                 [
                   'Accent · blue',
-                  ['#EDF2FE', '#3367F6', '#1A3FA8'],
+                  ['var(--blue-50)', 'var(--blue-500)', 'var(--blue-700)'],
                   'Primary action, selection, focus',
                   false,
                 ],
                 [
                   'Success · green',
-                  ['#E8F8F1', '#1FA971', '#158257'],
+                  ['var(--green-50)', 'var(--green-500)', 'var(--green-700)'],
                   'Confirmation, passing state',
                   false,
                 ],
                 [
                   'Warning · amber',
-                  ['#FEF5E7', '#E8960C', '#B87508'],
+                  ['var(--amber-50)', 'var(--amber-500)', 'var(--amber-700)'],
                   'Caution, degraded, needs review',
                   true,
                 ],
                 [
                   'Danger · red',
-                  ['#FEEDEC', '#D63F38', '#D22C23'],
+                  ['var(--red-50)', 'var(--red-500)', 'var(--red-700)'],
                   'Destructive, error, invalid',
                   false,
                 ],

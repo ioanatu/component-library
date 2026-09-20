@@ -93,6 +93,10 @@
   --red-50: #feedec;
   --red-500: #d63f38;
   --red-700: #d22c23;
+
+  /* The two brand accents the picker offers. */
+  --violet-500: #7a3bf6;
+  --emerald-500: #0e9f6e;
 }
 
 /* ---------- OFFSET tier 2 — semantic aliases ---------- */
@@ -171,8 +175,8 @@
  * is the same move as a theme: point --accent at one of these under a scope.
  */
 :root {
-  --accent-blue: #3367f6;
-  --accent-violet: #7a3bf6;
-  --accent-green: #0e9f6e;
-  --accent-red: #d63f38;
+  --accent-blue: var(--blue-500);
+  --accent-violet: var(--violet-500);
+  --accent-green: var(--emerald-500);
+  --accent-red: var(--red-500);
 }
