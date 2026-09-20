@@ -9,7 +9,15 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default tseslint.config(
   {
-    ignores: ['dist', '.yarn', 'storybook-static', 'coverage'],
+    ignores: [
+      'dist',
+      '.yarn',
+      'storybook-static',
+      'coverage',
+      '.storybook',
+      'node_modules',
+      'src/Button',
+    ],
   },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ComponentType, ReactNode } from 'react';
-import { fn } from 'storybook/test';
 import { buttonNewVariants, elevations, sizes } from '../types';
 import type { ButtonNewElementProps, ButtonNewProps } from './ButtonNew';
 import { ButtonNew } from './ButtonNew';
