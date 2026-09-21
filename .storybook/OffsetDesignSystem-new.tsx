@@ -10,6 +10,7 @@ import React, {
   useState,
 } from 'react';
 import { ButtonNew } from '../src/ButtonNew/ButtonNew';
+import { Input } from '../src/Input/Input';
 import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '../src/atoms/Typography';
 
 /* ------------------------------------------------------------------ *
@@ -46,7 +47,7 @@ const TOKENS_CSS = `
 .offset-root { background:var(--page); color:var(--ink); font-family:var(--font-sans); -webkit-font-smoothing:antialiased; }
 .offset-root a { color:var(--accent); text-decoration:none; }
 .offset-root a:hover { color:var(--accent-strong); text-decoration:underline; }
-.offset-root :focus-visible { outline:var(--bw-thick) solid var(--accent); outline-offset:2px; border-radius:2px; }
+/* .offset-root :focus-visible { outline:var(--bw-thick) solid var(--accent); outline-offset:2px; border-radius:2px; } NEEDS TO BE REMOVE TOGETHER WITH THE FIELD AND INPUT STYLES AFTER BUILDING TEXTAREA  */
 .offset-root pre { margin:0; }
 
 /* Press: the element travels exactly its offset distance. */
@@ -58,7 +59,7 @@ const TOKENS_CSS = `
 
 .off-ghost:hover { background:var(--sunken); border-color:var(--ink); }
 .off-input { transition:box-shadow var(--dur-fast) var(--ease); }
-.off-input:focus { box-shadow:2px 2px 0 var(--accent); }
+/* .off-input:focus { box-shadow:2px 2px 0 var(--accent); } NEEDS TO BE REMOVE TOGETHER WITH THE FIELD AND INPUT STYLES AFTER BUILDING TEXTAREA */ 
 .off-navlink:hover { background:var(--sunken); border-color:var(--ink); text-decoration:none; color:var(--ink); }
 
 @keyframes off-spin  { to { transform:rotate(360deg); } }
@@ -2009,38 +2010,28 @@ export function Toolbar() {
           >
             <Grid min={290}>
               <Card pad={24} style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
-                <Field
+                <Input
                   label="Project name"
-                  htmlFor="demo-name"
-                  required
                   helper="Shown to everyone in the workspace."
-                >
-                  <input
-                    id="demo-name"
-                    className="off-input"
-                    type="text"
-                    placeholder="Atlas migration"
-                    style={inputStyle()}
-                  />
-                </Field>
-                <Field
+                  id="demo-name"
+                  className="off-input"
+                  type="text"
+                  placeholder="Atlas migration"
+                />
+                <Input
                   label="Workspace URL"
-                  htmlFor="demo-err"
+                  id="demo-error"
+                  type="text"
+                  defaultValue="atlas migration"
+                  aria-invalid
+                  aria-describedby="demo-err-msg"
                   error={
                     <>
-                      Spaces aren't allowed — try <strong>atlas-migration</strong>.
+                      Spaces aren't allowed — try <strong>atlas-migration.</strong>
                     </>
                   }
-                >
-                  <input
-                    id="demo-err"
-                    type="text"
-                    defaultValue="atlas migration"
-                    aria-invalid
-                    aria-describedby="demo-err-msg"
-                    style={inputStyle('error')}
-                  />
-                </Field>
+                />
+
                 <Field label="Notes" htmlFor="demo-note">
                   <textarea
                     id="demo-note"
@@ -2050,20 +2041,15 @@ export function Toolbar() {
                     style={{ ...inputStyle(), resize: 'vertical' }}
                   />
                 </Field>
-                <Field
+
+                <Input
                   label="Billing owner"
-                  htmlFor="demo-dis"
-                  disabled
                   helper="Managed by your admin."
-                >
-                  <input
-                    id="demo-dis"
-                    type="text"
-                    defaultValue="finance@atlas.co"
-                    disabled
-                    style={inputStyle('disabled')}
-                  />
-                </Field>
+                  id="demo-dis"
+                  type="text"
+                  defaultValue="finance@atlas.co"
+                  disabled
+                />
               </Card>
 
               <Card pad={24} style={{ display: 'grid', gap: 22, alignContent: 'start' }}>
@@ -3472,15 +3458,13 @@ export function Toolbar() {
                 Focus moves here on open, is trapped while open, and returns to the button you
                 pressed when this closes.
               </Body>
-              <Field label="Project name" htmlFor="off-dialog-input">
-                <input
-                  ref={dialogInput}
-                  id="off-dialog-input"
-                  type="text"
-                  placeholder="Atlas migration"
-                  style={{ ...inputStyle(), boxShadow: '2px 2px 0 var(--accent)' }}
-                />
-              </Field>
+              <Input
+                label="Project name"
+                ref={dialogInput}
+                id="off-dialog-input"
+                type="text"
+                placeholder="Atlas migration"
+              />
               <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24 }}>
                 <ButtonNew variant="ghost" size="sm" onClick={closeModal}>
                   Cancel
