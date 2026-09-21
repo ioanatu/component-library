@@ -10,6 +10,13 @@ export type ButtonNewVariant = (typeof buttonNewVariants)[number];
 export const elevations = ['sm', 'md', 'lg'] as const;
 export type Elevation = (typeof elevations)[number];
 
+/**
+ * Text-like input types only. Checkbox, radio and file behave nothing like a
+ * text field and need their own components rather than the same frame.
+ */
+export const inputTypes = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'] as const;
+export type InputType = (typeof inputTypes)[number];
+
 export const chipVariants = ['default', 'success', 'warning', 'error', 'info'] as const;
 export type ChipVariant = (typeof chipVariants)[number];
 

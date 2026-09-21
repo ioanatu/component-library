@@ -8,3 +8,5 @@ export type { CardProps } from './Card/Card';
 export { Card } from './Card/Card';
 export type { ChipProps } from './Chip/Chip';
 export { Chip } from './Chip/Chip';
+export type { InputProps } from './Input/Input';
+export { Input } from './Input/Input';
