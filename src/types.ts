@@ -17,6 +17,13 @@ export type Elevation = (typeof elevations)[number];
 export const inputTypes = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'] as const;
 export type InputType = (typeof inputTypes)[number];
 
+/**
+ * Directions the textarea's drag handle may offer. Horizontal is left out: it
+ * breaks the measure the field sits in, and nothing is gained by a wider box.
+ */
+export const textAreaResizes = ['none', 'vertical'] as const;
+export type TextAreaResize = (typeof textAreaResizes)[number];
+
 export const chipVariants = ['default', 'success', 'warning', 'error', 'info'] as const;
 export type ChipVariant = (typeof chipVariants)[number];
 

@@ -1,0 +1,259 @@
+/**
+ * TextArea — the OFFSET multi-line field. The frame is deliberately the same one
+ * Input draws (2px ink border, --radius-md, a 2px offset shadow that carries the
+ * state) and is restated here rather than shared, which is how Button, ButtonNew
+ * and Chip each carry their own copy of the offset language in this library.
+ *
+ * The differences are the ones multi-line text forces: the shell is a block
+ * rather than a flex row, the control owns a prose line-height, and the box
+ * grows — by the user's drag, or by itself when autoResize is on.
+ */
+.field {
+  box-sizing: border-box;
+  display: block;
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+.shell {
+  --ta-offset: 2px;
+  --ta-border: var(--ink);
+  --ta-shadow: var(--border-subtle);
+  --ta-surface: var(--surface);
+  --ta-ink: var(--ink);
+
+  /**
+   * The control wears the padding, not the shell, so the textarea fills the
+   * frame edge to edge and the browser's resize grip — which it paints at the
+   * textarea's own corner — lands in the corner you can see. The size classes
+   * set these two; .control spends them.
+   */
+  --ta-pad-block: var(--space-3);
+  --ta-pad-inline: var(--space-4);
+
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  inline-size: 100%;
+
+  background-color: var(--ta-surface);
+  border: 2px solid var(--ta-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--ta-offset) var(--ta-offset) 0 var(--ta-shadow);
+  color: var(--ta-ink);
+
+  font-family: var(--font-sans, 'Hanken Grotesk', system-ui, sans-serif);
+  cursor: text;
+  transition:
+    border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The ring lives on the shell so the whole frame lights up; the focus itself
+   lands on the textarea inside. */
+.shell:focus-within {
+  --ta-shadow: var(--accent);
+
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.invalid {
+  --ta-border: var(--danger);
+  --ta-shadow: var(--danger);
+}
+
+/* Success colours the shadow and the icon, not the border: a field that has
+   merely passed should not shout as loudly as one that has failed. */
+.valid {
+  --ta-shadow: var(--success);
+}
+
+/* ---------- Status ---------- */
+
+/**
+ * The icon is pinned to the top-right rather than centred, because a multi-line
+ * box has no vertical centre to speak of — and the bottom-right corner belongs
+ * to the resize grip. Its height matches one line box, so it sits level with the
+ * first line of text instead of the padding edge.
+ */
+.status {
+  position: absolute;
+  inset-block-start: var(--ta-pad-block);
+  inset-inline-end: var(--ta-pad-inline);
+
+  display: flex;
+  align-items: center;
+  block-size: calc(1em * var(--lh-md));
+  color: var(--ink-muted);
+  pointer-events: none;
+}
+
+/* Size only — a fill here would beat the icon's own fill="none" and flood a
+   stroke drawing into a solid shape. */
+.status > svg {
+  inline-size: 1.15em;
+  block-size: 1.15em;
+}
+
+.statusSuccess {
+  color: var(--success);
+}
+
+.statusError {
+  color: var(--danger);
+}
+
+/* Text has to stop before the icon rather than run under it. */
+.hasStatus .control {
+  padding-inline-end: calc(var(--ta-pad-inline) + 1.15em + var(--space-2));
+}
+
+/**
+ * Read-only stays focusable and copyable, so it keeps its ink and its border and
+ * only the fill recedes. Disabled is inert and says so with every property.
+ */
+.readOnly {
+  --ta-surface: var(--sunken);
+}
+
+.disabled {
+  --ta-border: var(--ink-subtle);
+  --ta-surface: var(--sunken);
+  --ta-ink: var(--ink-subtle);
+
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ---------- Sizes ---------- */
+
+/* Size sets the padding the control will wear, and the type step. */
+.sm {
+  --ta-pad-block: var(--space-2);
+  --ta-pad-inline: var(--space-3);
+
+  font-size: var(--fs-sm);
+}
+
+.md {
+  --ta-pad-block: var(--space-3);
+  --ta-pad-inline: var(--space-4);
+
+  font-size: var(--fs-md);
+}
+
+.lg {
+  --ta-pad-block: var(--space-4);
+  --ta-pad-inline: var(--space-4);
+
+  font-size: var(--fs-lg);
+}
+
+/* ---------- Parts ---------- */
+
+/**
+ * border-box is what keeps auto-resize honest now that the padding is here:
+ * scrollHeight already counts the padding, so in content-box `height =
+ * scrollHeight` would add it a second time and the box would grow on every
+ * keystroke.
+ */
+.control {
+  box-sizing: border-box;
+  display: block;
+  inline-size: 100%;
+  margin: 0;
+  padding: var(--ta-pad-block) var(--ta-pad-inline);
+
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  /* Prose, not a single line: the body leading is what makes several lines
+     readable. font: inherit above would otherwise bring `normal` along. */
+  line-height: var(--lh-md);
+  resize: vertical;
+}
+
+.control:focus {
+  outline: none;
+}
+
+.control::placeholder {
+  color: var(--ink-subtle);
+  opacity: 1;
+}
+
+/**
+ * Safari fades disabled text on its own and ignores `color`, which drops it
+ * below the contrast the token was chosen for. -webkit-text-fill-color is the
+ * only property that overrides it.
+ */
+.control:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+  -webkit-text-fill-color: currentcolor;
+}
+
+/* A box that sizes itself must not also offer a drag handle: the two would
+   fight, and the next keystroke would undo the drag. */
+.resizeNone {
+  resize: none;
+}
+
+/* ---------- Messages ---------- */
+
+/**
+ * Helper and error on the left, counter on the right. The counter is pushed by
+ * its own margin rather than by space-between, so it stays at the trailing edge
+ * even when there is no message beside it.
+ */
+.footer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-block-start: 7px;
+}
+
+.messages {
+  display: grid;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.error {
+  display: flex;
+  gap: 6px;
+}
+
+.counter {
+  flex: none;
+  margin-inline-start: auto;
+  /* Lining figures stop the count jittering as digits change. */
+  font-variant-numeric: tabular-nums;
+}
+
+.counterOver {
+  color: var(--danger);
+}
+
+/* Present to assistive tech, invisible on screen. */
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell {
+    transition: none;
+  }
+}

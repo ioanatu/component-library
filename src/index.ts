@@ -10,3 +10,5 @@ export type { ChipProps } from './Chip/Chip';
 export { Chip } from './Chip/Chip';
 export type { InputProps } from './Input/Input';
 export { Input } from './Input/Input';
+export type { TextAreaProps } from './TextArea/TextArea';
+export { TextArea } from './TextArea/TextArea';
