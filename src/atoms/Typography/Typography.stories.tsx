@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '.';
+import Input from '../../Input/Input';
 
 /**
  * OFFSET typography. Two families with strictly separated jobs: Hanken Grotesk
@@ -57,77 +58,123 @@ export const Scale: StoryObj = {
 export const Families: StoryObj = {
   name: 'Every family',
   render: () => (
-    <div style={{ display: 'grid', gap: 40, maxWidth: 760 }}>
-      <section>
-        <Eyebrow level={2} style={{ marginBottom: 8 }}>
-          Display · levels 1–2
-        </Eyebrow>
-        <Display level={1}>Fluid hero</Display>
-        <Display level={2} as="p">
-          Fixed 56
-        </Display>
-      </section>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 32,
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+      }}
+    >
+      <div style={{ width: 600 }}>
+        <section style={{ marginBottom: 60 }}>
+          <Eyebrow level={2} style={{ marginBottom: 8 }}>
+            Display · levels 1–2
+          </Eyebrow>
+          <Display level={1}>Fluid hero</Display>
+          <Display level={2} as="p">
+            Fixed 56
+          </Display>
+        </section>
 
-      <section>
-        <Eyebrow level={2} style={{ marginBottom: 8 }}>
-          Headline · levels 1–5
-        </Eyebrow>
-        <Headline level={2} ruled>
-          Ruled section heading
-        </Headline>
-      </section>
+        <section style={{ marginBottom: 60 }}>
+          <Eyebrow level={2} style={{ marginBottom: 8 }}>
+            Headline · levels 1–5
+          </Eyebrow>
+          <Headline level={1}>Section heading</Headline>
+          <Headline level={2}>Section heading</Headline>
+          <Headline level={3}>Section heading</Headline>
+          <Headline level={4}>Section heading</Headline>
+          <Headline level={5}>Section heading</Headline>
+        </section>
 
-      <section>
-        <Eyebrow level={2} style={{ marginBottom: 8 }}>
-          Body · mono and clamping
-        </Eyebrow>
-        <Body level={2}>
-          Request{' '}
-          <Body as="span" mono>
-            req_8f2a91
-          </Body>{' '}
-          completed in 240ms.
-        </Body>
-        <Body level={3} lines={2} style={{ marginTop: 12 }}>
-          Clamped to two lines. Anything past the second line is hidden, which is only acceptable
-          where the full text is reachable some other way — a tooltip, a detail view, an expand
-          control.
-        </Body>
-      </section>
+        <section style={{ marginBottom: 60 }}>
+          <Eyebrow level={2} style={{ marginBottom: 8 }}>
+            Body · mono and clamping
+          </Eyebrow>
+          <Body level={2}>
+            Request{' '}
+            <Body as="span" mono>
+              req_8f2a91
+            </Body>{' '}
+            completed in 240ms.
+          </Body>
+          <Body level={3} lines={2} style={{ marginTop: 12 }}>
+            Clamped to two lines. Anything past the second line is hidden, which is only acceptable
+            where the full text is reachable some other way — a tooltip, a detail view, an expand
+            control.
+          </Body>
+          <Eyebrow level={2} style={{ marginTop: 40 }}>
+            Body · level 1-3
+          </Eyebrow>
+          <Body level={1} style={{ marginTop: 12 }}>
+            Body level 1
+          </Body>
+          <Body level={2}>Body level 2</Body>
+          <Body level={3}>Body level 3</Body>
+        </section>
+      </div>
 
-      <section>
-        <Eyebrow level={2} style={{ marginBottom: 8 }}>
-          Label &amp; Caption
-        </Eyebrow>
-        <Label htmlFor="story-card" required>
-          Card number
-        </Label>
-        <input
-          id="story-card"
-          style={{ font: 'inherit', padding: '10px 12px', border: '2px solid var(--ink)' }}
-        />
-        <Caption level={1} style={{ marginTop: 8 }}>
-          We never store the full number.
-        </Caption>
-        <Caption level={1} error style={{ marginTop: 8 }}>
-          Enter a valid card number.
-        </Caption>
-      </section>
+      <div style={{ width: 600 }}>
+        <section style={{ marginBottom: 60 }}>
+          <Eyebrow level={2} style={{ marginBottom: 8 }}>
+            Label &amp; Caption
+          </Eyebrow>
+          <Label htmlFor="story-card" required>
+            Card number
+          </Label>
+          <div style={{ width: 300 }}>
+            <Input id="story-card" label={''} />
+          </div>
+          <Caption level={1} style={{ marginTop: 8 }}>
+            We never store the full number.
+          </Caption>
+          <Caption level={1} error>
+            Enter a valid card number.
+          </Caption>
+        </section>
 
-      <section>
-        <Eyebrow level={2} style={{ marginBottom: 8 }}>
-          Code
-        </Eyebrow>
-        <Body level={2}>
-          Import from <Code>src/atoms/Typography</Code> — the barrel is the only public entry.
-        </Body>
-        <Code block level={1} style={{ marginTop: 12 }}>
-          {`import { Headline, Body } from '@/atoms/Typography';
+        <section style={{ marginBottom: 60 }}>
+          <Eyebrow level={2} style={{ marginBottom: 8 }}>
+            Code
+          </Eyebrow>
+          <Body level={2}>
+            Import from <Code level={2}>src/atoms/Typography</Code> — the barrel is the only public
+            entry.
+          </Body>
+          <Code block level={1} style={{ marginTop: 12 }}>
+            {`// Code level 1
+import { Headline, Body } from '@/atoms/Typography';
 
-<Headline level={1}>Billing</Headline>
-<Body level={1} tone="muted">Manage your plan and payment method.</Body>`}
-        </Code>
-      </section>
+<Headline level={1}>Billing</Headline>`}
+          </Code>
+          <Code block level={2} style={{ marginTop: 12 }}>
+            {`// Code level 2
+import { Headline, Body } from '@/atoms/Typography';
+
+<Headline level={1}>Billing</Headline>`}
+          </Code>
+        </section>
+
+        <section style={{ marginBottom: 60 }}>
+          <Eyebrow level={2} style={{ marginBottom: 18 }}>
+            Eyebrow levels & code
+          </Eyebrow>
+          <Eyebrow level={1} style={{ marginBottom: 4 }}>
+            Eyebrow level one
+          </Eyebrow>
+          <Eyebrow level={2} style={{ marginBottom: 8 }}>
+            Eyebrow level two
+          </Eyebrow>
+          <br />
+          <Code level={1}>src/atoms/Typography</Code>
+          <br />
+          <br />
+          <Code level={2}>src/atoms/Typography</Code>
+        </section>
+      </div>
     </div>
   ),
 };
