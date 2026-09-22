@@ -182,6 +182,15 @@
   color: var(--chip-on-fill);
 }
 
+/* Transparent keeps the border and ink but lets the surface behind show through,
+   so hover and press wash with the intent colour rather than an opaque grey. */
+.transparent {
+  --chip-hover: color-mix(in srgb, var(--chip-accent), transparent 88%);
+  --chip-active: color-mix(in srgb, var(--chip-accent), transparent 78%);
+
+  background-color: transparent;
+}
+
 /* ---------- Sizes ---------- */
 
 .sm {

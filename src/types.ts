@@ -27,7 +27,7 @@ export type TextAreaResize = (typeof textAreaResizes)[number];
 export const chipVariants = ['default', 'success', 'warning', 'error', 'info'] as const;
 export type ChipVariant = (typeof chipVariants)[number];
 
-export const chipFills = ['outlined', 'filled'] as const;
+export const chipFills = ['outlined', 'filled', 'transparent'] as const;
 export type ChipFill = (typeof chipFills)[number];
 
 export const cardVariants = ['shadow', 'flat'] as const;

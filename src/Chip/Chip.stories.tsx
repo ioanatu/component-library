@@ -131,6 +131,37 @@ export const FilledChip: Story = {
 };
 
 /**
+ * `transparent` keeps the intent's border and ink but lets whatever is behind the
+ * chip show through, for rows sitting on a tinted card or a coloured band. On a
+ * white page it is indistinguishable from `outlined` — hence the background here.
+ *
+ * Hover and press wash with the intent colour rather than the neutral greys an
+ * outlined chip falls back to, which would show as opaque patches.
+ */
+export const TransparentChips: Story = {
+  args: {
+    fill: 'transparent',
+  },
+  render: (args) => (
+    <div
+      style={{
+        ...row,
+        padding: '20px',
+        background: 'var(--accent-wash)',
+        border: '2px solid var(--ink)',
+        borderRadius: 'var(--radius-lg)',
+      }}
+    >
+      <Chip {...args} variant="info" label="info" />
+      <Chip {...args} variant="error" label="blocked" onDelete={fn()} />
+      <Chip {...args} variant="success" label="shipped" icon={<CheckIcon />} />
+      <Chip {...args} variant="warning" label="clickable" onClick={fn()} />
+      <Chip {...args} variant="default" label="disabled" disabled />
+    </div>
+  ),
+};
+
+/**
  * `size` runs from `sm` to `lg`. `md` is the default and matches the height of the
  * badges in the docs; `sm` is for dense rows and table cells.
  */

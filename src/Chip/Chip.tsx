@@ -17,7 +17,8 @@ type ChipDeleteEvent = React.MouseEvent<HTMLButtonElement, MouseEvent> | React.K
  *
  * @param label - Chip text, and the fallback accessible name of the remove button.
  * @param variant - Chip variant, which names the intent. Default is default.
- * @param fill - Whether that colour outlines the chip or fills it. Default is
+ * @param fill - Whether that colour outlines the chip, fills it, or outlines it
+ * over a transparent surface for use on a tinted background. Default is
  * outlined. The two are independent, so any variant can be either.
  * @param size - Chip size. Default is md.
  * @param icon - Decorative node rendered before the label. Hidden from assistive tech.
