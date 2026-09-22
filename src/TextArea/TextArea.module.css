@@ -165,7 +165,8 @@
   display: block;
   inline-size: 100%;
   margin: 0;
-  padding: var(--ta-pad-block) var(--ta-pad-inline);
+  /* padding: var(--ta-pad-block) var(--ta-pad-inline); */
+  padding: 18px 14px;
 
   background: none;
   border: 0;
@@ -173,7 +174,7 @@
   font: inherit;
   /* Prose, not a single line: the body leading is what makes several lines
      readable. font: inherit above would otherwise bring `normal` along. */
-  line-height: var(--lh-md);
+  line-height: var(--lh-2xs);
   resize: vertical;
 }
 

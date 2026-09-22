@@ -11,7 +11,8 @@ import React, {
 } from 'react';
 import { ButtonNew } from '../src/ButtonNew/ButtonNew';
 import { Input } from '../src/Input/Input';
-import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '../src/atoms/Typography';
+import { Body, Caption, Code, Display, Eyebrow, Headline } from '../src/atoms/Typography';
+import TextArea from '../src/TextArea/TextArea';
 
 /* ------------------------------------------------------------------ *
  * Tokens
@@ -258,46 +259,6 @@ const Spinner = ({ size = 22, color = 'var(--ink)' }: { size?: number; color?: s
       animation: 'off-spin .7s linear infinite',
     }}
   />
-);
-
-/* ------------------------------------------------------------------ *
- * Field / inputs
- * ------------------------------------------------------------------ */
-
-interface FieldProps {
-  label: string;
-  htmlFor: string;
-  required?: boolean;
-  helper?: ReactNode;
-  error?: ReactNode;
-  disabled?: boolean;
-  children: ReactNode;
-}
-
-/** Owns label association, helper text, required marking, and error announcement. */
-export const Field = ({
-  label,
-  htmlFor,
-  required,
-  helper,
-  error,
-  disabled,
-  children,
-}: FieldProps) => (
-  <div>
-    <Label htmlFor={htmlFor} required={required} disabled={disabled}>
-      {label}
-    </Label>
-    {children}
-    {error ? (
-      <Caption id={`${htmlFor}-msg`} error style={{ marginTop: 7, display: 'flex', gap: 6 }}>
-        <span aria-hidden="true">⚠</span>
-        {error}
-      </Caption>
-    ) : helper ? (
-      <Caption style={{ marginTop: 7 }}>{helper}</Caption>
-    ) : null}
-  </div>
 );
 
 const inputStyle = (state?: 'error' | 'disabled'): CSSProperties => ({
@@ -2032,15 +1993,13 @@ export function Toolbar() {
                   }
                 />
 
-                <Field label="Notes" htmlFor="demo-note">
-                  <textarea
-                    id="demo-note"
-                    className="off-input"
-                    rows={3}
-                    placeholder="Anything the team should know"
-                    style={{ ...inputStyle(), resize: 'vertical' }}
-                  />
-                </Field>
+                <TextArea
+                  label="Notes"
+                  helper="Optional, but helpful."
+                  id="demo-note"
+                  placeholder="Anything the team should know"
+                  rows={2}
+                />
 
                 <Input
                   label="Billing owner"
