@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '.';
 import Input from '../../Input/Input';
+import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '.';
+import { typographyTones } from './Typography.types';
 
 /**
  * OFFSET typography. Two families with strictly separated jobs: Hanken Grotesk
@@ -13,16 +14,18 @@ import Input from '../../Input/Input';
  */
 const meta: Meta = {
   title: 'Atoms/Typography',
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'Pick a step, never a size. Line height and tracking are part of the step; a one-off font-size with the wrong leading is the most common way this system degrades.',
-      },
+  argTypes: {
+    tone: {
+      control: { type: 'inline-radio' },
+      options: typographyTones,
+    },
+    weight: {
+      control: { type: 'inline-radio' },
+      options: ['regular', 'medium', 'semibold', 'bold'],
     },
   },
   args: {
-    label: 'Click here',
+    tone: 'default',
   },
 };
 
@@ -30,27 +33,39 @@ export default meta;
 
 export const Scale: StoryObj = {
   name: 'The scale',
-  render: () => (
+  render: (args) => (
     <div style={{ display: 'grid', gap: 32, maxWidth: 760 }}>
-      <Display level={2}>Display</Display>
-      <Headline level={1}>Page title</Headline>
-      <Headline level={2}>Section heading</Headline>
-      <Headline level={3}>Card &amp; dialog title</Headline>
-      <Headline level={4}>Subsection title</Headline>
-      <Headline level={5}>Dense card title</Headline>
-      <Body level={1} tone="muted">
+      <Display level={2} {...args}>
+        Display
+      </Display>
+      <Headline level={1} {...args}>
+        Page title
+      </Headline>
+      <Headline level={2} {...args}>
+        Section heading
+      </Headline>
+      <Headline level={3} {...args}>
+        Card &amp; dialog title
+      </Headline>
+      <Headline level={4} {...args}>
+        Subsection title
+      </Headline>
+      <Headline level={5} {...args}>
+        Dense card title
+      </Headline>
+      <Body level={1} tone="muted" {...args}>
         Lead paragraph — the one sentence that explains the screen before anyone reads the rest of
         it.
       </Body>
-      <Body level={2}>
+      <Body level={2} {...args}>
         Body. The default for all running text; 1.7 line height and a 72-character measure keep long
         passages readable at this weight.
       </Body>
-      <Body level={3} tone="muted">
+      <Body level={3} {...args}>
         Small — helper text, table cells, card body, captions. The floor for any sentence a user
         must read.
       </Body>
-      <Eyebrow>Eyebrow &amp; code label</Eyebrow>
+      <Eyebrow {...args}>Eyebrow &amp; code label</Eyebrow>
     </div>
   ),
 };

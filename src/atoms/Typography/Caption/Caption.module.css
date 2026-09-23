@@ -2,7 +2,6 @@
    text under a field, table footnotes. Muted by default, because a caption
    that competes with its subject has failed. */
 .caption {
-  font-weight: var(--fw-regular);
   line-height: var(--lh-sm);
   max-inline-size: var(--measure-body);
   text-wrap: pretty;
@@ -19,5 +18,4 @@
 /* Error helper text. Paired with an icon by the field, never colour alone. */
 .error {
   color: var(--danger);
-  font-weight: var(--fw-medium);
 }

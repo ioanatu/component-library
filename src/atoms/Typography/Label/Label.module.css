@@ -2,7 +2,6 @@
    its control. 1 is the default; 2 is for dense inline forms and toolbars. */
 .label {
   display: block;
-  font-weight: var(--fw-semibold);
 }
 
 .level1 {

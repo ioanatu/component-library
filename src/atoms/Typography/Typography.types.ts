@@ -1,17 +1,17 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 
-/** Semantic colour roles. Every value is full-opacity ink — never an alpha
- *  tint — so 4.5:1 holds against the surface it is used on. */
-export type TypographyTone =
-  | 'default'
-  | 'muted'
-  | 'subtle'
-  | 'danger'
-  | 'success'
-  | 'warning'
-  | 'accent'
-  | 'onAccent'
-  | 'inherit';
+export const typographyTones = [
+  'default',
+  'muted',
+  'subtle',
+  'danger',
+  'success',
+  'warning',
+  'accent',
+  'onAccent',
+  'inherit',
+] as const;
+export type TypographyTone = (typeof typographyTones)[number];
 
 /** Weight overrides. Each family already has the correct default weight;
  *  reach for this only when the design genuinely departs from the step. */

@@ -7,7 +7,6 @@
   line-height: var(--lh-xs);
   letter-spacing: var(--ls-xs);
   text-transform: uppercase;
-  color: var(--ink-muted);
   max-inline-size: none;
 }
 

@@ -18,7 +18,7 @@ export interface EyebrowProps extends Omit<BaseTypographyProps, 'weight'> {
  */
 export function Eyebrow({
   level = 1,
-  tone,
+  tone = 'muted',
   unbounded = false,
   lines,
   as,

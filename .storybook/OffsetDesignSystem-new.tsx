@@ -13,6 +13,7 @@ import { ButtonNew } from '../src/ButtonNew/ButtonNew';
 import { Input } from '../src/Input/Input';
 import { Body, Caption, Code, Display, Eyebrow, Headline } from '../src/atoms/Typography';
 import TextArea from '../src/TextArea/TextArea';
+import { Chip } from '../src';
 
 /* ------------------------------------------------------------------ *
  * Tokens
@@ -170,7 +171,6 @@ const Section = ({
 }) => (
   <section id={id} style={{ paddingBottom: last ? 44 : 'var(--sec-gap)' }}>
     {eyebrow ? <Eyebrow style={{ marginBottom: 6 }}>{eyebrow}</Eyebrow> : null}
-    {/* `ruled` draws the hairline the standalone <hr> used to. */}
     {title ? (
       <Headline level={2} ruled style={{ marginBottom: 24 }}>
         {title}
@@ -238,12 +238,6 @@ const Grid = ({
     {children}
   </div>
 );
-
-/* ------------------------------------------------------------------ *
- * Button — the library component, imported at the top of this file.
- * The local copy this page used to carry has been retired; ButtonNew reads the
- * same semantic tokens, so it re-themes with the switch and the accent picker.
- * ------------------------------------------------------------------ */
 
 const Spinner = ({ size = 22, color = 'var(--ink)' }: { size?: number; color?: string }) => (
   <span
@@ -700,27 +694,12 @@ const Header = () => (
           placeItems: 'center',
           boxShadow: '2px 2px 0 var(--ink)',
         }}
-      >
-        <div
-          style={{ width: 12, height: 10, border: '2px solid var(--on-accent)', borderRadius: 2 }}
-        />
-      </div>
-      <Body as="span" level={1} weight="bold">
+      ></div>
+
+      <Headline level={4} style={{ marginLeft: 4 }}>
         OFFSET
-      </Body>
-      <Body
-        as="span"
-        level={3}
-        mono
-        tone="muted"
-        style={{
-          padding: '2px 8px',
-          border: 'var(--bw) solid var(--ink)',
-          borderRadius: 'var(--r-full)',
-        }}
-      >
-        v2.0.0
-      </Body>
+      </Headline>
+      <Chip label="v2.0.0" size="lg" fill="transparent"></Chip>
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
       <nav style={{ display: 'flex', gap: 22 }}>
@@ -762,22 +741,11 @@ const Hero = () => (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
           {['React 19', 'TypeScript', 'WCAG 2.1 AA', 'Zero-runtime CSS vars', '32 components'].map(
             (t) => (
-              <Body
-                key={t}
-                as="span"
-                level={3}
-                mono
-                style={{
-                  padding: '6px 14px',
-                  border: 'var(--bw) solid var(--ink)',
-                  borderRadius: 'var(--r-full)',
-                }}
-              >
-                {t}
-              </Body>
+              <Chip size="lg" label={t} fill="transparent" />
             ),
           )}
         </div>
+
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginTop: 30 }}>
           <ButtonNew variant="primary" size="md" onClick={() => (location.hash = '#install')}>
             Get started
@@ -787,6 +755,7 @@ const Hero = () => (
           </ButtonNew>
         </div>
       </div>
+
       <div style={{ display: 'grid', gap: 14 }}>
         <Card pad={20}>
           <Eyebrow style={{ marginBottom: 10 }}>What changed in v2</Eyebrow>
@@ -809,6 +778,7 @@ const Hero = () => (
             </li>
           </Body>
         </Card>
+
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 14 }}>
           {[
             ['32', 'Components'],
@@ -816,7 +786,7 @@ const Hero = () => (
             ['2', 'Themes'],
           ].map(([n, label]) => (
             <Card key={label} pad={14} shadow={2}>
-              <Headline as="p" level={2} weight="bold">
+              <Headline level={2} weight="bold">
                 {n}
               </Headline>
               <Eyebrow level={2} style={{ marginTop: 2 }}>
@@ -827,6 +797,7 @@ const Hero = () => (
         </div>
       </div>
     </Grid>
+
     <hr
       style={{ margin: '48px 0 0', border: 'none', borderTop: '2px dashed var(--border-subtle)' }}
     />
@@ -1007,16 +978,16 @@ const A11Y_ROWS: [string, string, string, string][] = [
   ],
 ];
 
-const COVERAGE: [string, string, 'STABLE' | 'NEW' | 'EXTENDED' | 'PLANNED'][] = [
+const COVERAGE: [string, string, 'STABLE' | 'NEW' | 'EXTENDED' | 'PLANNED' | 'WIP'][] = [
   ['Actions', 'Button, IconButton, ButtonGroup, Link', 'STABLE'],
   [
     'Forms',
     'Field, Input, Textarea, Select, Checkbox, Radio, Toggle, Slider, SearchInput',
     'STABLE',
   ],
-  ['Feedback', 'Badge, Alert, Toast, Progress, Spinner, Skeleton, EmptyState', 'NEW'],
-  ['Overlays', 'Modal, Drawer, Popover, Tooltip, ConfirmDialog', 'NEW'],
-  ['Navigation', 'Tabs, TabMenu, Breadcrumb, Pagination, SideNav', 'EXTENDED'],
+  ['Feedback', 'Badge, Alert, Toast, Progress, Spinner, Skeleton, EmptyState', 'PLANNED'],
+  ['Overlays', 'Modal, Drawer, Popover, Tooltip, ConfirmDialog', 'PLANNED'],
+  ['Navigation', 'Tabs, TabMenu, Breadcrumb, Pagination, SideNav', 'PLANNED'],
   ['Data', 'Table, Avatar, AvatarGroup, Stat, DescriptionList, Chip', 'NEW'],
   ['Layout', 'Card, Stack, Divider, Toolbar', 'STABLE'],
   ['Not yet', 'DatePicker, Combobox, FileUpload, DataGrid, Charts', 'PLANNED'],
@@ -1054,10 +1025,6 @@ const BATCHES: BatchRow[] = [
   { name: 'Audit log', owner: 'ioana.t', count: '1,902,340', status: 'Failed', tone: 'danger' },
   { name: 'Sessions', owner: 'm.reyes', count: '76,455', status: 'Deployed', tone: 'success' },
 ];
-
-/* ------------------------------------------------------------------ *
- * Root
- * ------------------------------------------------------------------ */
 
 export interface OffsetDesignSystemProps {
   /** Initial theme. The header switch takes over after first interaction. */
@@ -1134,11 +1101,12 @@ export default function OffsetDesignSystem({
           <Hero />
 
           {/* Principles ------------------------------------------------ */}
+          <br />
           <Section id="principles" eyebrow="Principles" title="Four rules the whole library obeys">
             <Grid min={230}>
               {PRINCIPLES.map(([n, title, body]) => (
                 <Card key={n}>
-                  <Eyebrow level={2} style={{ marginBottom: 8, color: 'var(--accent)' }}>
+                  <Eyebrow level={2} tone="accent" style={{ marginBottom: 8 }}>
                     {n}
                   </Eyebrow>
                   <Headline level={4} style={{ marginBottom: 8 }}>
@@ -1152,7 +1120,7 @@ export default function OffsetDesignSystem({
             </Grid>
           </Section>
 
-          {/* Install --------------------------------------------------- */}
+          {/* Install ------------------------------------------------ */}
           <Section id="install" eyebrow="Getting started" title="Install & use">
             <Grid min={300} gap={20} style={{ alignItems: 'start' }}>
               <div>
@@ -1160,9 +1128,13 @@ export default function OffsetDesignSystem({
                   Add the package, then import components directly — styles inject on import, so
                   there is no separate CSS entry to wire up.
                 </Body>
-                <Pre>npm install @ioanatu/offset</Pre>
+                <Code block level={2} style={{ borderRadius: 'var(--r-md)' }}>
+                  npm install @ioanatu/offset
+                </Code>
                 <div style={{ marginTop: 14 }}>
-                  <Pre>{`import { ButtonNew, ThemeProvider } from '@ioanatu/offset';
+                  <Code block level={2} style={{ marginTop: 12, borderRadius: 'var(--r-md)' }}>
+                    {`
+import { ButtonNew, ThemeProvider } from '@ioanatu/offset';
 
 export function Toolbar() {
   return (
@@ -1170,9 +1142,11 @@ export function Toolbar() {
       Add new project
     </ButtonNew>
   );
-}`}</Pre>
+}`}
+                  </Code>
                 </div>
               </div>
+
               <Card>
                 <Headline level={4} style={{ marginBottom: 14 }}>
                   Adoption checklist
@@ -1181,19 +1155,20 @@ export function Toolbar() {
                   {[
                     <>
                       Wrap the app in <Code level={2}>ThemeProvider</Code> to own the root{' '}
-                      <Code>data-theme</Code>.
+                      <Code level={2}>data-theme</Code>.
                     </>,
                     <>Load the two font families once, in the document head.</>,
                     <>Replace local buttons and inputs first — highest density, lowest risk.</>,
                     <>Delete app-level hex values; point them at semantic tokens instead.</>,
                     <>
-                      Add the ESLint rule <Code>offset/no-raw-color</Code> to keep it that way.
+                      Add the ESLint rule <Code level={2}>offset/no-raw-color</Code> to keep it that
+                      way.
                     </>,
                   ].map((line, i) => (
                     <Body key={i} level={3} tone="muted">
-                      <Body as="span" level={3} weight="bold" tone="success">
+                      <Caption as="span" level={1} tone="success" weight="bold">
                         {i + 1}.
-                      </Body>{' '}
+                      </Caption>{' '}
                       {line}
                     </Body>
                   ))}
@@ -1228,7 +1203,8 @@ export function Toolbar() {
                 <Body level={3} tone="muted" style={{ marginBottom: 10 }}>
                   Descriptive, theme-independent, never used in a component.
                 </Body>
-                <Pre dark={false}>{`--blue-500: #3367F6
+                <Pre dark={false}>{`
+--blue-500: #3367F6
 --neutral-800: #1A1A1A
 --size-4: 16px`}</Pre>
               </Card>
@@ -1240,7 +1216,8 @@ export function Toolbar() {
                 <Body level={3} tone="muted" style={{ marginBottom: 10 }}>
                   Functional, theme-dependent, the public contract.
                 </Body>
-                <Pre dark={false}>{`--accent: var(--blue-500)
+                <Pre dark={false}>{`
+--accent: var(--blue-500)
 --ink: var(--neutral-800)
 --space-4: var(--size-4)`}</Pre>
               </Card>
@@ -1273,7 +1250,6 @@ export function Toolbar() {
                 marginBottom: 26,
               }}
             >
-              {/* The hex is the value this page documents; the token paints the swatch. */}
               {[
                 ['0', '#FFFFFF', 'var(--neutral-0)'],
                 ['50', '#F7F5F5', 'var(--neutral-50)'],

@@ -7,7 +7,6 @@
    them by weight and leading: they keep the heading's semibold and the tight
    --lh-xl rather than the loose leading those steps carry for running text. */
 .headline {
-  font-weight: var(--fw-semibold);
   text-wrap: balance;
 }
 

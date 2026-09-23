@@ -2,7 +2,6 @@
    1 lead · 2 body (the default) · 3 small.
    Level 3 is the floor: nothing a user must read goes below 14px. */
 .body {
-  font-weight: var(--fw-regular);
   text-wrap: pretty;
 }
 

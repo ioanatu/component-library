@@ -102,6 +102,9 @@
   color: inherit;
 }
 
+/* Families must not declare font-weight of their own: theirs is emitted later at
+   the same specificity and would outrank these, leaving the prop inert. Each
+   family defaults the prop instead. */
 .regular {
   font-weight: var(--fw-regular);
 }

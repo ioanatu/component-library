@@ -27,7 +27,7 @@ export function Label({
   optional = false,
   disabled = false,
   tone = 'default',
-  weight,
+  weight = 'semibold',
   unbounded = false,
   lines,
   className,

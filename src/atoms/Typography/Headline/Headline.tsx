@@ -30,7 +30,7 @@ export interface HeadlineProps extends BaseTypographyProps {
 export function Headline({
   level = 2,
   tone = 'default',
-  weight,
+  weight = 'semibold',
   ruled = false,
   unbounded = false,
   lines,

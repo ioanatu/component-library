@@ -17,7 +17,7 @@ export interface BodyProps extends BaseTypographyProps {
 export function Body({
   level = 2,
   tone = 'default',
-  weight,
+  weight = 'regular',
   mono = false,
   unbounded = false,
   lines,

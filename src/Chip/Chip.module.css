@@ -172,6 +172,10 @@
  * --chip-shade, so every state keeps its text above 4.5:1.
  */
 .filled {
+  /* Tonal fill casts the ink shadow, as the accent Button does; the coloured
+     shadow belongs to a neutral surface. Carries the focus ring with it. */
+  --chip-accent: var(--shadow-strong);
+
   --chip-hover: color-mix(in srgb, var(--chip-fill), var(--chip-shade) 8%);
   --chip-active: color-mix(in srgb, var(--chip-fill), var(--chip-shade) 14%);
   --chip-ink-hover: var(--chip-on-fill);
@@ -197,7 +201,7 @@
   --chip-pad: 8px;
   height: 24px;
   font-size: 11px;
-  border: 1.5px solid;
+  border: 1px solid;
 }
 
 .md {

@@ -36,7 +36,12 @@ export function Caption({
   return (
     <Tag
       className={cx(
-        sharedClasses({ tone: tone ?? (error ? undefined : 'muted'), weight, unbounded, lines }),
+        sharedClasses({
+          tone: tone ?? (error ? undefined : 'muted'),
+          weight: weight ?? (error ? 'medium' : 'regular'),
+          unbounded,
+          lines,
+        }),
         styles.caption,
         styles[`level${level}`],
         error && styles.error,
