@@ -30,7 +30,7 @@ export const TONE_ICON: Record<Tone, string> = {
 import type { ReactNode, CSSProperties } from 'react';
 import { Code, Eyebrow, Headline, Body, Display } from '../../src/Typography';
 import { useTheme } from './OffsetDesignSystem-new';
-import { Chip, ButtonNew } from '../../src';
+import { Chip, ButtonNew, Toggle } from '../../src';
 import { ACCENTS } from './OffsetDesignSystem-new';
 
 /** Bordered surface with the offset shadow. Neutral fill → accent shadow. */
@@ -423,46 +423,11 @@ export const SpecTable = ({ title, rows }: { title: string; rows: [string, React
   </div>
 );
 
-/* ------------------------------------------------------------------ *
- * Page sections
- * ------------------------------------------------------------------ */
-
 export const ThemeToggle = ({ id }: { id?: string }) => {
   const { theme, setTheme } = useTheme();
   const dark = theme === 'dark';
   return (
-    <button
-      id={id}
-      type="button"
-      role="switch"
-      aria-checked={dark}
-      aria-label="Dark mode"
-      onClick={() => setTheme(dark ? 'light' : 'dark')}
-      style={{
-        width: 60,
-        height: 32,
-        flex: 'none',
-        padding: 3,
-        border: 'var(--bw) solid var(--ink)',
-        borderRadius: 'var(--r-full)',
-        background: 'var(--surface)',
-        boxShadow: '2px 2px 0 var(--accent)',
-        cursor: 'pointer',
-        display: 'flex',
-        justifyContent: dark ? 'flex-end' : 'flex-start',
-        transition: 'all var(--dur-fast) var(--ease)',
-      }}
-    >
-      <span
-        style={{
-          width: 24,
-          height: 24,
-          borderRadius: 'var(--r-full)',
-          background: 'var(--ink)',
-          display: 'block',
-        }}
-      />
-    </button>
+    <Toggle id={id} label="" checked={dark} onChange={() => setTheme(dark ? 'light' : 'dark')} />
   );
 };
 

@@ -16,3 +16,5 @@ export type { InputProps } from './Input/Input';
 export { Input } from './Input/Input';
 export type { TextAreaProps } from './TextArea/TextArea';
 export { TextArea } from './TextArea/TextArea';
+export type { ToggleProps } from './Toggle/Toggle';
+export { Toggle } from './Toggle/Toggle';

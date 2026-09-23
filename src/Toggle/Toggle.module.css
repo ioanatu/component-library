@@ -1,0 +1,163 @@
+/**
+ * Toggle — the OFFSET switch: a 2px ink track with the offset shadow and an ink
+ * thumb that travels its own width.
+ *
+ * Sizes set only the track's width and height; the thumb and its travel are
+ * derived from those, so the three stay proportional without three sets of
+ * numbers to keep in step.
+ */
+.field {
+  --tg-track-w: 60px;
+  --tg-track-h: 32px;
+  --tg-pad: 3px;
+  --tg-thumb: calc(var(--tg-track-h) - 4px - 2 * var(--tg-pad));
+  --tg-travel: calc(var(--tg-track-w) - 4px - 2 * var(--tg-pad) - var(--tg-thumb));
+
+  box-sizing: border-box;
+  display: block;
+}
+
+.sm {
+  --tg-track-w: 44px;
+  --tg-track-h: 24px;
+  --tg-thumb: calc(var(--tg-track-h) - 2px - 2 * var(--tg-pad));
+  --tg-travel: calc(var(--tg-track-w) - 2px - 2 * var(--tg-pad) - var(--tg-thumb));
+}
+
+.md {
+  --tg-track-w: 60px;
+  --tg-track-h: 32px;
+}
+
+.lg {
+  --tg-track-w: 72px;
+  --tg-track-h: 38px;
+}
+
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: 24px;
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.track {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  align-items: center;
+  inline-size: var(--tg-track-w);
+  block-size: var(--tg-track-h);
+  padding: var(--tg-pad);
+
+  background-color: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-round);
+  box-shadow: 2px 2px 0 var(--accent);
+  transition:
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sm .track {
+  padding: 2px;
+}
+
+.thumb {
+  inline-size: var(--tg-thumb);
+  block-size: var(--tg-thumb);
+
+  background-color: var(--ink);
+  border-radius: var(--radius-round);
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.input:checked ~ .track {
+  background-color: var(--accent);
+}
+
+.input:checked ~ .track .thumb {
+  transform: translateX(var(--tg-travel));
+}
+
+[dir='rtl'] .input:checked ~ .track .thumb {
+  transform: translateX(calc(-1 * var(--tg-travel)));
+}
+
+.input:focus-visible ~ .track {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.row:hover .input:enabled ~ .track {
+  background-color: var(--accent-wash);
+}
+
+.row:hover .input:enabled:checked ~ .track {
+  background-color: var(--accent-strong);
+}
+
+.input:disabled ~ .track {
+  background-color: var(--sunken);
+  border-color: var(--ink-subtle);
+  box-shadow: none;
+}
+
+.input:disabled ~ .track .thumb {
+  background-color: var(--ink-subtle);
+}
+
+.invalid .track {
+  border-color: var(--danger);
+  box-shadow: 2px 2px 0 var(--danger);
+}
+
+.labelText {
+  min-inline-size: 0;
+}
+
+/* Messages line up under the label, not under the track. */
+.messages {
+  display: grid;
+  gap: 2px;
+  margin-block-start: 4px;
+  margin-inline-start: calc(var(--tg-track-w) + var(--space-3));
+}
+
+.error {
+  display: flex;
+  gap: 6px;
+}
+
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .thumb {
+    transition: none;
+  }
+}

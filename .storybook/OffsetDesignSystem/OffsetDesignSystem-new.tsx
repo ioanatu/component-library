@@ -32,7 +32,7 @@ import {
   ThemeToggle,
   type Tone,
 } from './components';
-import { Checkbox } from '../../src';
+import { Checkbox, Toggle } from '../../src';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
@@ -116,7 +116,6 @@ const ThemeContext = createContext<ThemeCtx>({
 });
 export const useTheme = () => useContext(ThemeContext);
 
-/** Scope, don't fork: a theme is a set of semantic token values under one attribute. */
 export const ThemeProvider = ({
   theme,
   density = 'comfortable',
