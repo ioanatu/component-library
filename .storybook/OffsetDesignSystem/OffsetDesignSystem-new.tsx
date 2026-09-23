@@ -32,6 +32,7 @@ import {
   ThemeToggle,
   type Tone,
 } from './components';
+import { Checkbox } from '../../src';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
@@ -1435,68 +1436,10 @@ export function Toolbar() {
                     Checkbox &amp; radio
                   </Body>
                   <div style={{ display: 'grid', gap: 11 }}>
-                    <Body
-                      as="label"
-                      level={3}
-                      style={{ display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer' }}
-                    >
-                      <span
-                        style={{
-                          width: 22,
-                          height: 22,
-                          flex: 'none',
-                          border: 'var(--bw) solid var(--ink)',
-                          borderRadius: 6,
-                          background: 'var(--accent)',
-                          display: 'grid',
-                          placeItems: 'center',
-                          color: 'var(--on-accent)',
-                          fontSize: 13,
-                          fontWeight: 700,
-                        }}
-                      >
-                        ✓
-                      </span>
-                      Notify the team
-                    </Body>
-                    <Body
-                      as="label"
-                      level={3}
-                      style={{ display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer' }}
-                    >
-                      <span
-                        style={{
-                          width: 22,
-                          height: 22,
-                          flex: 'none',
-                          border: 'var(--bw) solid var(--ink)',
-                          borderRadius: 6,
-                          background: 'var(--surface)',
-                        }}
-                      />
-                      Archive when finished
-                    </Body>
-                    <Body
-                      as="label"
-                      level={3}
-                      tone="subtle"
-                      style={{ display: 'flex', alignItems: 'center', gap: 11 }}
-                    >
-                      <span
-                        style={{
-                          width: 22,
-                          height: 22,
-                          flex: 'none',
-                          border: 'var(--bw) solid var(--ink-subtle)',
-                          borderRadius: 6,
-                          background: 'var(--sunken)',
-                        }}
-                      />
-                      Require approval{' '}
-                      <Body as="span" level={3} mono tone="inherit">
-                        (pro)
-                      </Body>
-                    </Body>
+                    <Checkbox label="Notify the team" defaultChecked />
+                    <Checkbox label="Archive when finished" />
+                    <Checkbox label="Require approval" disabled />
+
                     <div style={{ display: 'flex', gap: 20, marginTop: 2 }}>
                       <Body
                         as="label"
