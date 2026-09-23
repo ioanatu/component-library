@@ -9,15 +9,27 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ButtonNew } from '../src/ButtonNew/ButtonNew';
-import { Input } from '../src/Input/Input';
-import { Body, Caption, Code, Display, Eyebrow, Headline } from '../src/atoms/Typography';
-import TextArea from '../src/TextArea/TextArea';
-import { Chip } from '../src';
-
-/* ------------------------------------------------------------------ *
- * Tokens
- * ------------------------------------------------------------------ */
+import { ButtonNew } from '../../src/ButtonNew/ButtonNew';
+import { Input } from '../../src/Input/Input';
+import { Body, Caption, Code, Display, Eyebrow, Headline } from '../../src/atoms/Typography';
+import TextArea from '../../src/TextArea/TextArea';
+import { Chip } from '../../src';
+import {
+  Alert,
+  Badge,
+  Card,
+  DataTable,
+  Grid,
+  inputStyle,
+  Pre,
+  Section,
+  Skeleton,
+  SpecTable,
+  Spinner,
+  SubSection,
+  Tag,
+  type Tone,
+} from './components';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
@@ -74,421 +86,6 @@ const TOKENS_CSS = `
   }
 }
 `;
-
-/* ------------------------------------------------------------------ *
- * Primitives
- * ------------------------------------------------------------------ */
-
-/** Bordered surface with the offset shadow. Neutral fill → accent shadow. */
-const Card = ({
-  children,
-  style,
-  shadow = 4,
-  pad = 22,
-}: {
-  children: ReactNode;
-  style?: CSSProperties;
-  shadow?: number;
-  pad?: number | string;
-}) => (
-  <div
-    style={{
-      border: 'var(--bw) solid var(--ink)',
-      borderRadius: 'var(--r-md)',
-      background: 'var(--surface)',
-      boxShadow: `${shadow}px ${shadow}px 0 var(--accent)`,
-      padding: pad,
-      minWidth: 0,
-      ...style,
-    }}
-  >
-    {children}
-  </div>
-);
-
-/**
- * Code samples. The dark form is the library's block treatment; the light form
- * strips the inverted surface back to plain muted text for inline token lists.
- */
-const Pre = ({ children, dark = true }: { children: ReactNode; dark?: boolean }) => (
-  <Code
-    block
-    level={2}
-    style={
-      dark
-        ? { borderRadius: 'var(--r-md)' }
-        : {
-            padding: 0,
-            border: 'none',
-            background: 'transparent',
-            color: 'var(--ink-muted)',
-          }
-    }
-  >
-    {children}
-  </Code>
-);
-
-const Tag = ({
-  children,
-  tone = 'accent',
-}: {
-  children: ReactNode;
-  tone?: 'accent' | 'success' | 'danger' | 'muted';
-}) => {
-  const color = tone === 'muted' ? 'var(--ink-subtle)' : `var(--${tone})`;
-  return (
-    <Eyebrow
-      as="span"
-      level={2}
-      style={{
-        padding: '3px 9px',
-        border: `var(--bw) solid ${color}`,
-        borderRadius: 'var(--r-full)',
-        color,
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {children}
-    </Eyebrow>
-  );
-};
-
-const Section = ({
-  id,
-  eyebrow,
-  title,
-  lead,
-  children,
-  last = false,
-}: {
-  id: string;
-  eyebrow?: string;
-  title?: string;
-  lead?: ReactNode;
-  children?: ReactNode;
-  last?: boolean;
-}) => (
-  <section id={id} style={{ paddingBottom: last ? 44 : 'var(--sec-gap)' }}>
-    {eyebrow ? <Eyebrow style={{ marginBottom: 6 }}>{eyebrow}</Eyebrow> : null}
-    {title ? (
-      <Headline level={2} ruled style={{ marginBottom: 24 }}>
-        {title}
-      </Headline>
-    ) : null}
-    {lead ? (
-      <Body level={2} tone="muted" style={{ marginBottom: 22 }}>
-        {lead}
-      </Body>
-    ) : null}
-    {children}
-  </section>
-);
-
-const SubSection = ({
-  id,
-  title,
-  badge,
-  lead,
-  children,
-}: {
-  id: string;
-  title: string;
-  badge?: string;
-  lead?: ReactNode;
-  children: ReactNode;
-}) => (
-  <section id={id} style={{ paddingBottom: 'var(--sec-gap)' }}>
-    <Headline level={3} style={{ marginBottom: 4 }}>
-      {title}
-      {badge ? (
-        <span style={{ marginLeft: 8, verticalAlign: 'middle' }}>
-          <Tag>{badge}</Tag>
-        </span>
-      ) : null}
-    </Headline>
-    {lead ? (
-      <Body level={2} tone="muted" style={{ marginBottom: 22 }}>
-        {lead}
-      </Body>
-    ) : null}
-    {children}
-  </section>
-);
-
-const Grid = ({
-  min = 280,
-  gap = 16,
-  children,
-  style,
-}: {
-  min?: number;
-  gap?: number;
-  children: ReactNode;
-  style?: CSSProperties;
-}) => (
-  <div
-    style={{
-      display: 'grid',
-      gridTemplateColumns: `repeat(auto-fit,minmax(${min}px,1fr))`,
-      gap,
-      ...style,
-    }}
-  >
-    {children}
-  </div>
-);
-
-const Spinner = ({ size = 22, color = 'var(--ink)' }: { size?: number; color?: string }) => (
-  <span
-    aria-hidden="true"
-    style={{
-      width: size,
-      height: size,
-      flex: 'none',
-      display: 'block',
-      border: `${size > 16 ? 3 : 2}px solid ${color}`,
-      borderTopColor: 'transparent',
-      borderRadius: '50%',
-      animation: 'off-spin .7s linear infinite',
-    }}
-  />
-);
-
-const inputStyle = (state?: 'error' | 'disabled'): CSSProperties => ({
-  width: '100%',
-  fontFamily: 'var(--font-sans)',
-  fontSize: 'var(--fs-md)',
-  padding: '11px 14px',
-  border: `var(--bw) solid ${state === 'error' ? 'var(--danger)' : state === 'disabled' ? 'var(--ink-subtle)' : 'var(--ink)'}`,
-  borderRadius: 'var(--r-sm)',
-  background: state === 'disabled' ? 'var(--sunken)' : 'var(--surface)',
-  color: state === 'disabled' ? 'var(--ink-subtle)' : 'var(--ink)',
-  boxShadow: `2px 2px 0 ${state === 'error' ? 'var(--danger)' : 'var(--border-subtle)'}`,
-  cursor: state === 'disabled' ? 'not-allowed' : undefined,
-});
-
-/* ------------------------------------------------------------------ *
- * Feedback
- * ------------------------------------------------------------------ */
-
-export type Tone = 'info' | 'success' | 'warning' | 'danger';
-
-const TONE_COLOR: Record<Tone, string> = {
-  info: 'var(--accent)',
-  success: 'var(--success)',
-  warning: 'var(--warning)',
-  danger: 'var(--danger)',
-};
-const TONE_WASH: Record<Tone, string> = {
-  info: 'var(--surface)',
-  success: 'var(--success-wash)',
-  warning: 'var(--warning-wash)',
-  danger: 'var(--danger-wash)',
-};
-const TONE_ICON: Record<Tone, string> = { info: 'ⓘ', success: '✓', warning: '⚠', danger: '⚠' };
-
-/** Color is always paired with an icon and a word, so meaning survives grayscale. */
-export const Alert = ({
-  tone,
-  title,
-  children,
-  action,
-}: {
-  tone: Tone;
-  title: string;
-  children?: ReactNode;
-  action?: ReactNode;
-}) => (
-  <div
-    role={tone === 'danger' ? 'alert' : undefined}
-    style={{
-      display: 'flex',
-      gap: 14,
-      alignItems: 'flex-start',
-      border: 'var(--bw) solid var(--ink)',
-      borderLeft: `6px solid ${TONE_COLOR[tone]}`,
-      borderRadius: 'var(--r-md)',
-      background: TONE_WASH[tone],
-      boxShadow: tone === 'info' ? '4px 4px 0 var(--accent)' : '4px 4px 0 var(--ink)',
-      padding: '16px 20px',
-    }}
-  >
-    <span aria-hidden="true" style={{ fontSize: 16, lineHeight: 1.5, color: TONE_COLOR[tone] }}>
-      {TONE_ICON[tone]}
-    </span>
-    <div style={{ minWidth: 0 }}>
-      <Body level={3} weight="semibold" style={{ marginBottom: 3 }}>
-        {title}
-      </Body>
-      {children ? (
-        <Body level={3} tone="muted">
-          {children}
-        </Body>
-      ) : null}
-    </div>
-    {action ? <div style={{ marginLeft: 'auto', flex: 'none' }}>{action}</div> : null}
-  </div>
-);
-
-export const Badge = ({
-  children,
-  tone = 'neutral',
-  solid = false,
-}: {
-  children: ReactNode;
-  tone?: Tone | 'neutral';
-  solid?: boolean;
-}) => {
-  const neutral = tone === 'neutral';
-  return (
-    <Body
-      as="span"
-      level={3}
-      mono
-      weight="medium"
-      style={{
-        padding: '4px 12px',
-        border: `var(--bw) solid ${neutral ? 'var(--ink-subtle)' : 'var(--ink)'}`,
-        borderRadius: 'var(--r-full)',
-        background: solid ? 'var(--accent)' : neutral ? 'var(--sunken)' : TONE_WASH[tone as Tone],
-        color: solid ? 'var(--on-accent)' : neutral ? 'var(--ink-muted)' : 'var(--ink)',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      {children}
-    </Body>
-  );
-};
-
-const Skeleton = ({ h = 14, w = '100%' }: { h?: number; w?: number | string }) => (
-  <span
-    aria-hidden="true"
-    style={{
-      display: 'block',
-      height: h,
-      width: w,
-      borderRadius: h > 30 ? 'var(--r-sm)' : 'var(--r-full)',
-      background: 'var(--sunken)',
-      border: '1px solid var(--border-subtle)',
-      animation: 'off-pulse 1.5s ease-in-out infinite',
-    }}
-  />
-);
-
-/* ------------------------------------------------------------------ *
- * Table helpers
- * ------------------------------------------------------------------ */
-
-/** Heavy outside, quiet inside — the container is bordered, rows divide subtly. */
-const DataTable = <T,>({
-  columns,
-  rows,
-  cell,
-  minWidth = 620,
-  header,
-}: {
-  columns: { key: string; label: string; span: string }[];
-  rows: T[];
-  cell: (row: T, key: string) => ReactNode;
-  minWidth?: number;
-  header?: ReactNode;
-}) => {
-  const template = columns.map((c) => c.span).join(' ');
-  return (
-    <div
-      style={{
-        border: 'var(--bw) solid var(--ink)',
-        borderRadius: 'var(--r-md)',
-        overflow: 'hidden',
-        boxShadow: '4px 4px 0 var(--accent)',
-      }}
-    >
-      {header}
-      <div style={{ overflowX: 'auto' }}>
-        <div style={{ minWidth }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: template,
-              background: 'var(--ink)',
-              color: 'var(--surface)',
-            }}
-          >
-            {columns.map((c) => (
-              <Body
-                key={c.key}
-                level={3}
-                weight="semibold"
-                tone="inherit"
-                style={{ padding: '11px 18px' }}
-              >
-                {c.label}
-              </Body>
-            ))}
-          </div>
-          {rows.map((row, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: template,
-                borderTop:
-                  i === 0 ? 'var(--bw) solid var(--ink)' : '1px solid var(--border-subtle)',
-                background: i % 2 ? 'var(--sunken)' : 'var(--surface)',
-              }}
-            >
-              {columns.map((c) => (
-                <div key={c.key} style={{ padding: '12px 18px', minWidth: 0 }}>
-                  {cell(row, c.key)}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SpecTable = ({ title, rows }: { title: string; rows: [string, ReactNode][] }) => (
-  <div
-    style={{
-      border: 'var(--bw) solid var(--ink)',
-      borderRadius: 'var(--r-md)',
-      overflow: 'hidden',
-      boxShadow: '4px 4px 0 var(--accent)',
-    }}
-  >
-    <Body
-      level={3}
-      weight="semibold"
-      tone="inherit"
-      style={{ padding: '12px 16px', background: 'var(--ink)', color: 'var(--surface)' }}
-    >
-      {title}
-    </Body>
-    <div style={{ background: 'var(--surface)' }}>
-      {rows.map(([k, v], i) => (
-        <div
-          key={k}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1.5fr',
-            borderTop: i === 0 ? 'var(--bw) solid var(--ink)' : '1px solid var(--border-subtle)',
-          }}
-        >
-          <Body level={3} mono style={{ padding: '9px 16px' }}>
-            {k}
-          </Body>
-          <Body level={3} tone="muted" style={{ padding: '9px 16px' }}>
-            {v}
-          </Body>
-        </div>
-      ))}
-    </div>
-  </div>
-);
 
 /* ------------------------------------------------------------------ *
  * Theme context
@@ -988,8 +585,8 @@ const COVERAGE: [string, string, 'STABLE' | 'NEW' | 'EXTENDED' | 'PLANNED' | 'WI
   ['Feedback', 'Badge, Alert, Toast, Progress, Spinner, Skeleton, EmptyState', 'PLANNED'],
   ['Overlays', 'Modal, Drawer, Popover, Tooltip, ConfirmDialog', 'PLANNED'],
   ['Navigation', 'Tabs, TabMenu, Breadcrumb, Pagination, SideNav', 'PLANNED'],
-  ['Data', 'Table, Avatar, AvatarGroup, Stat, DescriptionList, Chip', 'NEW'],
-  ['Layout', 'Card, Stack, Divider, Toolbar', 'STABLE'],
+  ['Data', 'Table, Avatar, AvatarGroup, Stat, DescriptionList, Chip', 'PLANNED'],
+  ['Layout', 'Card, Stack, Divider, Toolbar', 'PLANNED'],
   ['Not yet', 'DatePicker, Combobox, FileUpload, DataGrid, Charts', 'PLANNED'],
 ];
 
@@ -1052,7 +649,7 @@ export default function OffsetDesignSystem({
   const [modal, setModal] = useState(false);
   const [toast, setToast] = useState(false);
 
-  const toastTimer = useRef<number>();
+  const toastTimer = useRef<number | null>(null);
   const modalTrigger = useRef<HTMLElement | null>(null);
   const dialogInput = useRef<HTMLInputElement>(null);
 
@@ -1087,7 +684,14 @@ export default function OffsetDesignSystem({
     return () => document.removeEventListener('keydown', onKey);
   }, [modal, closeModal]);
 
-  useEffect(() => () => window.clearTimeout(toastTimer.current), []);
+  useEffect(
+    () => () => {
+      if (toastTimer.current) {
+        window.clearTimeout(toastTimer.current);
+      }
+    },
+    [],
+  );
 
   const themeCtx = useMemo(() => ({ theme, setTheme, accent, setAccent }), [theme, accent]);
   const activeTab = TABS.find((t) => t.id === tab) ?? TABS[0];
@@ -1484,9 +1088,9 @@ export function Toolbar() {
           >
             <Grid min={280}>
               <Card>
-                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
+                <Headline level={5} style={{ marginBottom: 14 }}>
                   Spacing — 4px base
-                </Body>
+                </Headline>
                 <div style={{ display: 'grid', gap: 8 }}>
                   {[
                     ['--space-1', 4, 'icon gap'],
@@ -1531,9 +1135,9 @@ export function Toolbar() {
               </Card>
 
               <Card>
-                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
+                <Headline level={5} style={{ marginBottom: 14 }}>
                   Radius &amp; border
-                </Body>
+                </Headline>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 16 }}>
                   {[
                     ['sm · 8', 8],
@@ -1569,9 +1173,9 @@ export function Toolbar() {
               </Card>
 
               <Card>
-                <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 6 }}>
+                <Headline level={5} style={{ marginBottom: 6 }}>
                   Elevation — the offset rule
-                </Body>
+                </Headline>
                 <Body level={3} tone="muted" style={{ marginBottom: 16 }}>
                   Offset always travels down-right at 45°, never blurs, never uses alpha.
                 </Body>
@@ -1879,7 +1483,7 @@ export function Toolbar() {
                   [
                     'loading',
                     <>
-                      spinner replaces icon, width held, <Code>aria-busy</Code>
+                      spinner replaces icon, width held, <Code level={2}>aria-busy</Code>
                     </>,
                   ],
                 ]}
@@ -3327,29 +2931,34 @@ export function Toolbar() {
             }}
           >
             <Body level={3} tone="muted">
-              OFFSET Design System · v2.0.0 · React + TypeScript
+              OFFSET Design System · v1.0.0 · React + TypeScript
             </Body>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-              {['Storybook', 'GitHub', 'Figma library', 'Changelog'].map((label) => (
-                <Body
+              {['Offset', 'GitHub', 'Figma library', 'Changelog'].map((label) => (
+                <ButtonNew
                   key={label}
-                  as="a"
-                  href={label === 'Changelog' ? '#governance' : '#top'}
-                  level={3}
-                  weight="semibold"
-                  className="off-press off-press-sm"
-                  style={{
-                    padding: '9px 18px',
-                    border: 'var(--bw) solid var(--ink)',
-                    borderRadius: 'var(--r-md)',
-                    background: 'var(--surface)',
-                    color: 'var(--ink)',
-                    boxShadow: '3px 3px 0 var(--accent)',
-                    textDecoration: 'none',
+                  variant="secondary"
+                  size="sm"
+                  elevation="sm"
+                  // as="a"
+                  // href={label === 'Changelog' ? '#governance' : '#top'}
+                  onClick={() => {
+                    if (label === 'GitHub') {
+                      window.open('https://github.com/ioanatu/component-library', '_blank');
+                    } else if (label === 'Figma library') {
+                      window.open(
+                        'https://www.figma.com/community/file/1261870597869051550',
+                        '_blank',
+                      );
+                    } else if (label === 'Changelog') {
+                      window.location.hash = '#governance';
+                    } else if (label === 'Offset') {
+                      window.location.hash = '#top';
+                    }
                   }}
                 >
                   {label}
-                </Body>
+                </ButtonNew>
               ))}
             </div>
           </footer>
