@@ -35,3 +35,11 @@ export type ChipFill = (typeof chipFills)[number];
 
 export const cardVariants = ['shadow', 'flat'] as const;
 export type CardVariant = (typeof cardVariants)[number];
+
+/** Preferred side for a tooltip. It flips to the opposite one on collision. */
+export const tooltipPlacements = ['top', 'right', 'bottom', 'left'] as const;
+export type TooltipPlacement = (typeof tooltipPlacements)[number];
+
+/** Tooltip fill. Named for the light theme: dark inverts, light sits on --surface. */
+export const tooltipVariants = ['dark', 'light'] as const;
+export type TooltipVariant = (typeof tooltipVariants)[number];

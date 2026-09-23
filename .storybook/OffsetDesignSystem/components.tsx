@@ -30,7 +30,7 @@ export const TONE_ICON: Record<Tone, string> = {
 import type { ReactNode, CSSProperties } from 'react';
 import { Code, Eyebrow, Headline, Body, Display } from '../../src/Typography';
 import { useTheme } from './OffsetDesignSystem-new';
-import { Chip, ButtonNew, Toggle } from '../../src';
+import { Chip, ButtonNew, Toggle, Tooltip } from '../../src';
 import { ACCENTS } from './OffsetDesignSystem-new';
 
 /** Bordered surface with the offset shadow. Neutral fill → accent shadow. */
@@ -427,7 +427,9 @@ export const ThemeToggle = ({ id }: { id?: string }) => {
   const { theme, setTheme } = useTheme();
   const dark = theme === 'dark';
   return (
-    <Toggle id={id} label="" checked={dark} onChange={() => setTheme(dark ? 'light' : 'dark')} />
+    <Tooltip content={`Switch to ${dark ? 'light' : 'dark'} theme.`}>
+      <Toggle id={id} label="" checked={dark} onChange={() => setTheme(dark ? 'light' : 'dark')} />
+    </Tooltip>
   );
 };
 

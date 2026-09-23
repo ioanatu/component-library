@@ -18,3 +18,5 @@ export type { TextAreaProps } from './TextArea/TextArea';
 export { TextArea } from './TextArea/TextArea';
 export type { ToggleProps } from './Toggle/Toggle';
 export { Toggle } from './Toggle/Toggle';
+export type { TooltipProps } from './Tooltip/Tooltip';
+export { Tooltip } from './Tooltip/Tooltip';

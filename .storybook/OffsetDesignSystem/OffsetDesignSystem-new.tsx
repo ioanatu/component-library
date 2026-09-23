@@ -32,7 +32,7 @@ import {
   ThemeToggle,
   type Tone,
 } from './components';
-import { Checkbox, Toggle } from '../../src';
+import { Checkbox } from '../../src';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';

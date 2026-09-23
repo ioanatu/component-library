@@ -1,0 +1,164 @@
+/**
+ * Tooltip — 2px ink border and the offset shadow, matching the design page's
+ * live tooltip. Two fills: dark (inverted) and light (sits on --surface).
+ * --ink and --page both flip with the theme, so dark stays inverted in either.
+ */
+.wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.tip {
+  /* Puts the arrow's centre on the border box, so its fill hides that border. */
+  --tip-arrow-offset: calc(-1 * (2px + var(--tip-arrow) / 2));
+
+  box-sizing: border-box;
+  position: absolute;
+  z-index: var(--tip-z, 30);
+  inline-size: max-content;
+  max-inline-size: var(--tip-max);
+
+  background-color: var(--tip-fill);
+  color: var(--tip-text);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: 4px 4px 0 var(--accent);
+  animation: tip-in 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dark {
+  --tip-fill: var(--ink);
+  --tip-text: var(--page);
+}
+
+.light {
+  --tip-fill: var(--surface);
+  --tip-text: var(--ink);
+}
+
+/* The gap clears the arrow, which projects about 0.7 of its own size. */
+.sm {
+  --tip-gap: 12px;
+  --tip-arrow: 10px;
+  --tip-max: 180px;
+
+  padding: 4px 6px;
+}
+
+.md {
+  --tip-gap: 14px;
+  --tip-arrow: 12px;
+  --tip-max: 230px;
+
+  padding: 6px 8px;
+}
+
+.lg {
+  --tip-gap: 16px;
+  --tip-arrow: 14px;
+  --tip-max: 300px;
+
+  padding: 8px 12px;
+}
+
+/* Centring uses `translate` so the entrance animation keeps `transform`. */
+.top {
+  inset-block-end: calc(100% + var(--tip-gap));
+  inset-inline-start: 50%;
+  translate: -50% 0;
+}
+
+.bottom {
+  inset-block-start: calc(100% + var(--tip-gap));
+  inset-inline-start: 50%;
+  translate: -50% 0;
+}
+
+.left {
+  inset-inline-end: calc(100% + var(--tip-gap));
+  inset-block-start: 50%;
+  translate: 0 -50%;
+}
+
+.right {
+  inset-inline-start: calc(100% + var(--tip-gap));
+  inset-block-start: 50%;
+  translate: 0 -50%;
+}
+
+/**
+ * Arrow: a rotated square, half inside the bubble. The outward two edges carry
+ * the border and form the point; the inward half is unbordered fill, which
+ * covers the bubble's own border where they meet. Those two edges are physical,
+ * because the rotation is — hence the RTL overrides for the inline placements.
+ */
+.tip::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  inline-size: var(--tip-arrow);
+  block-size: var(--tip-arrow);
+  background-color: var(--tip-fill);
+  border: 0 solid var(--ink);
+  rotate: 45deg;
+}
+
+.top::after {
+  inset-block-end: var(--tip-arrow-offset);
+  inset-inline-start: calc(50% - var(--tip-arrow) / 2);
+  border-block-end-width: 2px;
+  border-right-width: 2px;
+}
+
+.bottom::after {
+  inset-block-start: var(--tip-arrow-offset);
+  inset-inline-start: calc(50% - var(--tip-arrow) / 2);
+  border-block-start-width: 2px;
+  border-left-width: 2px;
+}
+
+.left::after {
+  inset-inline-end: var(--tip-arrow-offset);
+  inset-block-start: calc(50% - var(--tip-arrow) / 2);
+  border-block-start-width: 2px;
+  border-right-width: 2px;
+}
+
+.right::after {
+  inset-inline-start: var(--tip-arrow-offset);
+  inset-block-start: calc(50% - var(--tip-arrow) / 2);
+  border-block-end-width: 2px;
+  border-left-width: 2px;
+}
+
+[dir='rtl'] .left::after {
+  border-block-start-width: 0;
+  border-right-width: 0;
+  border-block-end-width: 2px;
+  border-left-width: 2px;
+}
+
+[dir='rtl'] .right::after {
+  border-block-end-width: 0;
+  border-left-width: 0;
+  border-block-start-width: 2px;
+  border-right-width: 2px;
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip {
+    animation: none;
+  }
+}
