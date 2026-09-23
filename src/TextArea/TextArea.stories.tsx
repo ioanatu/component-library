@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { Body, Headline } from '../Typography';
 import { ButtonNew } from '../ButtonNew/ButtonNew';
 import { sizes, textAreaResizes } from '../types';
+import { Body, Headline } from '../Typography';
 import { TextArea } from './TextArea';
 
 /**

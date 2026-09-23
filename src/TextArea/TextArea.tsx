@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import type { ChangeEvent, ReactNode, Ref, TextareaHTMLAttributes } from 'react';
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
-import { Caption, Label } from '../Typography';
 import type { Size, TextAreaResize } from '../types';
+import { Caption, Label } from '../Typography';
 import styles from './TextArea.module.css';
 
 /**

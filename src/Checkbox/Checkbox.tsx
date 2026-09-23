@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import type { ChangeEvent, InputHTMLAttributes, ReactNode, Ref } from 'react';
 import { useCallback, useContext, useId, useLayoutEffect, useRef, useState } from 'react';
-import { Body, Caption } from '../Typography';
 import type { Size } from '../types';
+import { Body, Caption } from '../Typography';
 import styles from './Checkbox.module.css';
 import { CheckboxGroupContext } from './CheckboxContext';
 

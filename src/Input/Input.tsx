@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import type { ChangeEvent, InputHTMLAttributes, ReactNode, Ref } from 'react';
 import { useCallback, useId, useRef, useState } from 'react';
-import { Caption, Label } from '../Typography';
 import type { InputType, Size } from '../types';
+import { Caption, Label } from '../Typography';
 import styles from './Input.module.css';
 
 /**

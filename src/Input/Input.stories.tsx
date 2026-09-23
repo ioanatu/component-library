@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { Body, Headline } from '../Typography';
 import { ButtonNew } from '../ButtonNew/ButtonNew';
 import { inputTypes, sizes } from '../types';
+import { Body, Headline } from '../Typography';
 import { Input } from './Input';
 
 const SearchIcon = () => (
