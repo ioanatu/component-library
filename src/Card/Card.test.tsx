@@ -1,6 +1,6 @@
 import { createEvent, fireEvent, render, screen } from '@testing-library/react';
 import { createRef } from 'react';
-import { cardVariants } from '../types';
+import { cardElevations, sizes } from '../types';
 import { Card } from './Card';
 import styles from './Card.module.css';
 
@@ -55,20 +55,33 @@ describe('Card', () => {
     });
   });
 
-  describe('variant', () => {
-    it('carries the shadow by default, which is the base card and has no class', () => {
+  describe('elevation', () => {
+    it('sits at md by default', () => {
       const { container } = render(<Card title="Card" />);
-      expect(container.firstChild).toHaveClass(styles.card);
-      expect(container.firstChild).not.toHaveClass(styles.flat);
+      expect(container.firstChild).toHaveClass(styles.card, styles.elevationMd);
+      expect(container.firstChild).not.toHaveClass(styles.elevationFlat);
     });
 
     it('drops the shadow when flat', () => {
-      const { container } = render(<Card title="Card" variant="flat" />);
-      expect(container.firstChild).toHaveClass(styles.card, styles.flat);
+      const { container } = render(<Card title="Card" elevation="flat" />);
+      expect(container.firstChild).toHaveClass(styles.card, styles.elevationFlat);
     });
 
-    it.each(cardVariants)('renders the %s variant', (variant) => {
-      const { container } = render(<Card title="Card" variant={variant} />);
+    it.each(cardElevations)('renders the %s elevation', (elevation) => {
+      const { container } = render(<Card title="Card" elevation={elevation} />);
+      expect(container.firstChild).toHaveClass(styles.card);
+      expect((container.firstChild as HTMLElement).className).not.toContain('undefined');
+    });
+  });
+
+  describe('padding', () => {
+    it('sits at md by default', () => {
+      const { container } = render(<Card title="Card" />);
+      expect(container.firstChild).toHaveClass(styles.card, styles.padMd);
+    });
+
+    it.each(sizes)('renders the %s padding', (padding) => {
+      const { container } = render(<Card title="Card" padding={padding} />);
       expect(container.firstChild).toHaveClass(styles.card);
       expect((container.firstChild as HTMLElement).className).not.toContain('undefined');
     });
@@ -131,9 +144,12 @@ describe('Card', () => {
       expect(event.defaultPrevented).toBe(true);
     });
 
-    it('keeps the flat variant', () => {
-      render(<Card title="Go" href="#card" variant="flat" />);
-      expect(screen.getByRole('link', { name: 'Go' })).toHaveClass(styles.flat, styles.link);
+    it('keeps a flat elevation', () => {
+      render(<Card title="Go" href="#card" elevation="flat" />);
+      expect(screen.getByRole('link', { name: 'Go' })).toHaveClass(
+        styles.elevationFlat,
+        styles.link,
+      );
     });
 
     it('forwards its ref to the underlying anchor element', () => {

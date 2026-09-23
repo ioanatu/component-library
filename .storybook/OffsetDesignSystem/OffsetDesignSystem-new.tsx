@@ -9,14 +9,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ButtonNew } from '../../src/ButtonNew/ButtonNew';
-import { Input } from '../../src/Input/Input';
 import { Body, Caption, Code, Display, Eyebrow, Headline } from '../../src/Typography';
 import TextArea from '../../src/TextArea/TextArea';
 import {
   Alert,
   Badge,
-  Card,
   DataTable,
   Grid,
   Header,
@@ -32,7 +29,7 @@ import {
   ThemeToggle,
   type Tone,
 } from './components';
-import { Checkbox } from '../../src';
+import { Checkbox, Card, Input, ButtonNew } from '../../src';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
@@ -568,7 +565,7 @@ export function Toolbar() {
             last
           >
             <Grid min={260}>
-              <Card pad={20}>
+              <Card>
                 <Eyebrow style={{ marginBottom: 6 }}>Tier 1</Eyebrow>
                 <Headline level={4} weight="semibold" style={{ marginBottom: 8 }}>
                   Primitives
@@ -581,7 +578,7 @@ export function Toolbar() {
 --neutral-800: #1A1A1A
 --size-4: 16px`}</Pre>
               </Card>
-              <Card pad={20}>
+              <Card>
                 <Eyebrow style={{ marginBottom: 6 }}>Tier 2</Eyebrow>
                 <Headline level={4} style={{ marginBottom: 8 }}>
                   Semantic aliases
@@ -594,7 +591,7 @@ export function Toolbar() {
 --ink: var(--neutral-800)
 --space-4: var(--size-4)`}</Pre>
               </Card>
-              <Card pad={20}>
+              <Card>
                 <Eyebrow style={{ marginBottom: 6 }}>Rule</Eyebrow>
                 <Headline level={4} style={{ marginBottom: 8 }}>
                   One direction only
@@ -1185,7 +1182,7 @@ export function Toolbar() {
             title="Button"
             lead="The component the system was extrapolated from, now specified rather than merely shown: an anatomy, a complete state matrix, and a documented API."
           >
-            <Card pad={26} style={{ marginBottom: 18 }}>
+            <Card style={{ marginBottom: 18 }}>
               <Eyebrow style={{ marginBottom: 18 }}>Variants — one primary per view</Eyebrow>
               <div
                 style={{
@@ -1319,7 +1316,7 @@ export function Toolbar() {
             }
           >
             <Grid min={290}>
-              <Card pad={24} style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
+              <Card style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
                 <Input
                   label="Project name"
                   helper="Shown to everyone in the workspace."
@@ -1360,7 +1357,7 @@ export function Toolbar() {
                 />
               </Card>
 
-              <Card pad={24} style={{ display: 'grid', gap: 22, alignContent: 'start' }}>
+              <Card style={{ display: 'grid', gap: 22, alignContent: 'start' }}>
                 <div>
                   <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                     Select — listbox pattern
@@ -1546,7 +1543,7 @@ export function Toolbar() {
             lead="The largest gap in v1: nothing to report status, progress, error, or emptiness. Every tone below pairs its color with an icon and a word, so meaning survives grayscale and color blindness."
           >
             <div style={{ display: 'grid', gap: 16 }}>
-              <Card pad={24}>
+              <Card>
                 <Eyebrow style={{ marginBottom: 16 }}>Badge — status, not decoration</Eyebrow>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 11 }}>
                   <Badge tone="info">● In review</Badge>
@@ -1793,7 +1790,7 @@ export function Toolbar() {
             title="Navigation"
             lead="Tabs and TabMenu carry over from v1 with the roving-tabindex behaviour intact. Breadcrumb and Pagination close the gap that made it impossible to build a list-and-detail screen from the library alone."
           >
-            <Card pad={24} style={{ marginBottom: 16 }}>
+            <Card style={{ marginBottom: 16 }}>
               <nav aria-label="Breadcrumb" style={{ marginBottom: 26 }}>
                 <Body
                   as="ol"
@@ -2280,7 +2277,7 @@ export function Toolbar() {
                 <Body level={3} weight="bold" tone="success" style={{ marginBottom: 16 }}>
                   ✓ DO
                 </Body>
-                <Card pad={16} style={{ marginBottom: 18 }}>
+                <Card padding="sm" style={{ marginBottom: 18 }}>
                   <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                     Nested surfaces
                   </Body>
@@ -2316,11 +2313,11 @@ export function Toolbar() {
                 <Body level={3} weight="bold" tone="danger" style={{ marginBottom: 16 }}>
                   ✕ DON'T
                 </Body>
-                <Card pad={16} style={{ marginBottom: 18 }}>
+                <Card style={{ marginBottom: 18 }} padding="sm">
                   <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                     Nested surfaces
                   </Body>
-                  <Card pad={12}>
+                  <Card padding="sm">
                     <Body level={3} tone="muted">
                       Every level shouting the same shadow at the same distance.
                     </Body>
@@ -2333,7 +2330,7 @@ export function Toolbar() {
               </div>
             </Grid>
 
-            <Card pad={24} style={{ marginTop: 16 }}>
+            <Card style={{ marginTop: 16 }}>
               <Body as="h4" level={2} weight="semibold" style={{ marginBottom: 14 }}>
                 Voice — how components speak
               </Body>

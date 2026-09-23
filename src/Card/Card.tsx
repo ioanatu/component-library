@@ -1,9 +1,22 @@
 import clsx from 'clsx';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import type { CardVariant } from '../types';
+import type { CardElevation, Size } from '../types';
 import styles from './Card.module.css';
 
 type CardTitleLevel = 2 | 3 | 4 | 5 | 6;
+
+const ELEVATION_CLASS: Record<CardElevation, string> = {
+  flat: styles.elevationFlat,
+  sm: styles.elevationSm,
+  md: styles.elevationMd,
+  lg: styles.elevationLg,
+};
+
+const PADDING_CLASS: Record<Size, string> = {
+  sm: styles.padSm,
+  md: styles.padMd,
+  lg: styles.padLg,
+};
 
 /**
  * Bordered surface for a titled block of content.
@@ -21,7 +34,11 @@ type CardTitleLevel = 2 | 3 | 4 | 5 | 6;
  * assistive tech.
  * @param action - Node placed at the trailing edge of the title row, for a status
  * chip or a menu.
- * @param variant - shadow keeps the offset shadow, flat drops it. Default is shadow.
+ * @param elevation - flat drops the offset shadow; sm, md and lg set how far it
+ * sits from the face, and so how far the card travels on hover and press. Default
+ * is md. Use flat where cards stack densely or nest inside another bordered
+ * surface and the shadows would pile up.
+ * @param padding - Inner spacing: sm 16, md 20, lg 24. Default is md.
  * @param href - When set, the whole card is a link. Only use it on a card with no
  * other interactive content.
  * @param onClick - Receives the click event, so an href handler can call
@@ -35,7 +52,8 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick' |
   titleLevel?: CardTitleLevel;
   icon?: ReactNode;
   action?: ReactNode;
-  variant?: CardVariant;
+  elevation?: CardElevation;
+  padding?: Size;
   href?: string;
   children?: ReactNode;
   onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
@@ -47,7 +65,8 @@ export function Card({
   titleLevel = 3,
   icon,
   action,
-  variant = 'shadow',
+  elevation = 'md',
+  padding = 'md',
   href,
   className,
   children,
@@ -55,10 +74,10 @@ export function Card({
   ref,
   ...rest
 }: CardProps) {
-  /* shadow is the base card, so only flat has a class of its own. */
   const classes = clsx(
     styles.card,
-    styles[variant],
+    ELEVATION_CLASS[elevation],
+    PADDING_CLASS[padding],
     { [styles.link]: href !== undefined },
     className,
   );

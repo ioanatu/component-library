@@ -5,7 +5,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 20px;
 
   background-color: var(--surface-default);
   border: 2px solid var(--border-default);
@@ -20,8 +19,37 @@
     box-shadow 120ms ease;
 }
 
-.flat {
+/**
+ * The offset travels down-right at 45°, never blurs and never uses alpha, so the
+ * distance is the whole of the elevation. Hover and press both read it, so the
+ * three can never disagree. flat drops the shadow instead of shortening it.
+ */
+.elevationFlat {
   box-shadow: none;
+}
+
+.elevationSm {
+  --card-shadow-offset: 2px;
+}
+
+.elevationMd {
+  --card-shadow-offset: 4px;
+}
+
+.elevationLg {
+  --card-shadow-offset: 8px;
+}
+
+.padSm {
+  padding: 16px;
+}
+
+.padMd {
+  padding: 20px;
+}
+
+.padLg {
+  padding: 24px;
 }
 
 /**
@@ -46,18 +74,20 @@
 }
 
 /* A flat card has no shadow to grow, so it leans on the surface instead. */
-.flat.link:hover {
+.elevationFlat.link:hover {
   background-color: var(--surface-hover);
   box-shadow: none;
   transform: none;
 }
 
+/* Travels 2px into its own shadow, so the shadow gives up the same 2px. */
 .link:active {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--shadow-default);
+  box-shadow: calc(var(--card-shadow-offset) - 2px) calc(var(--card-shadow-offset) - 2px) 0
+    var(--shadow-default);
 }
 
-.flat.link:active {
+.elevationFlat.link:active {
   background-color: var(--surface-active);
   box-shadow: none;
   transform: none;

@@ -33,8 +33,9 @@ export type ChipVariant = (typeof chipVariants)[number];
 export const chipFills = ['outlined', 'filled', 'transparent'] as const;
 export type ChipFill = (typeof chipFills)[number];
 
-export const cardVariants = ['shadow', 'flat'] as const;
-export type CardVariant = (typeof cardVariants)[number];
+/** flat drops the card's offset shadow; the rest set how far it sits. */
+export const cardElevations = ['flat', 'sm', 'md', 'lg'] as const;
+export type CardElevation = (typeof cardElevations)[number];
 
 /** Preferred side for a tooltip. It flips to the opposite one on collision. */
 export const tooltipPlacements = ['top', 'right', 'bottom', 'left'] as const;

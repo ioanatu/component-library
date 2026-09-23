@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { Chip } from '../Chip/Chip';
-import { cardVariants } from '../types';
+import { cardElevations, sizes } from '../types';
 import { Card } from './Card';
 
 /**
@@ -31,7 +31,7 @@ import { Card } from './Card';
  *
  * ** All props example: **
  *
- * `<Card variant="flat" title="Token-driven" titleLevel={2} icon={<Mark />} action={<Chip label="ready" />} href="/tokens" onClick={onClick}>Every value is a CSS custom property.</Card>`
+ * `<Card elevation="flat" padding="lg" title="Token-driven" titleLevel={2} icon={<Mark />} action={<Chip label="ready" />} href="/tokens" onClick={onClick}>Every value is a CSS custom property.</Card>`
  *
  */
 
@@ -40,14 +40,16 @@ const meta: Meta<typeof Card> = {
   component: Card,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'inline-radio', options: cardVariants },
+    elevation: { control: 'inline-radio', options: cardElevations },
+    padding: { control: 'inline-radio', options: sizes },
     titleLevel: { control: 'inline-radio', options: [2, 3, 4, 5, 6] },
     href: { control: 'text' },
     icon: { control: false },
     action: { control: false },
   },
   args: {
-    variant: 'shadow',
+    elevation: 'md',
+    padding: 'md',
     title: 'Token-driven',
     children:
       'Every value — color, spacing, radius, elevation, type — is a CSS custom property. Restyle the whole system by editing the token layer, not the components.',
@@ -64,19 +66,38 @@ const grid = {
   maxWidth: 760,
 } as const;
 
+const PADDING_PX = { sm: 16, md: 20, lg: 24 } as const;
+
 /**
- * `variant` decides whether the card carries the offset shadow. Use `flat` where
- * cards are already stacked densely, or nested inside another bordered surface,
- * and the shadows would pile up.
+ * `flat` drops the shadow; the other three are the same distances as ButtonNew —
+ * 2, 4 and 8px. The offset never blurs and never uses alpha, so the distance is
+ * the whole of the elevation, and hover and press both scale with it.
+ *
+ * Reach for `flat` where cards stack densely, or nest inside another bordered
+ * surface, and the shadows would pile up.
  */
-export const Variants: Story = {
-  argTypes: {
-    variant: { control: false, table: { disable: true } },
-  },
+export const Elevations: Story = {
+  argTypes: { elevation: { control: false, table: { disable: true } } },
   render: (args) => (
     <div style={grid}>
-      {cardVariants.map((variant) => (
-        <Card {...args} key={variant} variant={variant} title={variant} />
+      {cardElevations.map((elevation) => (
+        <Card {...args} key={elevation} elevation={elevation} title={`Elevation ${elevation}`}>
+          The offset travels down-right at 45°, and never blurs.
+        </Card>
+      ))}
+    </div>
+  ),
+};
+
+/** Inner spacing: 16, 20 or 24px. The border, radius and shadow do not change. */
+export const Paddings: Story = {
+  argTypes: { padding: { control: false, table: { disable: true } } },
+  render: (args) => (
+    <div style={grid}>
+      {sizes.map((padding) => (
+        <Card {...args} key={padding} padding={padding} title={`Padding ${padding}`}>
+          {PADDING_PX[padding]}px on every side.
+        </Card>
       ))}
     </div>
   ),
@@ -137,7 +158,7 @@ export const AsLink: Story = {
       <Card {...args} icon="→" title="Get started">
         Install the package and import the components.
       </Card>
-      <Card {...args} variant="flat" icon="→" title="Read the tokens">
+      <Card {...args} elevation="flat" icon="→" title="Read the tokens">
         Every colour, radius and shadow in one file.
       </Card>
     </div>

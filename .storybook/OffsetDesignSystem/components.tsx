@@ -30,35 +30,8 @@ export const TONE_ICON: Record<Tone, string> = {
 import type { ReactNode, CSSProperties } from 'react';
 import { Code, Eyebrow, Headline, Body, Display } from '../../src/Typography';
 import { useTheme } from './OffsetDesignSystem-new';
-import { Chip, ButtonNew, Toggle, Tooltip } from '../../src';
+import { Chip, ButtonNew, Toggle, Tooltip, Card } from '../../src';
 import { ACCENTS } from './OffsetDesignSystem-new';
-
-/** Bordered surface with the offset shadow. Neutral fill → accent shadow. */
-export const Card = ({
-  children,
-  style,
-  shadow = 4,
-  pad = 22,
-}: {
-  children: ReactNode;
-  style?: CSSProperties;
-  shadow?: number;
-  pad?: number | string;
-}) => (
-  <div
-    style={{
-      border: 'var(--bw) solid var(--ink)',
-      borderRadius: 'var(--r-md)',
-      background: 'var(--surface)',
-      boxShadow: `${shadow}px ${shadow}px 0 var(--accent)`,
-      padding: pad,
-      minWidth: 0,
-      ...style,
-    }}
-  >
-    {children}
-  </div>
-);
 
 /**
  * Code samples. The dark form is the library's block treatment; the light form
@@ -576,7 +549,8 @@ export const Hero = () => (
       </div>
 
       <div style={{ display: 'grid', gap: 14 }}>
-        <Card pad={20}>
+        <Card>
+          {/* pad={20}  */}
           <Eyebrow style={{ marginBottom: 10 }}>What changed in v2</Eyebrow>
           <Body as="ul" level={3} tone="muted" style={{ paddingLeft: 18 }}>
             <li>
@@ -604,7 +578,8 @@ export const Hero = () => (
             ['148', 'Tokens'],
             ['2', 'Themes'],
           ].map(([n, label]) => (
-            <Card key={label} pad={14} shadow={2}>
+            <Card key={label} variant="shadow">
+              {/* pad={14} shadow={2} */}
               <Headline level={2} weight="bold">
                 {n}
               </Headline>
