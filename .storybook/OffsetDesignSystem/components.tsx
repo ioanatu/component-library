@@ -28,7 +28,10 @@ export const TONE_ICON: Record<Tone, string> = {
  * ------------------------------------------------------------------ */
 
 import type { ReactNode, CSSProperties } from 'react';
-import { Code, Eyebrow, Headline, Body } from '../../src/atoms/Typography';
+import { Code, Eyebrow, Headline, Body, Display } from '../../src/atoms/Typography';
+import { useTheme } from './OffsetDesignSystem-new';
+import { Chip, ButtonNew } from '../../src';
+import { ACCENTS } from './OffsetDesignSystem-new';
 
 /** Bordered surface with the offset shadow. Neutral fill → accent shadow. */
 export const Card = ({
@@ -418,4 +421,237 @@ export const SpecTable = ({ title, rows }: { title: string; rows: [string, React
       ))}
     </div>
   </div>
+);
+
+/* ------------------------------------------------------------------ *
+ * Page sections
+ * ------------------------------------------------------------------ */
+
+export const ThemeToggle = ({ id }: { id?: string }) => {
+  const { theme, setTheme } = useTheme();
+  const dark = theme === 'dark';
+  return (
+    <button
+      id={id}
+      type="button"
+      role="switch"
+      aria-checked={dark}
+      aria-label="Dark mode"
+      onClick={() => setTheme(dark ? 'light' : 'dark')}
+      style={{
+        width: 60,
+        height: 32,
+        flex: 'none',
+        padding: 3,
+        border: 'var(--bw) solid var(--ink)',
+        borderRadius: 'var(--r-full)',
+        background: 'var(--surface)',
+        boxShadow: '2px 2px 0 var(--accent)',
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: dark ? 'flex-end' : 'flex-start',
+        transition: 'all var(--dur-fast) var(--ease)',
+      }}
+    >
+      <span
+        style={{
+          width: 24,
+          height: 24,
+          borderRadius: 'var(--r-full)',
+          background: 'var(--ink)',
+          display: 'block',
+        }}
+      />
+    </button>
+  );
+};
+
+export const AccentPicker = () => {
+  const { accent, setAccent } = useTheme();
+  return (
+    <div
+      role="radiogroup"
+      aria-label="Accent color"
+      style={{
+        display: 'flex',
+        gap: 4,
+        padding: 3,
+        border: 'var(--bw) solid var(--ink)',
+        borderRadius: 'var(--r-full)',
+        background: 'var(--surface)',
+        boxShadow: '2px 2px 0 var(--accent)',
+      }}
+    >
+      {ACCENTS.map((a) => {
+        const on = a.value === accent;
+        return (
+          <button
+            key={a.value}
+            type="button"
+            role="radio"
+            aria-checked={on}
+            aria-label={a.name}
+            title={a.name}
+            onClick={() => setAccent(a.value)}
+            style={{
+              width: 24,
+              height: 24,
+              flex: 'none',
+              padding: 0,
+              borderRadius: 'var(--r-full)',
+              border: `var(--bw) solid ${on ? 'var(--ink)' : 'transparent'}`,
+              background: a.value,
+              cursor: 'pointer',
+              display: 'grid',
+              placeItems: 'center',
+              color: 'var(--neutral-0)',
+              fontSize: 12,
+              fontWeight: 700,
+              lineHeight: 1,
+            }}
+          >
+            {on ? '✓' : ''}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+export const Header = () => (
+  <header
+    style={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 40,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 24,
+      padding: '14px 28px',
+      background: 'var(--page)',
+      borderBottom: 'var(--bw) solid var(--ink)',
+    }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          flex: 'none',
+          border: 'var(--bw) solid var(--ink)',
+          borderRadius: 'var(--r-sm)',
+          background: 'var(--accent)',
+          display: 'grid',
+          placeItems: 'center',
+          boxShadow: '2px 2px 0 var(--ink)',
+        }}
+      ></div>
+
+      <Headline level={4} style={{ marginLeft: 4 }}>
+        OFFSET
+      </Headline>
+      <Chip label="v2.0.0" size="lg" fill="transparent"></Chip>
+    </div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
+      <nav style={{ display: 'flex', gap: 22 }}>
+        {[
+          ['#foundations', 'Foundations'],
+          ['#components', 'Components'],
+          ['#guidelines', 'Guidelines'],
+          ['#governance', 'Governance'],
+        ].map(([href, label]) => (
+          <Body
+            key={href}
+            as="a"
+            href={href}
+            level={3}
+            weight="medium"
+            style={{ color: 'var(--ink-muted)' }}
+          >
+            {label}
+          </Body>
+        ))}
+      </nav>
+      <AccentPicker />
+      <ThemeToggle />
+    </div>
+  </header>
+);
+
+export const Hero = () => (
+  <section id="top" style={{ padding: '64px 0 40px' }}>
+    <Eyebrow style={{ marginBottom: 18 }}>React · TypeScript · Design System</Eyebrow>
+    <Grid min={280} gap={40} style={{ alignItems: 'start' }}>
+      <div>
+        <Display level={1}>OFFSET</Display>
+        <Body level={1} tone="muted" style={{ marginTop: 20 }}>
+          A neo-brutalist component library built on one idea: a bold border and a hard,
+          unapologetic offset shadow. Two-tier tokens, one-attribute theming, WCAG 2.1 AA from the
+          first commit.
+        </Body>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
+          {['React 19', 'TypeScript', 'WCAG 2.1 AA', 'Zero-runtime CSS vars', '32 components'].map(
+            (t) => (
+              <Chip size="lg" label={t} fill="transparent" />
+            ),
+          )}
+        </div>
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginTop: 30 }}>
+          <ButtonNew variant="primary" size="md" onClick={() => (location.hash = '#install')}>
+            Get started
+          </ButtonNew>
+          <ButtonNew variant="secondary" onClick={() => (location.hash = '#components')}>
+            Browse components
+          </ButtonNew>
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gap: 14 }}>
+        <Card pad={20}>
+          <Eyebrow style={{ marginBottom: 10 }}>What changed in v2</Eyebrow>
+          <Body as="ul" level={3} tone="muted" style={{ paddingLeft: 18 }}>
+            <li>
+              <strong style={{ color: 'var(--ink)' }}>Two-tier tokens</strong> — primitives are now
+              separate from semantic aliases.
+            </li>
+            <li>
+              <strong style={{ color: 'var(--ink)' }}>Shadow rule</strong> — ink shadow on accent
+              fills, accent shadow on neutral surfaces.
+            </li>
+            <li>
+              <strong style={{ color: 'var(--ink)' }}>23 new components</strong> — feedback,
+              overlays, navigation, data display.
+            </li>
+            <li>
+              <strong style={{ color: 'var(--ink)' }}>Motion + density tokens</strong>, a warning
+              tone, and a governance model.
+            </li>
+          </Body>
+        </Card>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,minmax(0,1fr))', gap: 14 }}>
+          {[
+            ['32', 'Components'],
+            ['148', 'Tokens'],
+            ['2', 'Themes'],
+          ].map(([n, label]) => (
+            <Card key={label} pad={14} shadow={2}>
+              <Headline level={2} weight="bold">
+                {n}
+              </Headline>
+              <Eyebrow level={2} style={{ marginTop: 2 }}>
+                {label}
+              </Eyebrow>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </Grid>
+
+    <hr
+      style={{ margin: '48px 0 0', border: 'none', borderTop: '2px dashed var(--border-subtle)' }}
+    />
+  </section>
 );
