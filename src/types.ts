@@ -24,6 +24,9 @@ export type InputType = (typeof inputTypes)[number];
 export const textAreaResizes = ['none', 'vertical'] as const;
 export type TextAreaResize = (typeof textAreaResizes)[number];
 
+export const checkboxOrientations = ['vertical', 'horizontal'] as const;
+export type CheckboxOrientation = (typeof checkboxOrientations)[number];
+
 export const chipVariants = ['default', 'success', 'warning', 'error', 'info'] as const;
 export type ChipVariant = (typeof chipVariants)[number];
 
