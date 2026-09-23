@@ -2,7 +2,7 @@
  *
  * Custom properties are declared on :root (global, as intended); the classes
  * below are local CSS-module classes consumed via `import base from
- * '../Typography.module.css'`. Nothing here is imported by app code directly.
+ * '../Typography.module.css'`.
  * ------------------------------------------------------------------ */
 
 :root {

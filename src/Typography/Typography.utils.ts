@@ -2,7 +2,6 @@ import type { CSSProperties } from 'react';
 import base from './Typography.module.css';
 import type { TypographyTone, TypographyWeight } from './Typography.types';
 
-/** Join class names, dropping anything falsy. */
 export function cx(...parts: (string | false | null | undefined)[]): string {
   return parts.filter(Boolean).join(' ');
 }

@@ -40,7 +40,7 @@ import { Chip } from './Chip';
  */
 
 const meta: Meta<typeof Chip> = {
-  title: 'Molecules/Chip',
+  title: 'Components/Chip',
   component: Chip,
   tags: ['autodocs'],
   argTypes: {

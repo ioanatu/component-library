@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { Body, Headline } from '../atoms/Typography';
+import { Body, Headline } from '../Typography';
 import { ButtonNew } from '../ButtonNew/ButtonNew';
 import { inputTypes, sizes } from '../types';
 import { Input } from './Input';
@@ -77,7 +77,7 @@ const Row = ({ children }: { children: React.ReactNode }) => (
  */
 
 const meta: Meta<typeof Input> = {
-  title: 'Molecules/Input',
+  title: 'Components/Input',
   component: Input,
   tags: ['autodocs'],
   argTypes: {

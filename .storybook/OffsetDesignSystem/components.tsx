@@ -28,7 +28,7 @@ export const TONE_ICON: Record<Tone, string> = {
  * ------------------------------------------------------------------ */
 
 import type { ReactNode, CSSProperties } from 'react';
-import { Code, Eyebrow, Headline, Body, Display } from '../../src/atoms/Typography';
+import { Code, Eyebrow, Headline, Body, Display } from '../../src/Typography';
 import { useTheme } from './OffsetDesignSystem-new';
 import { Chip, ButtonNew } from '../../src';
 import { ACCENTS } from './OffsetDesignSystem-new';

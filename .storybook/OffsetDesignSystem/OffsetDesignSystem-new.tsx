@@ -11,7 +11,7 @@ import React, {
 } from 'react';
 import { ButtonNew } from '../../src/ButtonNew/ButtonNew';
 import { Input } from '../../src/Input/Input';
-import { Body, Caption, Code, Display, Eyebrow, Headline } from '../../src/atoms/Typography';
+import { Body, Caption, Code, Display, Eyebrow, Headline } from '../../src/Typography';
 import TextArea from '../../src/TextArea/TextArea';
 import {
   Alert,

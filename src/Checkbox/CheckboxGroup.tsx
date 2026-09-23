@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { FieldsetHTMLAttributes, ReactNode, Ref } from 'react';
 import { useId, useMemo } from 'react';
-import { Body, Caption } from '../atoms/Typography';
+import { Body, Caption } from '../Typography';
 import type { CheckboxOrientation, Size } from '../types';
 import { CheckboxGroupContext } from './CheckboxContext';
 import styles from './CheckboxGroup.module.css';

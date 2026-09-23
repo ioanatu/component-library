@@ -38,7 +38,7 @@ import { Button } from './Button';
 type ButtonStoryArgs = Omit<ButtonElementProps, 'href'> & { href?: string };
 
 const meta: Meta<ButtonStoryArgs> = {
-  title: 'Molecules/Button',
+  title: 'Components/Button',
   component: Button as ComponentType<ButtonStoryArgs>,
   tags: ['autodocs'],
   argTypes: {

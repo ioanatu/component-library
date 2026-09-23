@@ -36,7 +36,7 @@ import { Card } from './Card';
  */
 
 const meta: Meta<typeof Card> = {
-  title: 'Molecules/Card',
+  title: 'Components/Card',
   component: Card,
   tags: ['autodocs'],
   argTypes: {

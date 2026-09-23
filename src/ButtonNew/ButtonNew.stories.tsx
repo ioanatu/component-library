@@ -78,7 +78,7 @@ type ButtonNewStoryArgs = Omit<ButtonNewElementProps, 'href'> & {
  */
 
 const meta: Meta<ButtonNewStoryArgs> = {
-  title: 'Molecules/ButtonNew',
+  title: 'Components/ButtonNew',
   component: ButtonNew as ComponentType<ButtonNewStoryArgs>,
   tags: ['autodocs'],
   argTypes: {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import Input from '../../Input/Input';
+import Input from '../Input/Input';
 import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '.';
 import { typographyTones } from './Typography.types';
 
@@ -13,7 +13,7 @@ import { typographyTones } from './Typography.types';
  * measure, so you pick one prop rather than four values.
  */
 const meta: Meta = {
-  title: 'Atoms/Typography',
+  title: 'Primitives/Typography',
   argTypes: {
     tone: {
       control: { type: 'inline-radio' },
@@ -156,18 +156,17 @@ export const Families: StoryObj = {
             Code
           </Eyebrow>
           <Body level={2}>
-            Import from <Code level={2}>src/atoms/Typography</Code> — the barrel is the only public
-            entry.
+            Import from <Code level={2}>src/Typography</Code> — the barrel is the only public entry.
           </Body>
           <Code block level={1} style={{ marginTop: 12 }}>
             {`// Code level 1
-import { Headline, Body } from '@/atoms/Typography';
+import { Headline, Body } from '@/Typography';
 
 <Headline level={1}>Billing</Headline>`}
           </Code>
           <Code block level={2} style={{ marginTop: 12 }}>
             {`// Code level 2
-import { Headline, Body } from '@/atoms/Typography';
+import { Headline, Body } from '@/Typography';
 
 <Headline level={1}>Billing</Headline>`}
           </Code>
@@ -184,10 +183,10 @@ import { Headline, Body } from '@/atoms/Typography';
             Eyebrow level two
           </Eyebrow>
           <br />
-          <Code level={1}>src/atoms/Typography</Code>
+          <Code level={1}>src/Typography</Code>
           <br />
           <br />
-          <Code level={2}>src/atoms/Typography</Code>
+          <Code level={2}>src/Typography</Code>
         </section>
       </div>
     </div>

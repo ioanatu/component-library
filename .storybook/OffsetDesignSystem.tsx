@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '../src/atoms/Typography';
+import { Body, Caption, Code, Display, Eyebrow, Headline, Label } from '../src/Typography';
 import { PRINCIPLES_LIST } from './OffsetDesignSystem.text';
 
 /* ------------------------------------------------------------------ *
