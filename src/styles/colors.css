@@ -1,8 +1,4 @@
 /**
- * Colour tokens.
- *
- * Two independent sets live here.
- *
  * The first is the original component palette (--surface-*, --text-*,
  * --border-*, --shadow-*), which Button, Card and Chip read.
  *
@@ -35,7 +31,7 @@
   --text-danger: #b91c1c;
   --text-info: #1d4ed8;
 
-  /* Text sitting on a filled surface. */
+  /* Text placed on a filled surface. */
   --text-on-accent: #111111;
   --text-on-neutral: #111111;
   --text-on-success: #111111;
@@ -59,16 +55,7 @@
   --shadow-warning: #f59e0b;
   --shadow-danger: #ef4444;
   --shadow-info: #4f7eff;
-}
 
-/* ---------- OFFSET tier 1 — primitives ---------- */
-
-/**
- * Descriptive, theme-independent, never used in a component. A component that
- * reads --blue-500 is a bug, because it will not follow a theme or a brand
- * override.
- */
-:root {
   --neutral-0: #ffffff;
   --neutral-50: #f7f5f5;
   --neutral-100: #edebea;
@@ -78,32 +65,36 @@
   --neutral-800: #1a1a1a;
   --neutral-900: #0c0c0e;
 
-  --blue-50: #edf2fe;
+  --blue-50: #e0e8fa;
   --blue-500: #3367f6;
   --blue-700: #1a3fa8;
 
-  --green-50: #e8f8f1;
+  --green-50: #e2f7ee;
   --green-500: #1fa971;
   --green-700: #158257;
 
-  --amber-50: #fef5e7;
+  --amber-50: #fff0d8;
   --amber-500: #e8960c;
   --amber-700: #b87508;
 
-  --red-50: #feedec;
+  --red-50: #fde8e7;
   --red-500: #d63f38;
   --red-700: #d22c23;
 
   /* The two brand accents the picker offers. */
   --violet-500: #7a3bf6;
   --emerald-500: #0e9f6e;
+
+  /* Color accents offered by the design system's accent picker. */
+  --accent-blue: var(--blue-500);
+  --accent-violet: var(--violet-500);
+  --accent-green: var(--emerald-500);
+  --accent-red: var(--red-500);
 }
 
 /* ---------- OFFSET tier 2 — semantic aliases ---------- */
 
 /**
- * Functional, theme-dependent, the public contract.
- *
  * --ink draws both body text and every structural border, which is what keeps
  * the border contrast tied to the text beside it in any theme.
  */
@@ -168,15 +159,4 @@
 
   --code-bg: #0c0c0e;
   --code-ink: #f2f2f0;
-}
-
-/**
- * Brand accents offered by the design system's accent picker. A brand override
- * is the same move as a theme: point --accent at one of these under a scope.
- */
-:root {
-  --accent-blue: var(--blue-500);
-  --accent-violet: var(--violet-500);
-  --accent-green: var(--emerald-500);
-  --accent-red: var(--red-500);
 }

@@ -33,11 +33,6 @@
     box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/**
- * The ring lives on the shell rather than the input, so the whole frame is what
- * lights up. :focus-within carries it because the focus actually lands on the
- * input inside.
- */
 .shell:focus-within {
   --input-shadow: var(--accent);
 
@@ -45,13 +40,13 @@
   outline-offset: 2px;
 }
 
-/**
- * The clear button draws its own ring, so the frame stands down while the focus
- * is on it — otherwise the two rings sit inside each other. Progressive: where
- * :has() is missing both rings show, which is noisy but never unfocusable.
- */
 .shell:has(.clear:focus-visible) {
   outline: none;
+}
+
+/* Read-only and disabled are excluded since neither can be edited. */
+.shell:hover:not(.disabled):not(.readOnly) {
+  --input-surface: var(--accent-wash);
 }
 
 /* Invalid outranks focus for the border, but focus still moves the shadow to
