@@ -39,14 +39,9 @@ describe('Card', () => {
   });
 
   describe('title', () => {
-    it('is an h3 by default', () => {
+    it('is an h3', () => {
       render(<Card title="Card" />);
       expect(screen.getByRole('heading', { level: 3, name: 'Card' })).toBeInTheDocument();
-    });
-
-    it.each([2, 3, 4, 5, 6] as const)('renders at level %s when asked', (level) => {
-      render(<Card title="Card" titleLevel={level} />);
-      expect(screen.getByRole('heading', { level, name: 'Card' })).toBeInTheDocument();
     });
 
     it('is omitted entirely when no title is given', () => {

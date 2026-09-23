@@ -31,7 +31,7 @@ import { Card } from './Card';
  *
  * ** All props example: **
  *
- * `<Card elevation="flat" padding="lg" title="Token-driven" titleLevel={2} icon={<Mark />} action={<Chip label="ready" />} href="/tokens" onClick={onClick}>Every value is a CSS custom property.</Card>`
+ * `<Card elevation="flat" padding="lg" title="Token-driven" icon={<Mark />} action={<Chip label="ready" />} href="/tokens" onClick={onClick}>Every value is a CSS custom property.</Card>`
  *
  */
 
@@ -42,7 +42,6 @@ const meta: Meta<typeof Card> = {
   argTypes: {
     elevation: { control: 'inline-radio', options: cardElevations },
     padding: { control: 'inline-radio', options: sizes },
-    titleLevel: { control: 'inline-radio', options: [2, 3, 4, 5, 6] },
     href: { control: 'text' },
     icon: { control: false },
     action: { control: false },

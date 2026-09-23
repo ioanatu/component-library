@@ -1316,219 +1316,237 @@ export function Toolbar() {
             }
           >
             <Grid min={290}>
-              <Card style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
-                <Input
-                  label="Project name"
-                  helper="Shown to everyone in the workspace."
-                  id="demo-name"
-                  className="off-input"
-                  type="text"
-                  placeholder="Atlas migration"
-                />
-                <Input
-                  label="Workspace URL"
-                  id="demo-error"
-                  type="text"
-                  defaultValue="atlas migration"
-                  aria-invalid
-                  aria-describedby="demo-err-msg"
-                  error={
-                    <>
-                      Spaces aren't allowed — try <strong>atlas-migration.</strong>
-                    </>
-                  }
-                />
+              <Card padding="lg">
+                <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
+                  <Input
+                    label="Project name"
+                    helper="Shown to everyone in the workspace."
+                    id="demo-name"
+                    className="off-input"
+                    type="text"
+                    placeholder="Atlas migration"
+                  />
 
-                <TextArea
-                  label="Notes"
-                  helper="Optional, but helpful."
-                  id="demo-note"
-                  placeholder="Anything the team should know"
-                  rows={2}
-                />
+                  <Input
+                    label="Workspace URL"
+                    id="demo-error"
+                    type="text"
+                    defaultValue="atlas migration"
+                    aria-invalid
+                    aria-describedby="demo-err-msg"
+                    error={
+                      <>
+                        Spaces aren't allowed — try <strong>atlas-migration.</strong>
+                      </>
+                    }
+                  />
 
-                <Input
-                  label="Billing owner"
-                  helper="Managed by your admin."
-                  id="demo-dis"
-                  type="text"
-                  defaultValue="finance@atlas.co"
-                  disabled
-                />
+                  <TextArea
+                    label="Notes"
+                    helper="Optional, but helpful."
+                    id="demo-note"
+                    placeholder="Anything the team should know"
+                    rows={2}
+                  />
+
+                  <Input
+                    label="Billing owner"
+                    helper="Managed by your admin."
+                    id="demo-dis"
+                    type="text"
+                    defaultValue="finance@atlas.co"
+                    disabled
+                  />
+                </div>
               </Card>
 
-              <Card style={{ display: 'grid', gap: 22, alignContent: 'start' }}>
-                <div>
-                  <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
-                    Select — listbox pattern
-                  </Body>
-                  <div style={{ position: 'relative' }}>
-                    <button
-                      type="button"
-                      aria-haspopup="listbox"
-                      aria-expanded={selOpen}
-                      onClick={() => setSelOpen((o) => !o)}
-                      style={{
-                        ...inputStyle(),
-                        boxShadow: '2px 2px 0 var(--accent)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        gap: 10,
-                      }}
-                    >
-                      <span>{sel}</span>
-                      <span aria-hidden="true" style={{ fontSize: 11, color: 'var(--ink-muted)' }}>
-                        ▼
-                      </span>
-                    </button>
-                    {selOpen ? (
-                      <ul
-                        role="listbox"
+              <Card padding="lg">
+                <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
+                  <div>
+                    <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
+                      Select — listbox pattern
+                    </Body>
+                    <div style={{ position: 'relative' }}>
+                      <button
+                        type="button"
+                        aria-haspopup="listbox"
+                        aria-expanded={selOpen}
+                        onClick={() => setSelOpen((o) => !o)}
                         style={{
-                          position: 'absolute',
-                          zIndex: 20,
-                          top: 'calc(100% + 8px)',
-                          left: 0,
-                          right: 0,
-                          margin: 0,
-                          padding: 5,
-                          listStyle: 'none',
-                          border: 'var(--bw) solid var(--ink)',
-                          borderRadius: 'var(--r-sm)',
-                          background: 'var(--surface)',
-                          boxShadow: '8px 8px 0 var(--accent)',
+                          ...inputStyle(),
+                          boxShadow: '2px 2px 0 var(--accent)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          gap: 10,
                         }}
                       >
-                        {['Small', 'Medium', 'Large'].map((o) => (
-                          <Body
-                            key={o}
-                            as="li"
-                            level={3}
-                            role="option"
-                            aria-selected={o === sel}
-                            onClick={() => {
-                              setSel(o);
-                              setSelOpen(false);
-                            }}
-                            style={{
-                              padding: '9px 12px',
-                              borderRadius: 6,
-                              cursor: 'pointer',
-                              background: o === sel ? 'var(--accent-wash)' : 'transparent',
-                            }}
-                          >
-                            {o}
-                          </Body>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div>
-                  <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
-                    Checkbox &amp; radio
-                  </Body>
-                  <div style={{ display: 'grid', gap: 11 }}>
-                    <Checkbox label="Notify the team" defaultChecked />
-                    <Checkbox label="Archive when finished" />
-                    <Checkbox label="Require approval" disabled />
-
-                    <div style={{ display: 'flex', gap: 20, marginTop: 2 }}>
-                      <Body
-                        as="label"
-                        level={3}
-                        style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}
-                      >
+                        <span>{sel}</span>
                         <span
+                          aria-hidden="true"
+                          style={{ fontSize: 11, color: 'var(--ink-muted)' }}
+                        >
+                          ▼
+                        </span>
+                      </button>
+                      {selOpen ? (
+                        <ul
+                          role="listbox"
                           style={{
-                            width: 22,
-                            height: 22,
-                            flex: 'none',
+                            position: 'absolute',
+                            zIndex: 20,
+                            top: 'calc(100% + 8px)',
+                            left: 0,
+                            right: 0,
+                            margin: 0,
+                            padding: 5,
+                            listStyle: 'none',
                             border: 'var(--bw) solid var(--ink)',
-                            borderRadius: '50%',
+                            borderRadius: 'var(--r-sm)',
                             background: 'var(--surface)',
-                            display: 'grid',
-                            placeItems: 'center',
+                            boxShadow: '8px 8px 0 var(--accent)',
+                          }}
+                        >
+                          {['Small', 'Medium', 'Large'].map((o) => (
+                            <Body
+                              key={o}
+                              as="li"
+                              level={3}
+                              role="option"
+                              aria-selected={o === sel}
+                              onClick={() => {
+                                setSel(o);
+                                setSelOpen(false);
+                              }}
+                              style={{
+                                padding: '9px 12px',
+                                borderRadius: 6,
+                                cursor: 'pointer',
+                                background: o === sel ? 'var(--accent-wash)' : 'transparent',
+                              }}
+                            >
+                              {o}
+                            </Body>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
+                      Checkbox &amp; radio
+                    </Body>
+                    <div style={{ display: 'grid', gap: 11 }}>
+                      <Checkbox label="Notify the team" defaultChecked />
+                      <Checkbox label="Archive when finished" />
+                      <Checkbox label="Require approval" disabled />
+
+                      <div style={{ display: 'flex', gap: 20, marginTop: 2 }}>
+                        <Body
+                          as="label"
+                          level={3}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 9,
+                            cursor: 'pointer',
                           }}
                         >
                           <span
                             style={{
-                              width: 10,
-                              height: 10,
+                              width: 22,
+                              height: 22,
+                              flex: 'none',
+                              border: 'var(--bw) solid var(--ink)',
                               borderRadius: '50%',
-                              background: 'var(--accent)',
+                              background: 'var(--surface)',
+                              display: 'grid',
+                              placeItems: 'center',
+                            }}
+                          >
+                            <span
+                              style={{
+                                width: 10,
+                                height: 10,
+                                borderRadius: '50%',
+                                background: 'var(--accent)',
+                              }}
+                            />
+                          </span>
+                          Private
+                        </Body>
+                        <Body
+                          as="label"
+                          level={3}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 9,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: 22,
+                              height: 22,
+                              flex: 'none',
+                              border: 'var(--bw) solid var(--ink)',
+                              borderRadius: '50%',
+                              background: 'var(--surface)',
                             }}
                           />
-                        </span>
-                        Private
-                      </Body>
+                          Public
+                        </Body>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
+                      Slider{' '}
+                      <span style={{ marginLeft: 4, verticalAlign: 'middle' }}>
+                        <Tag>NEW</Tag>
+                      </span>
+                    </Body>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                      <input
+                        type="range"
+                        min={0}
+                        max={100}
+                        value={slider}
+                        onChange={(e) => setSlider(Number(e.target.value))}
+                        aria-label="Storage limit"
+                        style={{ flex: 1, minWidth: 0, accentColor: 'var(--accent)', height: 22 }}
+                      />
                       <Body
-                        as="label"
+                        as="span"
                         level={3}
-                        style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer' }}
+                        mono
+                        style={{
+                          padding: '4px 10px',
+                          border: 'var(--bw) solid var(--ink)',
+                          borderRadius: 'var(--r-full)',
+                          minWidth: 56,
+                          textAlign: 'center',
+                        }}
                       >
-                        <span
-                          style={{
-                            width: 22,
-                            height: 22,
-                            flex: 'none',
-                            border: 'var(--bw) solid var(--ink)',
-                            borderRadius: '50%',
-                            background: 'var(--surface)',
-                          }}
-                        />
-                        Public
+                        {slider}%
                       </Body>
                     </div>
                   </div>
-                </div>
 
-                <div>
-                  <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
-                    Slider{' '}
-                    <span style={{ marginLeft: 4, verticalAlign: 'middle' }}>
-                      <Tag>NEW</Tag>
-                    </span>
-                  </Body>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={slider}
-                      onChange={(e) => setSlider(Number(e.target.value))}
-                      aria-label="Storage limit"
-                      style={{ flex: 1, minWidth: 0, accentColor: 'var(--accent)', height: 22 }}
-                    />
-                    <Body
-                      as="span"
-                      level={3}
-                      mono
-                      style={{
-                        padding: '4px 10px',
-                        border: 'var(--bw) solid var(--ink)',
-                        borderRadius: 'var(--r-full)',
-                        minWidth: 56,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {slider}%
+                  <div>
+                    <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
+                      Toggle — <Code>role=switch</Code>
                     </Body>
-                  </div>
-                </div>
-
-                <div>
-                  <Body level={3} weight="semibold" style={{ marginBottom: 10 }}>
-                    Toggle — <Code>role=switch</Code>
-                  </Body>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <ThemeToggle />
-                    <Body as="span" level={3} tone="muted">
-                      Dark mode — {theme === 'dark' ? 'on' : 'off'}
-                    </Body>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <ThemeToggle />
+                      <Body as="span" level={3} tone="muted">
+                        Dark mode — {theme === 'dark' ? 'on' : 'off'}
+                      </Body>
+                    </div>
                   </div>
                 </div>
               </Card>

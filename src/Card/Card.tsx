@@ -3,8 +3,6 @@ import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import type { CardElevation, Size } from '../types';
 import styles from './Card.module.css';
 
-type CardTitleLevel = 2 | 3 | 4 | 5 | 6;
-
 const ELEVATION_CLASS: Record<CardElevation, string> = {
   flat: styles.elevationFlat,
   sm: styles.elevationSm,
@@ -27,9 +25,8 @@ const PADDING_CLASS: Record<Size, string> = {
  * `button` would swallow anything interactive inside it. A card that needs a
  * control should hold that control in `action` or in its children instead.
  *
- * @param title - Card heading.
- * @param titleLevel - Heading level for the title, 2 to 6. Default is 3. Set it so
- * the card does not skip a level in the page it sits on.
+ * @param title - Card heading, rendered as an h3. Where the page needs another
+ * level, leave it unset and pass your own heading in children.
  * @param icon - Decorative node in a bordered square above the title. Hidden from
  * assistive tech.
  * @param action - Node placed at the trailing edge of the title row, for a status
@@ -49,7 +46,6 @@ const PADDING_CLASS: Record<Size, string> = {
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick' | 'title'> {
   title?: string;
-  titleLevel?: CardTitleLevel;
   icon?: ReactNode;
   action?: ReactNode;
   elevation?: CardElevation;
@@ -62,7 +58,6 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick' |
 
 export function Card({
   title,
-  titleLevel = 3,
   icon,
   action,
   elevation = 'md',
@@ -82,8 +77,6 @@ export function Card({
     className,
   );
 
-  const Title = `h${titleLevel}` as const;
-
   const content = (
     <>
       {icon ? (
@@ -94,7 +87,7 @@ export function Card({
 
       {title !== undefined || action ? (
         <div className={styles.header}>
-          {title !== undefined ? <Title className={styles.title}>{title}</Title> : null}
+          {title !== undefined ? <h3 className={styles.title}>{title}</h3> : null}
           {action ? <div className={styles.action}>{action}</div> : null}
         </div>
       ) : null}
