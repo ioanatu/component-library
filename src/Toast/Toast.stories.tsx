@@ -128,7 +128,7 @@ export const Live: Story = {
 
     return (
       <div style={{ display: 'grid', gap: 18 }}>
-        <Headline level={4}>Fire a Toast:</Headline>
+        <Headline level={4}>Fire a toast:</Headline>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
           {toastTones.map((tone) => (
             <ButtonNew key={tone} variant="secondary" size="sm" onClick={() => fire(tone)}>
