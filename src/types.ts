@@ -45,6 +45,19 @@ export type CardElevation = (typeof cardElevations)[number];
 export const tooltipPlacements = ['top', 'right', 'bottom', 'left'] as const;
 export type TooltipPlacement = (typeof tooltipPlacements)[number];
 
+export const toastTones = ['success', 'error', 'warning', 'info'] as const;
+export type ToastTone = (typeof toastTones)[number];
+
+export const toastPlacements = [
+  'bottom-right',
+  'bottom-left',
+  'bottom-center',
+  'top-right',
+  'top-left',
+  'top-center',
+] as const;
+export type ToastPlacement = (typeof toastPlacements)[number];
+
 /** Corner a dropdown menu hangs from. It flips on collision. */
 export const menuPlacements = ['bottom-start', 'bottom-end', 'top-start', 'top-end'] as const;
 export type MenuPlacement = (typeof menuPlacements)[number];

@@ -28,6 +28,8 @@ export type { TabMenuItem, TabMenuProps } from './TabMenu/TabMenu';
 export { TabMenu } from './TabMenu/TabMenu';
 export type { TextAreaProps } from './TextArea/TextArea';
 export { TextArea } from './TextArea/TextArea';
+export type { ToastProps } from './Toast/Toast';
+export { Toast, ToastRegion } from './Toast/Toast';
 export type { ToggleProps } from './Toggle/Toggle';
 export { Toggle } from './Toggle/Toggle';
 export type { TooltipProps } from './Tooltip/Tooltip';
