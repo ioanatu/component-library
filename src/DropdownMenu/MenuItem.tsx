@@ -15,22 +15,13 @@ import styles from './DropdownMenu.module.css';
 import { MenuContext } from './MenuContext';
 
 /**
- * One action inside a DropdownMenu.
+ * One action inside a DropdownMenu: a `<button role="menuitem">`, or an `<a>` with
+ * `href`. `tabIndex={-1}` because the menu moves focus itself, and `disabled` is
+ * `aria-disabled` so the item stays keyboard-discoverable while doing nothing.
  *
- * Renders a `<button role="menuitem">`, or an `<a>` when given `href`. Items are
- * taken out of the tab order (`tabIndex={-1}`) because the menu moves focus itself
- * — that is what makes Arrow keys, Home/End and typeahead work as one control.
- *
- * `disabled` uses `aria-disabled` rather than the native attribute, so the item
- * stays focusable and the keyboard can still discover it. It simply does nothing.
- *
- * @param onSelect - Called on activation, before the menu closes.
- * @param closeOnSelect - Default true. False for an item that toggles something and
- * should leave the menu open.
- * @param destructive - Paints the item with --danger. For deletes.
- * @param icon - Leading decorative node, hidden from assistive tech.
- * @param shortcut - Trailing hint such as ⌘K. Decorative, and never the only way to
- * discover the action.
+ * @param closeOnSelect - Default true. False to leave the menu open.
+ * @param destructive - Paints the item with --danger.
+ * @param shortcut - Decorative hint; never the only way to find the action.
  */
 
 interface BaseMenuItemProps {
@@ -162,22 +153,13 @@ export interface MenuCheckboxItemProps
 }
 
 /**
- * A menu item that toggles, drawn with the library's Checkbox.
- *
- * The row is the control: a `role="menuitemcheckbox"` with `aria-checked`, which is
- * what the menu's arrow keys and typeahead see. The Checkbox inside is a picture of
- * that state — pointer-events off, input aria-hidden and out of the tab order — so
- * there is never a second focusable thing inside a focusable item.
- *
- * The row is a `<div>` rather than a `<button>` for that reason: a button may not
- * contain an input, and `<button><input></button>` is invalid HTML. Enter and Space
- * are handled here, since a div does not activate on its own.
- *
- * `closeOnSelect` defaults to false here, because toggling two of these in a row is
- * the normal thing to want.
+ * A menu item that toggles, drawn with the library's Checkbox. A `<div>`, not a
+ * `<button>`: a button may not contain an input. Enter and Space are handled here
+ * because a div does not activate on its own.
  *
  * @param checked - Controlled state. Use `defaultChecked` for uncontrolled.
  * @param onCheckedChange - Receives the state it is moving to.
+ * @param closeOnSelect - Default false, so several can be toggled in a row.
  */
 export function MenuCheckboxItem({
   children,
@@ -257,10 +239,7 @@ export function MenuSeparator({ className }: { className?: string }) {
   return <hr className={clsx(styles.separator, className)} />;
 }
 
-/**
- * A named set of items. The label is tied to the group with aria-labelledby, so it
- * is announced as the group's name rather than read as a stray line of text.
- */
+/* aria-labelledby, so the label names the group instead of reading as stray text. */
 export function MenuGroup({
   label,
   children,

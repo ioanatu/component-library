@@ -1,7 +1,3 @@
-/**
- * Select — the listbox pattern from the design page: a field-shaped trigger with
- * the accent offset, and a panel that spans the trigger's width.
- */
 .field {
   box-sizing: border-box;
   display: block;
@@ -67,7 +63,6 @@
   cursor: not-allowed;
 }
 
-/* One line, so a long label cannot stretch the field. */
 .value {
   min-inline-size: 0;
   overflow: hidden;
@@ -139,8 +134,7 @@
   background-color: var(--accent-wash);
 }
 
-/* The active option is the keyboard's position, which is not the same thing as
-   the selected one — so it gets a ring rather than only a fill. */
+/* The keyboard's position, not the selection: a ring, not just a fill. */
 .active {
   background-color: var(--accent-wash);
   outline: 2px solid var(--accent);

@@ -45,10 +45,7 @@
   inset-inline-end: 0;
 }
 
-/**
- * Items are focused for real, not tracked with aria-activedescendant, so hover and
- * keyboard land in the same place: hover moves focus, and :focus paints it.
- */
+/* Focused for real, not aria-activedescendant: hover moves focus, :focus paints it. */
 .item {
   box-sizing: border-box;
   display: flex;

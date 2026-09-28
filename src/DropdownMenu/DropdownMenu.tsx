@@ -18,30 +18,14 @@ import { MenuContext } from './MenuContext';
  * Dropdown menu following the OFFSET design system: a bordered surface with the
  * offset shadow, hung off its trigger.
  *
- * This is a menu of actions — the APG menu-button pattern — not a value picker. A
- * `<button aria-haspopup="menu">` opens a `role="menu"`, and focus moves into the
- * items, so the whole thing behaves as one control. For choosing a value, a
- * listbox or a native select is the right shape, not this.
- *
- * Keyboard: Enter, Space or Down opens and focuses the first item, Up opens and
- * focuses the last. Inside, Up and Down move with wrapping, Home and End jump to
- * the ends, typing jumps to an item by name, Escape closes and returns focus to
- * the trigger, and Tab closes and moves on.
- *
- * Hovering an item focuses it, so mouse and keyboard converge on one highlight
- * rather than showing two.
- *
- * The menu is positioned relative to the trigger rather than portaled, so an
- * ancestor with `overflow: hidden` will clip it.
+ * A menu of actions (the APG menu-button pattern), not a value picker — Select is
+ * that. Not portaled, so an ancestor with `overflow: hidden` clips it.
  *
  * @param trigger - A focusable element. Cloned to add the ARIA wiring and the
  * chevron; its own handlers and children are kept.
- * @param chevron - Appends a caret to the trigger, rotating when open, so the
- * trigger looks like something that opens. Default true; turn it off for an
- * icon-only trigger.
+ * @param chevron - Default true; off for an icon-only trigger.
  * @param placement - Corner to hang from. Flips on collision, in both axes.
- * @param maxHeight - Cap in px; the list scrolls past it. Capped again by the space
- * actually available, so the menu never runs off screen.
+ * @param maxHeight - Cap in px, further capped by the space actually available.
  * @param minWidth - Default 200. `maxWidth` caps it; long labels wrap.
  */
 
@@ -122,8 +106,8 @@ export function DropdownMenu({
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const open = isControlled ? openProp : uncontrolledOpen;
 
-  /* Which end to land on when opening. State, not a ref: the trigger's handlers are
-     handed to cloneElement, and a ref read in there is flagged as a render-time read. */
+  /* State, not a ref: cloneElement gets these handlers, and a ref read there is
+     flagged as a render-time read. */
   const [openWith, setOpenWith] = useState<'first' | 'last'>('first');
 
   const wrapRef = useRef<HTMLSpanElement | null>(null);
@@ -190,11 +174,7 @@ export function DropdownMenu({
     items[openWith === 'last' ? items.length - 1 : 0].focus();
   }, [open, openWith]);
 
-  /**
-   * Flip and clamp against the viewport. Written to the DOM rather than held in
-   * state: React's className never changes, so it does not undo this on re-render,
-   * and there is no cascading render.
-   */
+  /* Flip and clamp against the viewport. Written to the DOM to avoid a re-render. */
   useLayoutEffect(() => {
     const el = menuRef.current;
     const triggerRect = getTrigger()?.getBoundingClientRect();

@@ -6,31 +6,12 @@ import { Body, Caption } from '../Typography';
 import styles from './Select.module.css';
 
 /**
- * Select following the design page's listbox pattern: a field-shaped trigger
- * carrying the accent offset, opening a panel the same width as itself.
+ * Select — the design page's listbox pattern. Picks a value; DropdownMenu runs an
+ * action. Not portaled, so an ancestor with `overflow: hidden` clips the panel.
  *
- * The trigger is a `<button aria-haspopup="listbox">` and the panel is a
- * `role="listbox"` of `role="option"`s. With `searchable`, the panel gets a search
- * field that is itself the `role="combobox"`: focus stays in the field and
- * `aria-activedescendant` moves the active option, which is what lets you type and
- * arrow at the same time.
- *
- * This picks a value, unlike DropdownMenu which runs an action. The two are
- * different patterns and are deliberately separate components.
- *
- * Keyboard: Enter, Space or Down opens on the selected option, Up opens on the
- * last. Inside, Up and Down move with wrapping, Home and End jump to the ends,
- * Enter picks the active option, Escape closes and returns focus to the trigger,
- * Tab closes. Without `searchable`, typing jumps to an option by name.
- *
- * Positioned relative to the trigger rather than portaled, so an ancestor with
- * `overflow: hidden` will clip the panel.
- *
- * @param value - Selected value. `null` is controlled with nothing selected; omit
- * it entirely for uncontrolled and use `defaultValue`.
- * @param searchable - Adds the search field and filters as you type.
+ * @param value - `null` is controlled with nothing selected; omit for uncontrolled.
+ * @param searchable - Adds a search field that is itself the combobox.
  * @param fullWidth - Fills the parent instead of the default 240px.
- * @param maxHeight - Cap on the option list in px; it scrolls past that.
  * @param name - Renders a hidden input so the value submits with a form.
  */
 
@@ -204,20 +185,13 @@ export function Select({
     else listRef.current?.focus();
   }, [open, searchable]);
 
-  /**
-   * Keep the active option in view. Looked up by id rather than a selector, since
-   * useId values contain characters that are not valid in one. The call is optional
-   * because jsdom does not implement it.
-   */
+  /* By id, not a selector: useId values contain chars invalid in one. */
   useLayoutEffect(() => {
     if (!open) return;
     document.getElementById(optionId(activeIndex))?.scrollIntoView?.({ block: 'nearest' });
   }, [open, activeIndex, id]);
 
-  /**
-   * Flip above the trigger when there is not room below. Written to the DOM rather
-   * than held in state, so there is no cascading render.
-   */
+  /* Flip above when there is no room below. Written to the DOM to avoid a re-render. */
   useLayoutEffect(() => {
     const panel = panelRef.current;
     const rect = triggerRef.current?.getBoundingClientRect();
@@ -355,8 +329,7 @@ export function Select({
           onClick={() => (open ? closePanel() : openPanel())}
           onKeyDown={onTriggerKeyDown}
         >
-          {/* tone rather than a class of our own: a color declaration here would
-              collide with Typography's tone classes at equal specificity. */}
+          {/* tone, not a class: a color here collides with Typography's tone classes. */}
           <Body
             as="span"
             id={valueId}
