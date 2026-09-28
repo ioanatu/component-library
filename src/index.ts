@@ -22,6 +22,8 @@ export type { RadioProps } from './Radio/Radio';
 export { Radio } from './Radio/Radio';
 export type { RadioGroupProps } from './Radio/RadioGroup';
 export { RadioGroup } from './Radio/RadioGroup';
+export type { SelectOption, SelectProps } from './Select/Select';
+export { Select } from './Select/Select';
 export type { TextAreaProps } from './TextArea/TextArea';
 export { TextArea } from './TextArea/TextArea';
 export type { ToggleProps } from './Toggle/Toggle';

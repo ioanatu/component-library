@@ -1,0 +1,215 @@
+/**
+ * Select — the listbox pattern from the design page: a field-shaped trigger with
+ * the accent offset, and a panel that spans the trigger's width.
+ */
+.field {
+  box-sizing: border-box;
+  display: block;
+  inline-size: var(--select-w, 240px);
+}
+
+.fullWidth {
+  inline-size: 100%;
+}
+
+.label {
+  display: block;
+  margin-block-end: var(--space-2);
+}
+
+.anchor {
+  position: relative;
+}
+
+.trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding: 11px 14px;
+
+  background-color: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: 2px 2px 0 var(--accent);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-sans, 'Hanken Grotesk', system-ui, sans-serif);
+  text-align: start;
+  transition:
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.trigger:hover:not(:disabled) {
+  background-color: var(--accent-wash);
+}
+
+.trigger:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.invalid .trigger {
+  border-color: var(--danger);
+  box-shadow: 2px 2px 0 var(--danger);
+}
+
+.trigger:disabled {
+  background-color: var(--sunken);
+  border-color: var(--ink-subtle);
+  box-shadow: none;
+  color: var(--ink-subtle);
+  cursor: not-allowed;
+}
+
+/* One line, so a long label cannot stretch the field. */
+.value {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex: none;
+  inline-size: 12px;
+  block-size: 12px;
+  color: var(--ink-muted);
+  transition: rotate 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.chevronOpen {
+  rotate: 180deg;
+}
+
+.panel {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: var(--select-z, 40);
+  inset-block-start: calc(100% + 8px);
+  inset-inline: 0;
+  padding: 5px;
+
+  background-color: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: 8px 8px 0 var(--accent);
+  animation: select-in 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.panelAbove {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + 8px);
+}
+
+.search {
+  padding: 3px 3px 7px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  max-block-size: var(--select-max-h, 260px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+}
+
+.list:focus {
+  outline: none;
+}
+
+.option {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 36px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.option[aria-selected='true'] {
+  background-color: var(--accent-wash);
+}
+
+/* The active option is the keyboard's position, which is not the same thing as
+   the selected one — so it gets a ring rather than only a fill. */
+.active {
+  background-color: var(--accent-wash);
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.option[aria-disabled='true'] {
+  background-color: transparent;
+  color: var(--ink-subtle);
+  cursor: not-allowed;
+}
+
+.optionLabel {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.tick {
+  flex: none;
+  inline-size: 14px;
+  block-size: 14px;
+}
+
+.empty {
+  padding: 10px 12px;
+}
+
+.messages {
+  display: grid;
+  gap: 2px;
+  margin-block-start: 6px;
+}
+
+.error {
+  display: flex;
+  gap: 6px;
+}
+
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes select-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+
+  .chevron,
+  .trigger {
+    transition: none;
+  }
+}

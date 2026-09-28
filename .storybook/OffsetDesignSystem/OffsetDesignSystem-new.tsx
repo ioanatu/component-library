@@ -29,7 +29,16 @@ import {
   ThemeToggle,
   type Tone,
 } from './components';
-import { Checkbox, Card, Input, ButtonNew, Radio, RadioGroup } from '../../src';
+import {
+  Checkbox,
+  Card,
+  Input,
+  ButtonNew,
+  Radio,
+  RadioGroup,
+  DropdownMenu,
+  MenuCheckboxItem,
+} from '../../src';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
@@ -1363,6 +1372,13 @@ export function Toolbar() {
               <Card padding="lg">
                 <div style={{ display: 'grid', gap: 20, alignContent: 'start' }}>
                   <div>
+                    <DropdownMenu
+                      trigger={<ButtonNew variant="secondary">Notifications</ButtonNew>}
+                    >
+                      <MenuCheckboxItem defaultChecked>Deploys</MenuCheckboxItem>
+                      <MenuCheckboxItem defaultChecked>Failed jobs</MenuCheckboxItem>
+                      <MenuCheckboxItem>Weekly digest</MenuCheckboxItem>
+                    </DropdownMenu>
                     <Body level={3} weight="semibold" style={{ marginBottom: 8 }}>
                       Select — listbox pattern
                     </Body>
