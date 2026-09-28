@@ -34,8 +34,11 @@ import { MenuContext } from './MenuContext';
  * The menu is positioned relative to the trigger rather than portaled, so an
  * ancestor with `overflow: hidden` will clip it.
  *
- * @param trigger - A focusable element. Cloned to add the ARIA wiring; its own
- * handlers are untouched.
+ * @param trigger - A focusable element. Cloned to add the ARIA wiring and the
+ * chevron; its own handlers and children are kept.
+ * @param chevron - Appends a caret to the trigger, rotating when open, so the
+ * trigger looks like something that opens. Default true; turn it off for an
+ * icon-only trigger.
  * @param placement - Corner to hang from. Flips on collision, in both axes.
  * @param maxHeight - Cap in px; the list scrolls past it. Capped again by the space
  * actually available, so the menu never runs off screen.
@@ -46,6 +49,7 @@ export interface DropdownMenuProps {
   trigger: ReactElement;
   children: ReactNode;
   placement?: MenuPlacement;
+  chevron?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -62,9 +66,21 @@ type TriggerProps = {
   'aria-haspopup'?: 'menu';
   'aria-expanded'?: boolean;
   'aria-controls'?: string;
+  children?: ReactNode;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
 };
+
+const Chevron = ({ open }: { open: boolean }) => (
+  <svg
+    className={clsx(styles.chevron, { [styles.chevronOpen]: open })}
+    viewBox="0 0 16 16"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M3 5.5h10L8 11z" />
+  </svg>
+);
 
 const PLACEMENT_CLASS: Record<MenuPlacement, string> = {
   'bottom-start': styles.bottomStart,
@@ -87,6 +103,7 @@ export function DropdownMenu({
   trigger,
   children,
   placement = 'bottom-start',
+  chevron = true,
   open: openProp,
   defaultOpen = false,
   onOpenChange,
@@ -116,8 +133,13 @@ export function DropdownMenu({
   const getTrigger = () =>
     wrapRef.current?.querySelector<HTMLElement>('[aria-haspopup="menu"]') ?? null;
 
+  /* Every checkable role counts, or the arrows would skip those items. */
   const getItems = () =>
-    Array.from(menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []);
+    Array.from(
+      menuRef.current?.querySelectorAll<HTMLElement>(
+        '[role="menuitem"],[role="menuitemcheckbox"],[role="menuitemradio"]',
+      ) ?? [],
+    );
 
   const setOpen = useCallback(
     (next: boolean) => {
@@ -283,7 +305,14 @@ export function DropdownMenu({
         setOpen(false);
         break;
       default:
-        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        /* Space activates the focused item; it is never typeahead. */
+        if (
+          event.key.length === 1 &&
+          event.key !== ' ' &&
+          !event.metaKey &&
+          !event.ctrlKey &&
+          !event.altKey
+        ) {
           event.preventDefault();
           runTypeahead(event.key, current);
         }
@@ -301,20 +330,25 @@ export function DropdownMenu({
 
   return (
     <span ref={wrapRef} className={clsx(styles.wrap, className)}>
-      {cloneElement(child, {
-        id: triggerId,
-        'aria-haspopup': 'menu',
-        'aria-expanded': open,
-        'aria-controls': open ? menuId : undefined,
-        onClick: (event: MouseEvent<HTMLElement>) => {
-          child.props.onClick?.(event);
-          onTriggerClick();
+      {cloneElement(
+        child,
+        {
+          id: triggerId,
+          'aria-haspopup': 'menu',
+          'aria-expanded': open,
+          'aria-controls': open ? menuId : undefined,
+          onClick: (event: MouseEvent<HTMLElement>) => {
+            child.props.onClick?.(event);
+            onTriggerClick();
+          },
+          onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
+            child.props.onKeyDown?.(event);
+            onTriggerKeyDown(event);
+          },
         },
-        onKeyDown: (event: KeyboardEvent<HTMLElement>) => {
-          child.props.onKeyDown?.(event);
-          onTriggerKeyDown(event);
-        },
-      })}
+        child.props.children,
+        chevron ? <Chevron key="chevron" open={open} /> : null,
+      )}
 
       {open ? (
         <div

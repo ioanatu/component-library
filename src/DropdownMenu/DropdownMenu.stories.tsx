@@ -4,7 +4,7 @@ import { ButtonNew } from '../ButtonNew/ButtonNew';
 import { menuPlacements } from '../types';
 import { Body } from '../Typography';
 import { DropdownMenu } from './DropdownMenu';
-import { MenuGroup, MenuItem, MenuSeparator } from './MenuItem';
+import { MenuCheckboxItem, MenuGroup, MenuItem, MenuSeparator } from './MenuItem';
 
 /**
  * Dropdown menu following the OFFSET design system: a bordered surface with the
@@ -19,6 +19,12 @@ import { MenuGroup, MenuItem, MenuSeparator } from './MenuItem';
  *   by name, Escape closes and returns focus to the trigger, Tab closes and moves on.
  * - **Hover focuses** — so mouse and keyboard converge on one highlight instead of
  *   showing two at once.
+ * - **A chevron on the trigger**, rotating when open, so the control looks like
+ *   something that opens. Decorative — `aria-expanded` is what actually reports the
+ *   state. Turn it off with `chevron={false}` for an icon-only trigger.
+ * - **Checkable items** — `MenuCheckboxItem` is `role="menuitemcheckbox"` with
+ *   `aria-checked`, never a nested `<input>`, which would put a focusable control
+ *   inside a focusable item.
  * - **Disabled items stay focusable** via `aria-disabled`, so the keyboard can still
  *   discover them. They just do nothing.
  * - **Flips and clamps** — the corner gives way on collision in both axes, and the
@@ -30,7 +36,7 @@ import { MenuGroup, MenuItem, MenuSeparator } from './MenuItem';
  * Import
  * ---
  *
- * `import { DropdownMenu, MenuItem, MenuSeparator, MenuGroup } from '@ioanatu/component-library';`
+ * `import { DropdownMenu, MenuItem, MenuCheckboxItem, MenuSeparator, MenuGroup } from '@ioanatu/component-library';`
  */
 
 const meta: Meta<typeof DropdownMenu> = {
@@ -39,6 +45,7 @@ const meta: Meta<typeof DropdownMenu> = {
   tags: ['autodocs'],
   argTypes: {
     placement: { control: 'inline-radio', options: menuPlacements },
+    chevron: { control: 'boolean' },
     maxHeight: { control: { type: 'number', min: 100, step: 20 } },
     minWidth: { control: { type: 'number', min: 120, step: 10 } },
     maxWidth: { control: { type: 'number', min: 160, step: 10 } },
@@ -47,6 +54,7 @@ const meta: Meta<typeof DropdownMenu> = {
   },
   args: {
     placement: 'bottom-start',
+    chevron: true,
     minWidth: 200,
   },
 };
@@ -209,13 +217,91 @@ export const LongLabels: Story = {
 };
 
 /**
- * `closeOnSelect={false}` leaves the menu open, for an item that toggles something
- * the user may want to change again straight away.
+ * Checkable items, as `role="menuitemcheckbox"` with `aria-checked` — so each is
+ * announced as a checkbox with its state, and the tick is drawn rather than being a
+ * nested input. The slot is reserved whether or not an item is ticked, so the labels
+ * stay aligned.
+ *
+ * These keep the menu open on select, since toggling two in a row is the normal
+ * thing to want. Arrow keys and typeahead treat them exactly like any other item.
  */
+export const CheckboxItems: Story = {
+  render: (args) => {
+    const [columns, setColumns] = useState({ status: true, owner: true, updated: false });
+    const set = (key: keyof typeof columns) => (checked: boolean) =>
+      setColumns((prev) => ({ ...prev, [key]: checked }));
+
+    return (
+      <div style={{ display: 'grid', gap: 16, justifyItems: 'start', padding: '20px 20px 260px' }}>
+        <DropdownMenu {...args} trigger={<ButtonNew variant="secondary">Columns</ButtonNew>}>
+          <MenuGroup label="Show columns">
+            <MenuCheckboxItem checked={columns.status} onCheckedChange={set('status')}>
+              Status
+            </MenuCheckboxItem>
+            <MenuCheckboxItem checked={columns.owner} onCheckedChange={set('owner')}>
+              Owner
+            </MenuCheckboxItem>
+            <MenuCheckboxItem checked={columns.updated} onCheckedChange={set('updated')}>
+              Last updated
+            </MenuCheckboxItem>
+            <MenuCheckboxItem disabled checked={false}>
+              Audit trail — needs a paid plan
+            </MenuCheckboxItem>
+          </MenuGroup>
+          <MenuSeparator />
+          <MenuItem onSelect={() => setColumns({ status: true, owner: true, updated: true })}>
+            Show all
+          </MenuItem>
+        </DropdownMenu>
+
+        <Body level={3} tone="muted">
+          Showing:{' '}
+          {Object.entries(columns)
+            .filter(([, on]) => on)
+            .map(([key]) => key)
+            .join(', ') || 'nothing'}
+        </Body>
+      </div>
+    );
+  },
+};
+
+/** Uncontrolled checkable items keep their own state through `defaultChecked`. */
+export const CheckboxItemsUncontrolled: Story = {
+  render: (args) => (
+    <div style={{ padding: '20px 20px 240px' }}>
+      <DropdownMenu {...args} trigger={<ButtonNew variant="secondary">Notifications</ButtonNew>}>
+        <MenuCheckboxItem defaultChecked>Deploys</MenuCheckboxItem>
+        <MenuCheckboxItem defaultChecked>Failed jobs</MenuCheckboxItem>
+        <MenuCheckboxItem>Weekly digest</MenuCheckboxItem>
+      </DropdownMenu>
+    </div>
+  ),
+};
+
+/** `chevron={false}` for a trigger whose icon already says it opens something. */
+export const WithoutChevron: Story = {
+  args: { chevron: false },
+  render: (args) => (
+    <div style={{ padding: '20px 20px 240px' }}>
+      <DropdownMenu
+        {...args}
+        trigger={
+          <ButtonNew variant="ghost" aria-label="More actions">
+            ⋯
+          </ButtonNew>
+        }
+      >
+        {actions}
+      </DropdownMenu>
+    </div>
+  ),
+};
+
+/** Driving the open state from outside. */
 export const Controlled: Story = {
   render: (args) => {
     const [open, setOpen] = useState(false);
-    const [density, setDensity] = useState('comfortable');
 
     return (
       <div style={{ display: 'grid', gap: 16, justifyItems: 'start', padding: '20px 20px 240px' }}>
@@ -223,17 +309,13 @@ export const Controlled: Story = {
           {...args}
           open={open}
           onOpenChange={setOpen}
-          trigger={<ButtonNew variant="secondary">View options</ButtonNew>}
+          trigger={<ButtonNew variant="secondary">Actions</ButtonNew>}
         >
-          {['comfortable', 'compact'].map((option) => (
-            <MenuItem key={option} closeOnSelect={false} onSelect={() => setDensity(option)}>
-              {option === density ? `✓ ${option}` : option}
-            </MenuItem>
-          ))}
+          {actions}
         </DropdownMenu>
 
         <Body level={3} tone="muted">
-          Density: {density} · menu {open ? 'open' : 'closed'}
+          Menu is {open ? 'open' : 'closed'}
         </Body>
       </div>
     );
