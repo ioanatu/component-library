@@ -24,8 +24,12 @@ export type InputType = (typeof inputTypes)[number];
 export const textAreaResizes = ['none', 'vertical'] as const;
 export type TextAreaResize = (typeof textAreaResizes)[number];
 
-export const checkboxOrientations = ['vertical', 'horizontal'] as const;
-export type CheckboxOrientation = (typeof checkboxOrientations)[number];
+export const orientations = ['vertical', 'horizontal'] as const;
+export type Orientation = (typeof orientations)[number];
+
+/** Kept as its own name for CheckboxGroup's published API. */
+export const checkboxOrientations = orientations;
+export type CheckboxOrientation = Orientation;
 
 export const chipVariants = ['default', 'success', 'warning', 'error', 'info'] as const;
 export type ChipVariant = (typeof chipVariants)[number];
