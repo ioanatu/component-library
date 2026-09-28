@@ -29,7 +29,7 @@ import {
   ThemeToggle,
   type Tone,
 } from './components';
-import { Checkbox, Card, Input, ButtonNew } from '../../src';
+import { Checkbox, Card, Input, ButtonNew, Radio, RadioGroup } from '../../src';
 
 export type Theme = 'light' | 'dark';
 export type Density = 'comfortable' | 'compact';
@@ -1443,62 +1443,15 @@ export function Toolbar() {
                       <Checkbox label="Archive when finished" />
                       <Checkbox label="Require approval" disabled />
 
-                      <div style={{ display: 'flex', gap: 20, marginTop: 2 }}>
-                        <Body
-                          as="label"
-                          level={3}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 9,
-                            cursor: 'pointer',
-                          }}
+                      <div style={{ display: 'flex', gap: 20, margin: '14px 0px' }}>
+                        <RadioGroup
+                          label="Delivery schedule"
+                          helper="Change it any time."
+                          orientation="horizontal"
                         >
-                          <span
-                            style={{
-                              width: 22,
-                              height: 22,
-                              flex: 'none',
-                              border: 'var(--bw) solid var(--ink)',
-                              borderRadius: '50%',
-                              background: 'var(--surface)',
-                              display: 'grid',
-                              placeItems: 'center',
-                            }}
-                          >
-                            <span
-                              style={{
-                                width: 10,
-                                height: 10,
-                                borderRadius: '50%',
-                                background: 'var(--accent)',
-                              }}
-                            />
-                          </span>
-                          Private
-                        </Body>
-                        <Body
-                          as="label"
-                          level={3}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 9,
-                            cursor: 'pointer',
-                          }}
-                        >
-                          <span
-                            style={{
-                              width: 22,
-                              height: 22,
-                              flex: 'none',
-                              border: 'var(--bw) solid var(--ink)',
-                              borderRadius: '50%',
-                              background: 'var(--surface)',
-                            }}
-                          />
-                          Public
-                        </Body>
+                          <Radio label="Private" value="private" />
+                          <Radio label="Public" value="public" />
+                        </RadioGroup>
                       </div>
                     </div>
                   </div>
