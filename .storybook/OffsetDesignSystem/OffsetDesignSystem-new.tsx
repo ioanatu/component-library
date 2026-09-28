@@ -38,6 +38,7 @@ import {
   RadioGroup,
   DropdownMenu,
   MenuCheckboxItem,
+  TabMenu,
 } from '../../src';
 
 export type Theme = 'light' | 'dark';
@@ -416,6 +417,7 @@ export default function OffsetDesignSystem({
   const [accent, setAccent] = useState<string>(initialAccent);
   const [tab, setTab] = useState('overview');
   const [view, setView] = useState('Grid');
+  const [viewTab, setViewTab] = useState('Grid');
   const [sel, setSel] = useState('Medium');
   const [selOpen, setSelOpen] = useState(false);
   const [slider, setSlider] = useState(82);
@@ -1869,50 +1871,40 @@ export function Toolbar() {
                 </Body>
               </div>
 
-              <Eyebrow style={{ margin: '28px 0 12px' }}>TabMenu — segmented sibling</Eyebrow>
-              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 18 }}>
-                <div
-                  role="tablist"
-                  aria-label="View mode"
-                  style={{
-                    display: 'inline-flex',
-                    padding: 4,
-                    gap: 4,
-                    border: 'var(--bw) solid var(--ink)',
-                    borderRadius: 'var(--r-full)',
-                    background: 'var(--surface)',
-                    boxShadow: '4px 4px 0 var(--accent)',
-                  }}
-                >
-                  {['Grid', 'List', 'Board'].map((v) => {
-                    const on = v === view;
-                    return (
-                      <button
-                        key={v}
-                        type="button"
-                        role="tab"
-                        aria-selected={on}
-                        onClick={() => setView(v)}
-                        style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: 'var(--fs-sm)',
-                          fontWeight: 'var(--fw-semibold)' as CSSProperties['fontWeight'],
-                          padding: '8px 22px',
-                          border: 'none',
-                          borderRadius: 'var(--r-full)',
-                          background: on ? 'var(--accent)' : 'transparent',
-                          color: on ? 'var(--on-accent)' : 'var(--ink-muted)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {v}
-                      </button>
-                    );
-                  })}
+              <Eyebrow style={{ margin: '28px 0 12px' }}>
+                TabMenu — component <span style={{ color: 'var(--accent)' }}>· new</span>
+              </Eyebrow>
+              <div style={{ display: 'grid', gap: 16 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 18 }}>
+                  <TabMenu
+                    label="View mode"
+                    items={[
+                      { value: 'Grid', label: 'Grid', panelId: 'off-tabmenu-panel' },
+                      { value: 'List', label: 'List', panelId: 'off-tabmenu-panel' },
+                      { value: 'Board', label: 'Board', panelId: 'off-tabmenu-panel' },
+                      { value: 'Timeline', label: 'Timeline', disabled: true },
+                    ]}
+                    value={viewTab}
+                    onChange={setViewTab}
+                  />
+                  <Body as="span" level={3} tone="muted">
+                    → showing <Code>{viewTab}</Code>
+                  </Body>
                 </div>
-                <Body as="span" level={3} tone="muted">
-                  → showing <Code>{view}</Code>
+                <Body level={3} tone="muted">
+                  One tab stop, arrows within it, Home and End to the ends. Selection follows focus,
+                  so the disabled tab is skipped rather than landed on.
                 </Body>
+                <TabMenu
+                  label="Environment"
+                  fullWidth
+                  items={[
+                    { value: 'dev', label: 'Development' },
+                    { value: 'staging', label: 'Staging' },
+                    { value: 'prod', label: 'Production' },
+                  ]}
+                  defaultValue="staging"
+                />
               </div>
             </Card>
 
