@@ -24,6 +24,8 @@ export type { RadioGroupProps } from './Radio/RadioGroup';
 export { RadioGroup } from './Radio/RadioGroup';
 export type { SelectOption, SelectProps } from './Select/Select';
 export { Select } from './Select/Select';
+export type { SliderProps } from './Slider/Slider';
+export { Slider } from './Slider/Slider';
 export type { TabMenuItem, TabMenuProps } from './TabMenu/TabMenu';
 export { TabMenu } from './TabMenu/TabMenu';
 export type { TextAreaProps } from './TextArea/TextArea';

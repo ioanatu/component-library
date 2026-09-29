@@ -38,6 +38,7 @@ import {
   RadioGroup,
   DropdownMenu,
   MenuCheckboxItem,
+  Slider,
   TabMenu,
   Toast,
   ToastRegion,
@@ -1493,31 +1494,13 @@ export function Toolbar() {
                           <Tag>NEW</Tag>
                         </span>
                       </Body>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                        <input
-                          type="range"
-                          min={0}
-                          max={100}
-                          value={slider}
-                          onChange={(e) => setSlider(Number(e.target.value))}
-                          aria-label="Storage limit"
-                          style={{ flex: 1, minWidth: 0, accentColor: 'var(--accent)', height: 22 }}
-                        />
-                        <Body
-                          as="span"
-                          level={3}
-                          mono
-                          style={{
-                            padding: '4px 10px',
-                            border: 'var(--bw) solid var(--ink)',
-                            borderRadius: 'var(--r-full)',
-                            minWidth: 56,
-                            textAlign: 'center',
-                          }}
-                        >
-                          {slider}%
-                        </Body>
-                      </div>
+                      <Slider
+                        label="Storage limit"
+                        hideLabel
+                        value={slider}
+                        onChange={setSlider}
+                        formatValue={(value) => `${value}%`}
+                      />
                     </div>
 
                     <div>
