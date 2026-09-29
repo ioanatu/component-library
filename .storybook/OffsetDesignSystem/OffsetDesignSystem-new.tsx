@@ -20,7 +20,6 @@ import {
   inputStyle,
   Pre,
   Section,
-  Skeleton,
   SpecTable,
   Spinner,
   SubSection,
@@ -37,6 +36,7 @@ import {
   Modal,
   Radio,
   RadioGroup,
+  Skeleton,
   DropdownMenu,
   MenuCheckboxItem,
   Slider,
@@ -1599,10 +1599,8 @@ export function Toolbar() {
                   <Card>
                     <Eyebrow style={{ marginBottom: 14 }}>Skeleton</Eyebrow>
                     <div style={{ display: 'grid', gap: 10 }}>
-                      <Skeleton w="70%" />
-                      <Skeleton />
-                      <Skeleton w="88%" />
-                      <Skeleton h={70} />
+                      <Skeleton lines={3} label="Loading…" />
+                      <Skeleton height={70} />
                     </div>
                     <Body level={3} tone="muted" style={{ marginTop: 14 }}>
                       Mirrors the real layout's shape. Screen readers get a polite{' '}

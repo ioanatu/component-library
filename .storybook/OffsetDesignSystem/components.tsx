@@ -578,7 +578,7 @@ export const Hero = () => (
             ['148', 'Tokens'],
             ['2', 'Themes'],
           ].map(([n, label]) => (
-            <Card key={label} variant="shadow">
+            <Card key={label}>
               {/* pad={14} shadow={2} */}
               <Headline level={2} weight="bold">
                 {n}

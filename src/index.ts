@@ -28,6 +28,8 @@ export type { RadioGroupProps } from './Radio/RadioGroup';
 export { RadioGroup } from './Radio/RadioGroup';
 export type { SelectOption, SelectProps } from './Select/Select';
 export { Select } from './Select/Select';
+export type { SkeletonProps } from './Skeleton/Skeleton';
+export { Skeleton } from './Skeleton/Skeleton';
 export type { SliderProps } from './Slider/Slider';
 export { Slider } from './Slider/Slider';
 export type { TabMenuItem, TabMenuProps } from './TabMenu/TabMenu';

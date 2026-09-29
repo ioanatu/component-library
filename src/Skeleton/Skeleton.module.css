@@ -1,0 +1,41 @@
+.group {
+  display: grid;
+}
+
+.bar {
+  display: block;
+  background-color: var(--sunken);
+  border: 1px solid var(--border-subtle);
+  animation: skeleton-pulse 1500ms ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* A pulsing placeholder is exactly what this setting is asking us to stop. */
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    opacity: 0.6;
+    animation: none;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
