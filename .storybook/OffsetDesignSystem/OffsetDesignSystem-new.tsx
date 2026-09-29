@@ -29,6 +29,7 @@ import {
   type Tone,
 } from './components';
 import {
+  Breadcrumbs,
   Checkbox,
   Card,
   Input,
@@ -1770,40 +1771,14 @@ export function Toolbar() {
               lead="Tabs and TabMenu carry over from v1 with the roving-tabindex behaviour intact. Breadcrumb and Pagination close the gap that made it impossible to build a list-and-detail screen from the library alone."
             >
               <Card style={{ marginBottom: 16 }}>
-                <nav aria-label="Breadcrumb" style={{ marginBottom: 26 }}>
-                  <Body
-                    as="ol"
-                    level={3}
-                    style={{
-                      padding: 0,
-                      listStyle: 'none',
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      alignItems: 'center',
-                      gap: 10,
-                    }}
-                  >
-                    <li>
-                      <a href="#navigation" style={{ color: 'var(--ink-muted)' }}>
-                        Workspace
-                      </a>
-                    </li>
-                    <li aria-hidden="true" style={{ color: 'var(--ink-subtle)' }}>
-                      /
-                    </li>
-                    <li>
-                      <a href="#navigation" style={{ color: 'var(--ink-muted)' }}>
-                        Projects
-                      </a>
-                    </li>
-                    <li aria-hidden="true" style={{ color: 'var(--ink-subtle)' }}>
-                      /
-                    </li>
-                    <Body as="li" level={3} weight="semibold" aria-current="page">
-                      Atlas migration
-                    </Body>
-                  </Body>
-                </nav>
+                <Breadcrumbs
+                  style={{ marginBottom: 26 }}
+                  items={[
+                    { label: 'Workspace', href: '#navigation' },
+                    { label: 'Projects', href: '#navigation' },
+                    { label: 'Atlas migration' },
+                  ]}
+                />
 
                 <Eyebrow style={{ marginBottom: 12 }}>Tabs — browser-tab silhouette</Eyebrow>
                 <Tabs

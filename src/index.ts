@@ -1,5 +1,7 @@
 import './index.css';
 
+export type { BreadcrumbItem, BreadcrumbsProps } from './Breadcrumbs/Breadcrumbs';
+export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 export type { ButtonProps } from './Button/Button';
 export { Button } from './Button/Button';
 export type { ButtonNewProps } from './ButtonNew/ButtonNew';
