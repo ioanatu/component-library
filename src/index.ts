@@ -28,6 +28,8 @@ export type { SliderProps } from './Slider/Slider';
 export { Slider } from './Slider/Slider';
 export type { TabMenuItem, TabMenuProps } from './TabMenu/TabMenu';
 export { TabMenu } from './TabMenu/TabMenu';
+export type { TabItem, TabsProps } from './Tabs/Tabs';
+export { Tabs } from './Tabs/Tabs';
 export type { TextAreaProps } from './TextArea/TextArea';
 export { TextArea } from './TextArea/TextArea';
 export type { ToastProps } from './Toast/Toast';

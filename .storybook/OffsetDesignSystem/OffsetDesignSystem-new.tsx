@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  type CSSProperties,
   type ReactNode,
   useCallback,
   useContext,
@@ -40,6 +39,7 @@ import {
   MenuCheckboxItem,
   Slider,
   TabMenu,
+  Tabs,
   Toast,
   ToastRegion,
 } from '../../src';
@@ -473,7 +473,6 @@ export default function OffsetDesignSystem({
   );
 
   const themeCtx = useMemo(() => ({ theme, setTheme, accent, setAccent }), [theme, accent]);
-  const activeTab = TABS.find((t) => t.id === tab) ?? TABS[0];
 
   return (
     <ThemeContext.Provider value={themeCtx}>
@@ -1807,60 +1806,20 @@ export function Toolbar() {
                 </nav>
 
                 <Eyebrow style={{ marginBottom: 12 }}>Tabs — browser-tab silhouette</Eyebrow>
-                <div
-                  role="tablist"
-                  aria-label="Project detail"
-                  style={{
-                    display: 'flex',
-                    gap: 6,
-                    marginBottom: -2,
-                    position: 'relative',
-                    zIndex: 1,
-                  }}
-                >
-                  {TABS.map((t) => {
-                    const on = t.id === tab;
-                    return (
-                      <button
-                        key={t.id}
-                        type="button"
-                        role="tab"
-                        aria-selected={on}
-                        tabIndex={on ? 0 : -1}
-                        onClick={() => setTab(t.id)}
-                        style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: 'var(--fs-sm)',
-                          fontWeight: 'var(--fw-semibold)' as CSSProperties['fontWeight'],
-                          padding: '11px 22px',
-                          border: 'var(--bw) solid var(--ink)',
-                          borderBottom: 'none',
-                          borderTop: on ? '3px solid var(--accent)' : '2px solid var(--ink)',
-                          borderRadius: 'var(--r-md) var(--r-md) 0 0',
-                          background: on ? 'var(--surface)' : 'var(--sunken)',
-                          color: on ? 'var(--ink)' : 'var(--ink-muted)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {t.label}
-                      </button>
-                    );
-                  })}
-                </div>
-                <div
-                  role="tabpanel"
-                  style={{
-                    border: 'var(--bw) solid var(--ink)',
-                    borderRadius: '0 var(--r-md) var(--r-md) var(--r-md)',
-                    background: 'var(--surface)',
-                    boxShadow: '4px 4px 0 var(--accent)',
-                    padding: 22,
-                  }}
-                >
-                  <Body level={2} tone="muted">
-                    {activeTab.body}
-                  </Body>
-                </div>
+                <Tabs
+                  label="Project detail"
+                  value={tab}
+                  onChange={setTab}
+                  items={TABS.map((t) => ({
+                    value: t.id,
+                    label: t.label,
+                    content: (
+                      <Body level={2} tone="muted">
+                        {t.body}
+                      </Body>
+                    ),
+                  }))}
+                />
 
                 <Eyebrow style={{ margin: '28px 0 12px' }}>
                   TabMenu — component <span style={{ color: 'var(--accent)' }}>· new</span>
