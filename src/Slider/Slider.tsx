@@ -14,7 +14,11 @@ import styles from './Slider.module.css';
  * @param formatValue - Formats the shown value and sets aria-valuetext, so "60%" is
  * announced rather than "60".
  * @param showValue - The pill beside the track. On by default.
+ * @param marks - Ticks under each step. Ignored past 40 steps, where they would be
+ * too dense to read.
  */
+
+const MAX_MARKS = 40;
 
 export interface SliderProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
@@ -29,6 +33,7 @@ export interface SliderProps extends Omit<
   defaultValue?: number;
   onChange?: (value: number, event: ChangeEvent<HTMLInputElement>) => void;
   showValue?: boolean;
+  marks?: boolean;
   formatValue?: (value: number) => string;
   helper?: ReactNode;
   error?: ReactNode;
@@ -46,6 +51,7 @@ export function Slider({
   defaultValue,
   onChange,
   showValue = true,
+  marks = false,
   formatValue,
   helper,
   error,
@@ -72,6 +78,9 @@ export function Slider({
   const shown = formatValue ? formatValue(value) : String(value);
   const fill = max === min ? 0 : ((value - min) / (max - min)) * 100;
 
+  const steps = step > 0 ? Math.round((max - min) / step) : 0;
+  const showMarks = marks && steps > 0 && steps <= MAX_MARKS;
+
   const describedBy =
     [rest['aria-describedby'], helperId, errorId].filter(Boolean).join(' ') || undefined;
 
@@ -84,22 +93,36 @@ export function Slider({
       </label>
 
       <div className={styles.row}>
-        <input
-          {...rest}
-          ref={ref}
-          id={id}
-          type="range"
-          className={styles.input}
-          style={{ '--sl-fill': `${fill}%` } as CSSProperties}
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          disabled={disabled}
-          onChange={handleChange}
-          aria-valuetext={formatValue ? shown : undefined}
-          aria-describedby={describedBy}
-        />
+        <div className={clsx(styles.control, { [styles.hasMarks]: showMarks })}>
+          <input
+            {...rest}
+            ref={ref}
+            id={id}
+            type="range"
+            className={styles.input}
+            style={{ '--sl-fill': `${fill}%` } as CSSProperties}
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            disabled={disabled}
+            onChange={handleChange}
+            aria-valuetext={formatValue ? shown : undefined}
+            aria-describedby={describedBy}
+          />
+
+          {showMarks ? (
+            <span className={styles.marks} aria-hidden="true">
+              {Array.from({ length: steps + 1 }, (_, index) => (
+                <span
+                  key={index}
+                  className={styles.mark}
+                  style={{ insetInlineStart: `${(index / steps) * 100}%` }}
+                />
+              ))}
+            </span>
+          ) : null}
+        </div>
 
         {/* aria-hidden: the input already announces its value. */}
         {showValue ? (

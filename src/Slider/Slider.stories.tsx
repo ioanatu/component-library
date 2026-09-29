@@ -32,6 +32,7 @@ const meta: Meta<typeof Slider> = {
     max: { control: 'number' },
     step: { control: 'number' },
     showValue: { control: 'boolean' },
+    marks: { control: 'boolean' },
     disabled: { control: 'boolean' },
     hideLabel: { control: 'boolean' },
     helper: { control: 'text' },
@@ -90,9 +91,17 @@ export const Disabled: Story = {
   args: { disabled: true, defaultValue: 40, formatValue: (value) => `${value}%` },
 };
 
-/** A coarse step, so the thumb snaps. Keyboard steps by the same amount. */
+/**
+ * A coarse step, so the thumb snaps. `marks` puts a tick under each stop. They are
+ * decorative and `aria-hidden`: the value is already announced.
+ */
 export const Stepped: Story = {
-  args: { label: 'Quality', min: 1, max: 5, step: 1, defaultValue: 3, showValue: true },
+  args: { label: 'Quality', min: 1, max: 5, step: 1, defaultValue: 3, marks: true },
+};
+
+/** Marks are skipped past 40 steps, where they would read as a solid line. */
+export const SteppedDense: Story = {
+  args: { label: 'Storage limit', min: 0, max: 100, step: 10, defaultValue: 40, marks: true },
 };
 
 export const WithoutValue: Story = {

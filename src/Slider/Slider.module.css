@@ -1,6 +1,7 @@
 .field {
   --sl-track-h: 14px;
   --sl-thumb: 22px;
+  --sl-fill-color: var(--accent);
 
   box-sizing: border-box;
   display: block;
@@ -17,6 +18,16 @@
   gap: 14px;
 }
 
+.control {
+  position: relative;
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.hasMarks {
+  margin-block-end: 10px;
+}
+
 /**
  * The fill is a gradient on the track, driven by --sl-fill set inline: only
  * Firefox has ::-moz-range-progress, so a gradient is the one portable way.
@@ -24,8 +35,7 @@
  * the whole selector invalid.
  */
 .input {
-  flex: 1;
-  min-inline-size: 0;
+  inline-size: 100%;
   block-size: var(--sl-thumb);
   margin: 0;
   appearance: none;
@@ -34,7 +44,13 @@
 }
 
 .input:disabled {
+  --sl-fill-color: var(--border-subtle);
+
   cursor: not-allowed;
+}
+
+.invalid {
+  --sl-fill-color: var(--danger);
 }
 
 .input::-webkit-slider-runnable-track {
@@ -42,7 +58,7 @@
   block-size: var(--sl-track-h);
   background-image: linear-gradient(
     to right,
-    var(--accent) var(--sl-fill),
+    var(--sl-fill-color) var(--sl-fill),
     var(--sunken) var(--sl-fill)
   );
   border: 2px solid var(--ink);
@@ -54,7 +70,7 @@
   block-size: var(--sl-track-h);
   background-image: linear-gradient(
     to right,
-    var(--accent) var(--sl-fill),
+    var(--sl-fill-color) var(--sl-fill),
     var(--sunken) var(--sl-fill)
   );
   border: 2px solid var(--ink);
@@ -65,39 +81,43 @@
   box-sizing: border-box;
   inline-size: var(--sl-thumb);
   block-size: var(--sl-thumb);
-  margin-block-start: calc((var(--sl-track-h) - var(--sl-thumb)) / 2);
+  margin-block-start: calc((var(--sl-track-h) - var(--sl-thumb)) / 2 - 2px);
   appearance: none;
 
   background-color: var(--surface);
   border: 2px solid var(--ink);
   border-radius: var(--radius-round);
   box-shadow: 2px 2px 0 var(--accent);
-  transition: box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .input::-moz-range-thumb {
   box-sizing: border-box;
   inline-size: var(--sl-thumb);
   block-size: var(--sl-thumb);
+  translate: 0 -2px;
 
   background-color: var(--surface);
   border: 2px solid var(--ink);
   border-radius: var(--radius-round);
   box-shadow: 2px 2px 0 var(--accent);
-  transition: box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition:
+    background-color 140ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* The wash ring on hover, the same signal Checkbox and Radio use. */
 .input:hover:not(:disabled)::-webkit-slider-thumb {
   box-shadow:
     2px 2px 0 var(--accent),
-    0 0 0 6px var(--accent-wash);
+    0 0 0 6px color-mix(in srgb, var(--accent), transparent 80%);
 }
 
 .input:hover:not(:disabled)::-moz-range-thumb {
   box-shadow:
     2px 2px 0 var(--accent),
-    0 0 0 6px var(--accent-wash);
+    0 0 0 6px color-mix(in srgb, var(--accent), transparent 80%);
 }
 
 .input:focus-visible {
@@ -115,20 +135,10 @@
 }
 
 .input:disabled::-webkit-slider-runnable-track {
-  background-image: linear-gradient(
-    to right,
-    var(--border-subtle) var(--sl-fill),
-    var(--sunken) var(--sl-fill)
-  );
   border-color: var(--ink-subtle);
 }
 
 .input:disabled::-moz-range-track {
-  background-image: linear-gradient(
-    to right,
-    var(--border-subtle) var(--sl-fill),
-    var(--sunken) var(--sl-fill)
-  );
   border-color: var(--ink-subtle);
 }
 
@@ -160,6 +170,23 @@
 .invalid .input::-moz-range-thumb {
   border-color: var(--danger);
   box-shadow: 2px 2px 0 var(--danger);
+}
+
+.marks {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline: calc(var(--sl-thumb) / 2);
+  block-size: 5px;
+  pointer-events: none;
+}
+
+.mark {
+  position: absolute;
+  inline-size: 2px;
+  block-size: 5px;
+  background-color: var(--ink-subtle);
+  border-radius: 1px;
+  translate: -50% 0;
 }
 
 .value {
