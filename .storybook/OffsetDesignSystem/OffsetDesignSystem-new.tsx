@@ -1,4 +1,4 @@
-import React, {
+import {
   createContext,
   type ReactNode,
   useCallback,
@@ -34,6 +34,7 @@ import {
   Card,
   Input,
   ButtonNew,
+  Modal,
   Radio,
   RadioGroup,
   DropdownMenu,
@@ -430,7 +431,6 @@ export default function OffsetDesignSystem({
   const [toast, setToast] = useState(false);
 
   const toastTimer = useRef<number | null>(null);
-  const modalTrigger = useRef<HTMLElement | null>(null);
   const dialogInput = useRef<HTMLInputElement>(null);
 
   const fireToast = useCallback(() => {
@@ -439,30 +439,18 @@ export default function OffsetDesignSystem({
     toastTimer.current = window.setTimeout(() => setToast(false), 4200);
   }, []);
 
-  const openModal = useCallback((e: React.MouseEvent) => {
-    modalTrigger.current = e.currentTarget as HTMLElement;
-    setModal(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setModal(false);
-    modalTrigger.current?.focus();
-  }, []);
-
-  useEffect(() => {
-    if (modal) dialogInput.current?.focus();
-  }, [modal]);
+  const openModal = useCallback(() => setModal(true), []);
+  const closeModal = useCallback(() => setModal(false), []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (modal) closeModal();
       setSelOpen(false);
       setTip(false);
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [modal, closeModal]);
+  }, []);
 
   useEffect(
     () => () => {
@@ -2584,68 +2572,39 @@ export function Toolbar() {
         </>
 
         {/* Modal --------------------------------------------------------- */}
-        {modal ? (
-          <div
-            onClick={closeModal}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 80,
-              background: 'var(--scrim)',
-              display: 'grid',
-              placeItems: 'center',
-              padding: 24,
-            }}
-          >
-            <div
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="off-dialog-title"
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                width: '100%',
-                maxWidth: 460,
-                border: 'var(--bw) solid var(--ink)',
-                borderRadius: 'var(--r-lg)',
-                background: 'var(--surface)',
-                boxShadow: '8px 8px 0 var(--accent)',
-                padding: 28,
-                animation: 'off-rise var(--dur-slow) var(--ease)',
-              }}
-            >
-              <Eyebrow style={{ marginBottom: 6 }}>New project</Eyebrow>
-              <Headline level={3} id="off-dialog-title" style={{ marginBottom: 10 }}>
-                Name this migration
-              </Headline>
-              <Body level={3} tone="muted" style={{ marginBottom: 20 }}>
-                Focus moves here on open, is trapped while open, and returns to the button you
-                pressed when this closes.
-              </Body>
-              <Input
-                label="Project name"
-                ref={dialogInput}
-                id="off-dialog-input"
-                type="text"
-                placeholder="Atlas migration"
-              />
-              <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24 }}>
-                <ButtonNew variant="ghost" size="sm" onClick={closeModal}>
-                  Cancel
-                </ButtonNew>
-                <ButtonNew
-                  variant="primary"
-                  size="sm"
-                  onClick={() => {
-                    closeModal();
-                    fireToast();
-                  }}
-                >
-                  Create project
-                </ButtonNew>
-              </div>
-            </div>
-          </div>
-        ) : null}
+        <Modal
+          open={modal}
+          onClose={closeModal}
+          eyebrow="New project"
+          title="Name this migration"
+          description="Focus moves here on open, is trapped while open, and returns to the button you pressed when this closes."
+          initialFocus={dialogInput}
+          footer={
+            <>
+              <ButtonNew variant="ghost" size="sm" onClick={closeModal}>
+                Cancel
+              </ButtonNew>
+              <ButtonNew
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  closeModal();
+                  fireToast();
+                }}
+              >
+                Create project
+              </ButtonNew>
+            </>
+          }
+        >
+          <Input
+            label="Project name"
+            ref={dialogInput}
+            id="off-dialog-input"
+            type="text"
+            placeholder="Atlas migration"
+          />
+        </Modal>
 
         {/* Toast --------------------------------------------------------- */}
         <ToastRegion placement="bottom-right">

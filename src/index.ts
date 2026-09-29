@@ -20,6 +20,8 @@ export type { MenuCheckboxItemProps, MenuItemProps } from './DropdownMenu/MenuIt
 export { MenuCheckboxItem, MenuGroup, MenuItem, MenuSeparator } from './DropdownMenu/MenuItem';
 export type { InputProps } from './Input/Input';
 export { Input } from './Input/Input';
+export type { ModalProps } from './Modal/Modal';
+export { Modal } from './Modal/Modal';
 export type { RadioProps } from './Radio/Radio';
 export { Radio } from './Radio/Radio';
 export type { RadioGroupProps } from './Radio/RadioGroup';
