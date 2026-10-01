@@ -65,3 +65,7 @@ export type MenuPlacement = (typeof menuPlacements)[number];
 /** Tooltip fill. Named for the light theme: dark inverts, light sits on --surface. */
 export const tooltipVariants = ['dark', 'light'] as const;
 export type TooltipVariant = (typeof tooltipVariants)[number];
+
+/** Avatar fill. Accent marks the current user; surface suits a group on --sunken. */
+export const avatarTones = ['sunken', 'surface', 'accent'] as const;
+export type AvatarTone = (typeof avatarTones)[number];

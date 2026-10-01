@@ -1,5 +1,9 @@
 import './index.css';
 
+export type { AvatarProps } from './Avatar/Avatar';
+export { Avatar } from './Avatar/Avatar';
+export type { AvatarGroupProps } from './Avatar/AvatarGroup';
+export { AvatarGroup } from './Avatar/AvatarGroup';
 export type { BreadcrumbItem, BreadcrumbsProps } from './Breadcrumbs/Breadcrumbs';
 export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 export type { ButtonProps } from './Button/Button';

@@ -1,0 +1,70 @@
+.avatar {
+  box-sizing: border-box;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  overflow: hidden;
+
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-round);
+  font-family: var(--font-sans, 'Hanken Grotesk', system-ui, sans-serif);
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+}
+
+.sm {
+  inline-size: 28px;
+  block-size: 28px;
+  font-size: 11px;
+}
+
+.md {
+  inline-size: 36px;
+  block-size: 36px;
+  font-size: 13px;
+}
+
+.lg {
+  inline-size: 44px;
+  block-size: 44px;
+  font-size: 15px;
+}
+
+.sunken {
+  background-color: var(--sunken);
+  color: var(--ink);
+}
+
+.surface {
+  background-color: var(--surface);
+  color: var(--ink);
+}
+
+.accent {
+  background-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.image {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+}
+
+/* The overlap is intentional: each border cuts cleanly into the one before. */
+.group > * + * {
+  margin-inline-start: -10px;
+}
+
+.overflow {
+  background-color: var(--ink);
+  color: var(--page);
+  font-family: var(--font-mono, 'JetBrains Mono', ui-monospace, monospace);
+  font-size: 11px;
+}

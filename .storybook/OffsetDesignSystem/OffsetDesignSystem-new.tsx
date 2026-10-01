@@ -26,6 +26,8 @@ import {
   type Tone,
 } from './components';
 import {
+  Avatar,
+  AvatarGroup,
   Breadcrumbs,
   Checkbox,
   Card,
@@ -2025,55 +2027,15 @@ export function Toolbar() {
                 <Card>
                   <Eyebrow style={{ marginBottom: 16 }}>Avatar &amp; group</Eyebrow>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                    {[
-                      ['IT', 44, 15, true],
-                      ['MR', 36, 13, false],
-                      ['KB', 28, 11, false],
-                    ].map(([initials, size, fs, accent]) => (
-                      <span
-                        key={initials as string}
-                        style={{
-                          width: size as number,
-                          height: size as number,
-                          flex: 'none',
-                          border: 'var(--bw) solid var(--ink)',
-                          borderRadius: 'var(--r-full)',
-                          background: accent ? 'var(--accent)' : 'var(--sunken)',
-                          color: accent ? 'var(--on-accent)' : 'var(--ink)',
-                          display: 'grid',
-                          placeItems: 'center',
-                          fontSize: fs as number,
-                          fontWeight: 600,
-                        }}
-                      >
-                        {initials}
-                      </span>
-                    ))}
+                    <Avatar name="ioana.t" size="lg" tone="accent" />
+                    <Avatar name="m.reyes" size="md" />
+                    <Avatar name="k.bauer" size="sm" />
                   </div>
-                  {/* AvatarGroup: the -10px overlap is intentional. */}
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {['IT', 'MR', 'KB', '+9'].map((initials, i) => (
-                      <span
-                        key={initials}
-                        style={{
-                          width: 36,
-                          height: 36,
-                          marginLeft: i === 0 ? 0 : -10,
-                          border: 'var(--bw) solid var(--ink)',
-                          borderRadius: 'var(--r-full)',
-                          background: initials === '+9' ? 'var(--ink)' : 'var(--surface)',
-                          color: initials === '+9' ? 'var(--page)' : 'var(--ink)',
-                          display: 'grid',
-                          placeItems: 'center',
-                          fontSize: initials === '+9' ? 11 : 13,
-                          fontWeight: 600,
-                          fontFamily: initials === '+9' ? 'var(--font-mono)' : 'var(--font-sans)',
-                        }}
-                      >
-                        {initials}
-                      </span>
-                    ))}
-                  </div>
+                  <AvatarGroup label="Reviewers" total={12}>
+                    <Avatar name="ioana.t" tone="surface" />
+                    <Avatar name="m.reyes" tone="surface" />
+                    <Avatar name="k.bauer" tone="surface" />
+                  </AvatarGroup>
                 </Card>
 
                 <Card>
