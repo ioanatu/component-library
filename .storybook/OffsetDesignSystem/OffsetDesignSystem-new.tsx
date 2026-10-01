@@ -19,7 +19,6 @@ import {
   inputStyle,
   Pre,
   Section,
-  SpecTable,
   Spinner,
   SubSection,
   Tag,
@@ -404,6 +403,30 @@ const BATCHES: BatchRow[] = [
   { name: 'Sessions', owner: 'm.reyes', count: '76,455', status: 'Deployed', tone: 'success' },
 ];
 
+type SpecRow = [string, ReactNode];
+const SPEC_COLUMNS = [
+  {
+    key: 'key',
+    label: 'Key',
+    width: '40%',
+    cell: ([key]: SpecRow) => (
+      <Body as="span" level={3} mono>
+        {key}
+      </Body>
+    ),
+  },
+  {
+    key: 'value',
+    label: 'Value',
+    width: '60%',
+    cell: ([, value]: SpecRow) => (
+      <Body as="span" level={3} tone="muted">
+        {value}
+      </Body>
+    ),
+  },
+];
+
 export interface OffsetDesignSystemProps {
   /** Initial theme. The header switch takes over after first interaction. */
   theme?: Theme;
@@ -434,7 +457,9 @@ export default function OffsetDesignSystem({
   const dialogInput = useRef<HTMLInputElement>(null);
 
   const fireToast = useCallback(() => {
-    window.clearTimeout(toastTimer.current);
+    if (toastTimer.current) {
+      window.clearTimeout(toastTimer.current);
+    }
     setToast(true);
     toastTimer.current = window.setTimeout(() => setToast(false), 4200);
   }, []);
@@ -1250,8 +1275,14 @@ export function Toolbar() {
               </Card>
 
               <Grid min={300}>
-                <SpecTable
-                  title="State matrix"
+                <Table<SpecRow>
+                  caption="State matrix"
+                  hideColumnHeaders
+                  zebra={false}
+                  minWidth={0}
+                  rowHeader="key"
+                  rowKey={([key]) => key}
+                  columns={SPEC_COLUMNS}
                   rows={[
                     ['rest', 'offset md, full border'],
                     ['hover', 'translate 1px, offset 3px'],
@@ -1266,8 +1297,14 @@ export function Toolbar() {
                     ],
                   ]}
                 />
-                <SpecTable
-                  title="Props"
+                <Table<SpecRow>
+                  caption="Props"
+                  hideColumnHeaders
+                  zebra={false}
+                  minWidth={0}
+                  rowHeader="key"
+                  rowKey={([key]) => key}
+                  columns={SPEC_COLUMNS}
                   rows={[
                     [
                       'variant',
@@ -2448,72 +2485,62 @@ export function Toolbar() {
                 </Card>
               </Grid>
 
-              <div
-                style={{
-                  border: 'var(--bw) solid var(--ink)',
-                  borderRadius: 'var(--r-md)',
-                  overflow: 'hidden',
-                  boxShadow: '4px 4px 0 var(--accent)',
-                }}
-              >
-                <Body
-                  level={3}
-                  weight="semibold"
-                  tone="inherit"
-                  style={{
-                    padding: '12px 18px',
-                    background: 'var(--ink)',
-                    color: 'var(--surface)',
-                  }}
-                >
-                  Changelog
-                </Body>
-                <div style={{ background: 'var(--surface)' }}>
-                  {[
-                    [
-                      '2.0.0',
-                      <>
-                        Two-tier token architecture. Warning tone added. Shadow-direction rule
-                        specified. Feedback, overlay, and data-display groups introduced — 23
-                        components. Motion and density tokens. Governance model published.{' '}
-                        <strong style={{ color: 'var(--ink)' }}>Breaking:</strong> components must
-                        read semantic tokens; primitive names are now private.
-                      </>,
-                    ],
-                    [
-                      '1.1.0',
-                      <>
-                        TabMenu promoted out of the Tabs story. Dropdown gained typeahead. Focus
-                        ring raised to 3px after a contrast audit.
-                      </>,
-                    ],
-                    [
-                      '1.0.0',
-                      <>
-                        First release. Nine components extrapolated from a single button: Button,
-                        Card, Chip, Input, Textarea, Dropdown, Checkbox, Radio, Toggle, Tabs.
-                      </>,
-                    ],
-                  ].map(([v, body], i) => (
-                    <div
-                      key={v as string}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'minmax(120px,.7fr) minmax(0,3fr)',
-                        borderTop:
-                          i === 0 ? 'var(--bw) solid var(--ink)' : '1px solid var(--border-subtle)',
-                      }}
-                    >
-                      <Body level={3} mono weight="bold" style={{ padding: '14px 18px' }}>
-                        {v}
+              <Table<SpecRow>
+                caption="Changelog"
+                hideColumnHeaders
+                zebra={false}
+                minWidth={0}
+                rowHeader="version"
+                rowKey={([version]) => version}
+                columns={[
+                  {
+                    key: 'version',
+                    label: 'Version',
+                    width: '19%',
+                    cell: ([version]) => (
+                      <Body as="span" level={3} mono weight="bold">
+                        {version}
                       </Body>
-                      <Body level={3} tone="muted" style={{ padding: '14px 18px' }}>
-                        {body}
+                    ),
+                  },
+                  {
+                    key: 'changes',
+                    label: 'Changes',
+                    width: '81%',
+                    cell: ([, changes]) => (
+                      <Body as="span" level={3} tone="muted">
+                        {changes}
                       </Body>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                    ),
+                  },
+                ]}
+                rows={[
+                  [
+                    '2.0.0',
+                    <>
+                      Two-tier token architecture. Warning tone added. Shadow-direction rule
+                      specified. Feedback, overlay, and data-display groups introduced — 23
+                      components. Motion and density tokens. Governance model published.{' '}
+                      <strong style={{ color: 'var(--ink)' }}>Breaking:</strong> components must
+                      read semantic tokens; primitive names are now private.
+                    </>,
+                  ],
+                  [
+                    '1.1.0',
+                    <>
+                      TabMenu promoted out of the Tabs story. Dropdown gained typeahead. Focus ring
+                      raised to 3px after a contrast audit.
+                    </>,
+                  ],
+                  [
+                    '1.0.0',
+                    <>
+                      First release. Nine components extrapolated from a single button: Button,
+                      Card, Chip, Input, Textarea, Dropdown, Checkbox, Radio, Toggle, Tabs.
+                    </>,
+                  ],
+                ]}
+              />
             </Section>
 
             <footer

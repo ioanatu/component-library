@@ -46,6 +46,11 @@
   text-align: start;
 }
 
+.captionInk {
+  background-color: var(--ink);
+  color: var(--surface);
+}
+
 .headCell {
   padding: 11px 18px;
   background-color: var(--ink);

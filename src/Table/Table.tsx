@@ -20,6 +20,8 @@ import styles from './Table.module.css';
  * what lets a screen reader say which row it is reading.
  * @param cell - Fallback renderer, used for any column without its own.
  * @param header - Slot above the table, inside the border. Laid out as a row.
+ * @param hideColumnHeaders - Keeps the column headers announced but off screen, for
+ * key–value tables where the first column already says what each row is.
  */
 
 export interface TableColumn<T> {
@@ -33,6 +35,7 @@ export interface TableColumn<T> {
 export interface TableProps<T> {
   caption: string;
   hideCaption?: boolean;
+  hideColumnHeaders?: boolean;
   columns: TableColumn<T>[];
   rows: T[];
   cell?: (row: T, key: string) => ReactNode;
@@ -49,6 +52,7 @@ export interface TableProps<T> {
 export function Table<T>({
   caption,
   hideCaption = false,
+  hideColumnHeaders = false,
   columns,
   rows,
   cell,
@@ -82,8 +86,20 @@ export function Table<T>({
           className={clsx(styles.table, { [styles.fixed]: fixed })}
           style={{ minInlineSize: minWidth }}
         >
-          <caption id={captionId} className={hideCaption ? styles.srOnly : styles.caption}>
-            <Body as="span" level={2} weight="semibold">
+          <caption
+            id={captionId}
+            className={
+              hideCaption
+                ? styles.srOnly
+                : clsx(styles.caption, { [styles.captionInk]: hideColumnHeaders })
+            }
+          >
+            <Body
+              as="span"
+              level={2}
+              weight="semibold"
+              tone={hideColumnHeaders ? 'inherit' : undefined}
+            >
               {caption}
             </Body>
           </caption>
@@ -102,7 +118,11 @@ export function Table<T>({
                 <th
                   key={column.key}
                   scope="col"
-                  className={clsx(styles.headCell, alignClass(column.align))}
+                  className={
+                    hideColumnHeaders
+                      ? styles.srOnly
+                      : clsx(styles.headCell, alignClass(column.align))
+                  }
                 >
                   <Body as="span" level={3} weight="semibold" tone="inherit" unbounded>
                     {column.label}

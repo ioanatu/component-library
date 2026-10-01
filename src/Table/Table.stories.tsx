@@ -150,3 +150,53 @@ export const Scrolling: Story = {
     </div>
   ),
 };
+
+type Spec = [string, string];
+
+/**
+ * For key–value tables. The column headers stay in the markup for screen readers; the
+ * caption takes their place on screen.
+ */
+export const WithoutColumnHeaders: StoryObj<typeof Table<Spec>> = {
+  render: () => (
+    <div style={{ maxWidth: 420 }}>
+      <Table<Spec>
+        caption="State matrix"
+        hideColumnHeaders
+        zebra={false}
+        minWidth={0}
+        rowHeader="state"
+        rowKey={([state]) => state}
+        columns={[
+          {
+            key: 'state',
+            label: 'State',
+            width: '40%',
+            cell: ([state]) => (
+              <Body as="span" level={3} mono unbounded>
+                {state}
+              </Body>
+            ),
+          },
+          {
+            key: 'treatment',
+            label: 'Treatment',
+            width: '60%',
+            cell: ([, treatment]) => (
+              <Body as="span" level={3} tone="muted" unbounded>
+                {treatment}
+              </Body>
+            ),
+          },
+        ]}
+        rows={[
+          ['rest', 'offset md, full border'],
+          ['hover', 'translate 1px, offset 3px'],
+          ['active', 'translate 4px, offset 0'],
+          ['focus', '3px accent ring, 2px offset'],
+          ['disabled', 'no shadow, subtle border, no pointer'],
+        ]}
+      />
+    </div>
+  ),
+};
