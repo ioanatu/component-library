@@ -1,5 +1,7 @@
 import './index.css';
 
+export type { AlertProps } from './Alert/Alert';
+export { Alert } from './Alert/Alert';
 export type { AvatarProps } from './Avatar/Avatar';
 export { Avatar } from './Avatar/Avatar';
 export type { AvatarGroupProps } from './Avatar/AvatarGroup';
@@ -24,6 +26,8 @@ export type { MenuCheckboxItemProps, MenuItemProps } from './DropdownMenu/MenuIt
 export { MenuCheckboxItem, MenuGroup, MenuItem, MenuSeparator } from './DropdownMenu/MenuItem';
 export type { InputProps } from './Input/Input';
 export { Input } from './Input/Input';
+export type { LinkProps } from './Link/Link';
+export { Link } from './Link/Link';
 export type { ModalProps } from './Modal/Modal';
 export { Modal } from './Modal/Modal';
 export type { RadioProps } from './Radio/Radio';

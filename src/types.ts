@@ -69,3 +69,6 @@ export type TooltipVariant = (typeof tooltipVariants)[number];
 /** Avatar fill. Accent marks the current user; surface suits a group on --sunken. */
 export const avatarTones = ['sunken', 'surface', 'accent'] as const;
 export type AvatarTone = (typeof avatarTones)[number];
+
+export const alertTones = ['info', 'success', 'warning', 'danger'] as const;
+export type AlertTone = (typeof alertTones)[number];

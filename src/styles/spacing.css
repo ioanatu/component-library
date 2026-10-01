@@ -44,3 +44,8 @@
 [data-density='compact'] {
   --sec-gap: 48px;
 }
+
+/* WCAG 2.5.5 (AAA): checkbox, radio and toggle rows grow to 44px targets. */
+[data-targets='large'] {
+  --target-min: 44px;
+}
