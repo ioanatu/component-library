@@ -20,6 +20,8 @@ export type { CheckboxGroupProps } from './Checkbox/CheckboxGroup';
 export { CheckboxGroup } from './Checkbox/CheckboxGroup';
 export type { ChipProps } from './Chip/Chip';
 export { Chip } from './Chip/Chip';
+export type { ComboboxOption, ComboboxProps } from './Combobox/Combobox';
+export { Combobox } from './Combobox/Combobox';
 export type { DropdownMenuProps } from './DropdownMenu/DropdownMenu';
 export { DropdownMenu } from './DropdownMenu/DropdownMenu';
 export type { MenuCheckboxItemProps, MenuItemProps } from './DropdownMenu/MenuItem';

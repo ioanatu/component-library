@@ -13,6 +13,7 @@ import styles from './Select.module.css';
  * @param searchable - Adds a search field that is itself the combobox.
  * @param fullWidth - Fills the parent instead of the default 240px.
  * @param name - Renders a hidden input so the value submits with a form.
+ * @param optional - Renders the word "optional" after the label.
  */
 
 export interface SelectOption {
@@ -37,6 +38,7 @@ export interface SelectProps {
   error?: ReactNode;
   disabled?: boolean;
   required?: boolean;
+  optional?: boolean;
   fullWidth?: boolean;
   maxHeight?: number;
   name?: string;
@@ -103,6 +105,7 @@ export function Select({
   error,
   disabled = false,
   required = false,
+  optional = false,
   fullWidth = false,
   maxHeight,
   name,
@@ -315,6 +318,7 @@ export function Select({
               <span className={styles.srOnly}> required</span>
             </>
           ) : null}
+          {optional ? <span className={styles.optional}>optional</span> : null}
         </Body>
       </label>
 

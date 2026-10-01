@@ -13,6 +13,12 @@
   margin-block-end: var(--space-2);
 }
 
+.optional {
+  margin-inline-start: 0.5rem;
+  font-weight: var(--fw-regular);
+  color: var(--ink-subtle);
+}
+
 .anchor {
   position: relative;
 }
