@@ -1,4 +1,4 @@
-import type { ElementType } from 'react';
+import type { ElementType, Ref } from 'react';
 import type { BaseTypographyProps } from '../Typography.types';
 import { cx, sharedClasses, sharedStyle } from '../Typography.utils';
 import styles from './Headline.module.css';
@@ -21,6 +21,7 @@ export interface HeadlineProps extends BaseTypographyProps {
    * override when document outline and visual hierarchy legitimately differ.
    */
   as?: ElementType;
+  ref?: Ref<HTMLHeadingElement>;
 }
 
 /**

@@ -306,10 +306,14 @@ export function Select({
         <Body as="span" level={3} weight="semibold">
           {label}
           {required ? (
-            <span aria-hidden="true" style={{ color: 'var(--danger)' }}>
-              {' '}
-              *
-            </span>
+            <>
+              <span aria-hidden="true" style={{ color: 'var(--danger)' }}>
+                {' '}
+                *
+              </span>
+              {/* aria-required is not allowed on a button, so the label says it. */}
+              <span className={styles.srOnly}> required</span>
+            </>
           ) : null}
         </Body>
       </label>
