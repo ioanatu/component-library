@@ -36,14 +36,24 @@ const meta: Meta<typeof Avatar> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+/** `avatar.svg` is served from `.storybook/public`. */
+export const Default: Story = {
+  args: { src: 'avatar.svg' },
+};
 
 export const Sizes: Story = {
   render: (args) => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-      {sizes.map((size) => (
-        <Avatar key={size} {...args} size={size} />
-      ))}
+    <div style={{ display: 'grid', gap: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        {sizes.map((size) => (
+          <Avatar key={size} {...args} size={size} />
+        ))}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        {sizes.map((size) => (
+          <Avatar key={size} {...args} size={size} src="avatar.svg" />
+        ))}
+      </div>
     </div>
   ),
 };
