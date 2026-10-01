@@ -32,6 +32,8 @@ export type { SkeletonProps } from './Skeleton/Skeleton';
 export { Skeleton } from './Skeleton/Skeleton';
 export type { SliderProps } from './Slider/Slider';
 export { Slider } from './Slider/Slider';
+export type { TableColumn, TableProps } from './Table/Table';
+export { Table } from './Table/Table';
 export type { TabMenuItem, TabMenuProps } from './TabMenu/TabMenu';
 export { TabMenu } from './TabMenu/TabMenu';
 export type { TabItem, TabsProps } from './Tabs/Tabs';

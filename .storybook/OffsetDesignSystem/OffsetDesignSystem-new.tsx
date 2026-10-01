@@ -13,7 +13,6 @@ import TextArea from '../../src/TextArea/TextArea';
 import {
   Alert,
   Badge,
-  DataTable,
   Grid,
   Header,
   Hero,
@@ -40,6 +39,7 @@ import {
   DropdownMenu,
   MenuCheckboxItem,
   Slider,
+  Table,
   TabMenu,
   Tabs,
   Toast,
@@ -1936,27 +1936,20 @@ export function Toolbar() {
               lead="A brutalist table is a real risk: 2px borders on every cell becomes a cage. The resolution is that the container is bordered and the rows are divided subtly — heavy outside, quiet inside."
             >
               <div style={{ marginBottom: 16 }}>
-                <DataTable<BatchRow>
+                <Table<BatchRow>
+                  caption="Migration batches"
+                  hideCaption
+                  rowHeader="name"
+                  rowKey={(row) => row.name}
                   columns={[
-                    { key: 'name', label: 'Batch', span: '1.4fr' },
-                    { key: 'owner', label: 'Owner', span: '1fr' },
-                    { key: 'count', label: 'Records', span: '.9fr' },
-                    { key: 'status', label: 'Status', span: '1fr' },
+                    { key: 'name', label: 'Batch', width: '33%' },
+                    { key: 'owner', label: 'Owner', width: '23%' },
+                    { key: 'count', label: 'Records', width: '21%' },
+                    { key: 'status', label: 'Status', width: '23%' },
                   ]}
                   rows={BATCHES}
                   header={
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: 12,
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '14px 18px',
-                        background: 'var(--surface)',
-                        borderBottom: 'var(--bw) solid var(--ink)',
-                      }}
-                    >
+                    <>
                       <Body level={2} weight="semibold">
                         Migration batches
                       </Body>
@@ -1966,7 +1959,7 @@ export function Toolbar() {
                           Export
                         </ButtonNew>
                       </div>
-                    </div>
+                    </>
                   }
                   cell={(row, key) => {
                     if (key === 'status') return <Badge tone={row.tone}>{row.status}</Badge>;
