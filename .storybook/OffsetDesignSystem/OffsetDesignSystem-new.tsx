@@ -26,6 +26,7 @@ import {
   type Tone,
 } from './components';
 import {
+  Accordion,
   Avatar,
   AvatarGroup,
   Breadcrumbs,
@@ -2283,6 +2284,66 @@ export function Toolbar() {
               lead="The tree is one tab stop: arrow keys move, Right and Left open and close, a letter jumps ahead. Select a node to see where that part sits in the card, and why it is built that way."
             >
               <RecipeInspector />
+            </SubSection>
+
+            {/* Accordion ------------------------------------------------- */}
+            <SubSection
+              id="accordion"
+              title="Accordion"
+              badge="NEW"
+              lead="Each header is a real button inside a heading, so it is reached by Tab and listed with the page's headings. Up, Down, Home and End move between headers, and find-in-page searches closed sections and opens the one with the match."
+            >
+              <div style={{ maxWidth: 720 }}>
+                <Accordion
+                  headingLevel={4}
+                  defaultExpanded={['accent']}
+                  items={[
+                    {
+                      id: 'accent',
+                      title: 'Can I change the accent colour?',
+                      content: (
+                        <Body level={3} tone="inherit">
+                          Yes. Set <Code level={2}>--accent</Code> on any ancestor and every focus
+                          ring, offset shadow and selected state follows. Pick a value that keeps
+                          3:1 against <Code level={2}>--surface</Code>.
+                        </Body>
+                      ),
+                    },
+                    {
+                      id: 'dark',
+                      title: 'How does the dark theme work?',
+                      content: (
+                        <Body level={3} tone="inherit">
+                          Set <Code level={2}>data-theme=&quot;dark&quot;</Code> on a container.
+                          Only the semantic tokens change; no component carries a dark variant.
+                        </Body>
+                      ),
+                    },
+                    {
+                      id: 'rtl',
+                      title: 'Does it support right-to-left languages?',
+                      content: (
+                        <Body level={3} tone="inherit">
+                          Components use logical properties, so they mirror under{' '}
+                          <Code level={2}>dir=&quot;rtl&quot;</Code>. Only the offset shadow keeps
+                          its direction, by design.
+                        </Body>
+                      ),
+                    },
+                    {
+                      id: 'motion',
+                      title: 'What happens with reduced motion?',
+                      content: (
+                        <Body level={3} tone="inherit">
+                          Every transition and animation stops under{' '}
+                          <Code level={2}>prefers-reduced-motion</Code>. State changes stay instant
+                          and visible.
+                        </Body>
+                      ),
+                    },
+                  ]}
+                />
+              </div>
             </SubSection>
 
             {/* Guidelines ------------------------------------------------ */}

@@ -1,5 +1,7 @@
 import './index.css';
 
+export type { AccordionItem, AccordionProps } from './Accordion/Accordion';
+export { Accordion } from './Accordion/Accordion';
 export type { AlertProps } from './Alert/Alert';
 export { Alert } from './Alert/Alert';
 export type { AvatarProps } from './Avatar/Avatar';

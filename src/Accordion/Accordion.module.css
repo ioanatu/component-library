@@ -1,0 +1,83 @@
+/* Heavy outside, quiet inside — the container is bordered, sections divide subtly. */
+.accordion {
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background-color: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: 4px 4px 0 var(--accent);
+}
+
+.item + .item {
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+.heading {
+  margin: 0;
+}
+
+.trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  inline-size: 100%;
+  min-block-size: 52px;
+  padding: 12px 18px;
+
+  background-color: transparent;
+  border: 0;
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.trigger:hover:not(:disabled) {
+  background-color: var(--sunken);
+}
+
+/* Inset, so the container's corners stay clean. */
+.trigger:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.trigger:disabled {
+  color: var(--ink-subtle);
+  cursor: not-allowed;
+}
+
+/* The open header carries the accent edge, so state is not the chevron alone. */
+.open .trigger {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.open .trigger:dir(rtl) {
+  box-shadow: inset -3px 0 0 var(--accent);
+}
+
+.chevron {
+  flex: none;
+  inline-size: 14px;
+  block-size: 14px;
+  color: var(--ink-muted);
+  transition: rotate 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.open .chevron {
+  rotate: 180deg;
+}
+
+.content {
+  padding: 0 18px 18px;
+  color: var(--ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}
