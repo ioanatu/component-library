@@ -45,6 +45,8 @@ import {
   Tabs,
   Toast,
   ToastRegion,
+  type TreeItem,
+  TreeView,
 } from '../../src';
 
 export type Theme = 'light' | 'dark';
@@ -428,6 +430,196 @@ const SPEC_COLUMNS = [
     ),
   },
 ];
+
+const RECIPE_TREE: TreeItem[] = [
+  {
+    id: 'card',
+    label: 'Card',
+    meta: '<div>',
+    children: [
+      {
+        id: 'header',
+        label: 'Header',
+        meta: '<header>',
+        children: [
+          { id: 'avatar', label: 'Avatar', meta: 'role=img' },
+          { id: 'title', label: 'Headline', meta: '<h4>' },
+          { id: 'date', label: 'Caption', meta: '<time>' },
+        ],
+      },
+      { id: 'media', label: 'Image', meta: '<img>' },
+      { id: 'content', label: 'Body', meta: '<p>' },
+      {
+        id: 'actions',
+        label: 'Actions',
+        meta: '<footer>',
+        children: [
+          { id: 'save', label: 'Save recipe', meta: '<button>' },
+          { id: 'share', label: 'Share', meta: '<button>' },
+        ],
+      },
+    ],
+  },
+];
+
+const RECIPE_NOTES: Record<string, string> = {
+  card: 'A plain container, not a link, so the buttons inside stay reachable on their own.',
+  header: 'Groups who made it and when, ahead of the dish itself.',
+  avatar: 'One role="img" named after the author, so it is read as a name, not as letters.',
+  title: 'An h4, so the recipe joins the page outline under its section.',
+  date: 'A <time> element with a machine-readable date beside the human one.',
+  media: 'The alt text describes the dish, the thing a sighted reader takes from it.',
+  content: 'Running text capped at a readable measure.',
+  actions: 'Real buttons in reading order, after the content they act on.',
+  save: 'Named by its own text, so no aria-label is needed.',
+  share: 'A secondary action, drawn as ghost so Save stays the primary one.',
+};
+
+function RecipeInspector() {
+  const [selected, setSelected] = useState('media');
+  const label = (id: string) => {
+    const find = (items: TreeItem[]): TreeItem | undefined =>
+      items.flatMap((item) => [item, ...(item.children ?? [])]).find((item) => item.id === id) ??
+      items.map((item) => find(item.children ?? [])).find(Boolean);
+    return find(RECIPE_TREE)?.label ?? '';
+  };
+
+  /* Outlines the part the tree has selected, with its name on a tag. */
+  const part = (id: string, children: ReactNode) => (
+    <div
+      style={{
+        position: 'relative',
+        borderRadius: 4,
+        outline: selected === id ? '2px dashed var(--accent)' : '2px dashed transparent',
+        outlineOffset: 3,
+      }}
+    >
+      {selected === id ? (
+        <Body
+          as="span"
+          level={3}
+          mono
+          tone="inherit"
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            zIndex: 1,
+            insetBlockStart: -14,
+            insetInlineStart: 6,
+            padding: '0 6px',
+            borderRadius: 4,
+            background: 'var(--accent)',
+            color: 'var(--on-accent)',
+            fontSize: 11,
+            lineHeight: '18px',
+          }}
+        >
+          {label(id)}
+        </Body>
+      ) : null}
+      {children}
+    </div>
+  );
+
+  return (
+    <Grid min={300} gap={24}>
+      <Card>
+        <Eyebrow style={{ marginBottom: 12 }}>Component tree</Eyebrow>
+        <TreeView
+          label="Recipe card structure"
+          items={RECIPE_TREE}
+          defaultExpandedIds={['card', 'header', 'actions']}
+          selectedId={selected}
+          onSelectedChange={setSelected}
+        />
+        <div
+          style={{
+            marginTop: 16,
+            padding: '12px 14px',
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--sunken)',
+          }}
+        >
+          <Body level={3} weight="semibold">
+            {label(selected)}
+          </Body>
+          <Body level={3} tone="muted">
+            {RECIPE_NOTES[selected]}
+          </Body>
+        </div>
+      </Card>
+
+      <div style={{ display: 'grid', gap: 8, alignContent: 'start' }}>
+        {part(
+          'card',
+          <Card padding="sm" elevation="md">
+            <div style={{ display: 'grid', gap: 14 }}>
+              {part(
+                'header',
+                <header style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {part('avatar', <Avatar name="m.reyes" tone="accent" />)}
+                  <div style={{ display: 'grid' }}>
+                    {part(
+                      'title',
+                      <Headline level={5} as="h4">
+                        Seafood paella
+                      </Headline>,
+                    )}
+                    {part(
+                      'date',
+                      <time dateTime="2026-09-14">
+                        <Caption as="span">September 14, 2026</Caption>
+                      </time>,
+                    )}
+                  </div>
+                </header>,
+              )}
+              {part(
+                'media',
+                <img
+                  src="paella.jpg"
+                  alt="Seafood paella in a wide black pan, topped with prawns, mussels, red pepper and lemon wedges."
+                  style={{
+                    display: 'block',
+                    width: 'calc(100% + 32px)',
+                    margin: '0 -16px',
+                    aspectRatio: '4 / 3',
+                    objectFit: 'cover',
+                  }}
+                />,
+              )}
+              {part(
+                'content',
+                <Body level={3} tone="muted">
+                  A party-sized paella of saffron rice, prawns and mussels, finished with lemon.
+                  Cook it in one wide pan and serve it straight from the table.
+                </Body>,
+              )}
+              {part(
+                'actions',
+                <footer style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                  {part(
+                    'save',
+                    <ButtonNew variant="secondary" size="sm">
+                      Save recipe
+                    </ButtonNew>,
+                  )}
+                  {part(
+                    'share',
+                    <ButtonNew variant="ghost" size="sm">
+                      Share
+                    </ButtonNew>,
+                  )}
+                </footer>,
+              )}
+            </div>
+          </Card>,
+        )}
+        <Caption>Photo: David Plaza, CC0, via the WordPress.org Photo Directory.</Caption>
+      </div>
+    </Grid>
+  );
+}
 
 export interface OffsetDesignSystemProps {
   /** Initial theme. The header switch takes over after first interaction. */
@@ -2081,6 +2273,16 @@ export function Toolbar() {
                   </div>
                 </Card>
               </Grid>
+            </SubSection>
+
+            {/* Tree view ------------------------------------------------- */}
+            <SubSection
+              id="tree-view"
+              title="Tree view"
+              badge="NEW"
+              lead="The tree is one tab stop: arrow keys move, Right and Left open and close, a letter jumps ahead. Select a node to see where that part sits in the card, and why it is built that way."
+            >
+              <RecipeInspector />
             </SubSection>
 
             {/* Guidelines ------------------------------------------------ */}

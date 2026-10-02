@@ -56,3 +56,5 @@ export type { ToggleProps } from './Toggle/Toggle';
 export { Toggle } from './Toggle/Toggle';
 export type { TooltipProps } from './Tooltip/Tooltip';
 export { Tooltip } from './Tooltip/Tooltip';
+export type { TreeItem, TreeViewProps } from './TreeView/TreeView';
+export { TreeView } from './TreeView/TreeView';

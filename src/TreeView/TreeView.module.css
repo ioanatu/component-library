@@ -1,0 +1,81 @@
+.tree,
+.group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  outline: none;
+}
+
+.row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 36px;
+  padding-inline-end: 10px;
+
+  border-inline-start: 3px solid transparent;
+  border-radius: 6px;
+  color: var(--ink);
+  cursor: pointer;
+  user-select: none;
+}
+
+.row:hover {
+  background-color: var(--sunken);
+}
+
+.selected,
+.selected:hover {
+  background-color: var(--accent-wash);
+  border-inline-start-color: var(--accent);
+}
+
+/* The ring sits on the row, since the treeitem also wraps its children. */
+.item:focus-visible > .row {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.toggle {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 16px;
+  block-size: 16px;
+  color: var(--ink-muted);
+}
+
+.chevron {
+  inline-size: 12px;
+  block-size: 12px;
+  transition: rotate 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.chevronOpen {
+  rotate: 90deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}
+
+.icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 18px;
+  block-size: 18px;
+  color: var(--ink-muted);
+}
+
+.meta {
+  margin-inline-start: auto;
+  padding-inline-start: var(--space-3);
+  white-space: nowrap;
+}
