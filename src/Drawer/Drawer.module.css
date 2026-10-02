@@ -1,0 +1,257 @@
+.sm {
+  --drawer-w: 280px;
+  --drawer-h: 240px;
+}
+
+.md {
+  --drawer-w: 360px;
+  --drawer-h: 360px;
+}
+
+.lg {
+  --drawer-w: 480px;
+  --drawer-h: 520px;
+}
+
+/* ---------- Temporary: a modal dialog floating 12px in from its edge ---------- */
+
+.dialog {
+  --drawer-gap: 12px;
+
+  box-sizing: border-box;
+  position: fixed;
+  inset: var(--drawer-gap);
+  max-inline-size: none;
+  max-block-size: none;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+
+  background-color: transparent;
+  border: 0;
+
+  translate: var(--drawer-from);
+  transition:
+    translate 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    overlay 260ms allow-discrete,
+    display 260ms allow-discrete;
+}
+
+.dialog[open] {
+  translate: 0 0;
+}
+
+@starting-style {
+  .dialog[open] {
+    translate: var(--drawer-from);
+  }
+}
+
+.dialog.start {
+  --drawer-from: calc(-100% - 2 * var(--drawer-gap)) 0;
+
+  inset-inline-end: auto;
+  inline-size: min(var(--drawer-w), calc(100vw - 2 * var(--drawer-gap)));
+}
+
+.dialog.end {
+  --drawer-from: calc(100% + 2 * var(--drawer-gap)) 0;
+
+  inset-inline-start: auto;
+  inline-size: min(var(--drawer-w), calc(100vw - 2 * var(--drawer-gap)));
+}
+
+.dialog.start:dir(rtl) {
+  --drawer-from: calc(100% + 2 * var(--drawer-gap)) 0;
+}
+
+.dialog.end:dir(rtl) {
+  --drawer-from: calc(-100% - 2 * var(--drawer-gap)) 0;
+}
+
+.dialog.top {
+  --drawer-from: 0 calc(-100% - 2 * var(--drawer-gap));
+
+  inset-block-end: auto;
+  max-block-size: min(var(--drawer-h), calc(100vh - 2 * var(--drawer-gap)));
+}
+
+.dialog.bottom {
+  --drawer-from: 0 calc(100% + 2 * var(--drawer-gap));
+
+  inset-block-start: auto;
+  max-block-size: min(var(--drawer-h), calc(100vh - 2 * var(--drawer-gap)));
+}
+
+.dialog::backdrop {
+  background-color: var(--scrim);
+  opacity: 0;
+  transition:
+    opacity 260ms ease,
+    overlay 260ms allow-discrete,
+    display 260ms allow-discrete;
+}
+
+.dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.dialog .panel {
+  max-block-size: inherit;
+}
+
+.dialog.start .panel,
+.dialog.end .panel {
+  block-size: 100%;
+}
+
+/* ---------- Persistent and permanent: a landmark in the page ---------- */
+
+/* The padding leaves room for the offset shadow, which overflow would clip. */
+.inPage {
+  box-sizing: border-box;
+  flex: none;
+  overflow: hidden;
+}
+
+.inPage.start,
+.inPage.end {
+  inline-size: calc(var(--drawer-w) + 8px);
+  padding-block-end: 8px;
+  padding-inline-end: 8px;
+  transition: inline-size 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.inPage.start.collapsed,
+.inPage.end.collapsed {
+  inline-size: 0;
+  padding: 0;
+}
+
+.inPage.top,
+.inPage.bottom {
+  display: grid;
+  grid-template-rows: 1fr;
+  padding-block-end: 8px;
+  padding-inline-end: 8px;
+  transition: grid-template-rows 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.inPage.top.collapsed,
+.inPage.bottom.collapsed {
+  grid-template-rows: 0fr;
+  padding: 0;
+}
+
+.region {
+  box-sizing: border-box;
+  display: flex;
+  min-block-size: 0;
+}
+
+.inPage.start .region,
+.inPage.end .region {
+  inline-size: var(--drawer-w);
+  block-size: 100%;
+}
+
+/* ---------- The panel, shared ---------- */
+
+.panel {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-block-size: 0;
+  padding: 24px;
+
+  background-color: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-lg);
+  box-shadow: 8px 8px 0 var(--accent);
+  color: var(--ink);
+}
+
+.header {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.heading {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.eyebrow {
+  margin-block-end: 6px;
+}
+
+.description {
+  flex: none;
+  margin-block-start: 8px;
+}
+
+/* Only the middle scrolls, so the title and the actions stay in reach. */
+.body {
+  flex: 1;
+  min-block-size: 0;
+  margin-block-start: 20px;
+  overflow-y: auto;
+}
+
+.footer {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-block-start: 20px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+.close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 36px;
+  block-size: 36px;
+  padding: 0;
+
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+
+.close svg {
+  inline-size: 14px;
+  block-size: 14px;
+}
+
+.close:hover {
+  background-color: var(--accent-wash);
+  color: var(--ink);
+}
+
+.close:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog::backdrop,
+  .inPage {
+    transition: none;
+  }
+}

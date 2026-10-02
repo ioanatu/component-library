@@ -22,6 +22,8 @@ export type { ChipProps } from './Chip/Chip';
 export { Chip } from './Chip/Chip';
 export type { ComboboxOption, ComboboxProps } from './Combobox/Combobox';
 export { Combobox } from './Combobox/Combobox';
+export type { DrawerProps } from './Drawer/Drawer';
+export { Drawer } from './Drawer/Drawer';
 export type { DropdownMenuProps } from './DropdownMenu/DropdownMenu';
 export { DropdownMenu } from './DropdownMenu/DropdownMenu';
 export type { MenuCheckboxItemProps, MenuItemProps } from './DropdownMenu/MenuItem';

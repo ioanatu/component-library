@@ -72,3 +72,11 @@ export type AvatarTone = (typeof avatarTones)[number];
 
 export const alertTones = ['info', 'success', 'warning', 'danger'] as const;
 export type AlertTone = (typeof alertTones)[number];
+
+/** temporary is modal; persistent sits beside the content; permanent never closes. */
+export const drawerVariants = ['temporary', 'persistent', 'permanent'] as const;
+export type DrawerVariant = (typeof drawerVariants)[number];
+
+/** Logical edges, so start is the right edge in a right-to-left layout. */
+export const drawerAnchors = ['start', 'end', 'top', 'bottom'] as const;
+export type DrawerAnchor = (typeof drawerAnchors)[number];
